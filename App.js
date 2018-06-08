@@ -1,11 +1,12 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, SafeAreaView } from 'react-native';
 import Login from './components/login';
+import { psalightred } from './utils/colors';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: psalightred,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -19,9 +20,9 @@ class App extends React.Component {
   render() {
     if (this.state.isLoggedIn) return <div>Secured</div>;
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <Login onLoginPress={() => this.setState({ isLoggedIn: true })} />
-      </View>
+      </SafeAreaView>
     );
   }
 }

@@ -1,21 +1,32 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  ActivityIndicator,
-  ScrollView,
-  Text,
-  TextInput,
-  Button,
-} from 'react-native';
+import { ActivityIndicator, ScrollView, Text, Button } from 'react-native';
 import Environment from '../utils/environment';
+import Header from '../components/header';
+import CustomTextInput from '../components/customTextInput';
 
 class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.handleUsernameChange = this.handleUsernameChange.bind(this);
+    this.handlePasswordChange = this.handlePasswordChange.bind(this);
+  }
+
   state = {
     username: '',
     password: '',
     isLoggingIn: false,
     msg: '',
   };
+
+  handleUsernameChange(n) {
+    console.log(n);
+    this.setState({ username: n });
+  }
+  handlePasswordChange(p) {
+    console.log(p);
+    this.setState({ password: p });
+  }
 
   userLogin = () => {
     this.setState({ isLoggingIn: true, msg: '' });
@@ -24,6 +35,7 @@ class Login extends Component {
       password: this.state.password,
       grant_type: 'password',
     };
+    console.log(params);
     let formBody = [];
     Object.keys(params).forEach((prop) => {
       const encodedKey = encodeURIComponent(prop);
@@ -59,19 +71,19 @@ class Login extends Component {
 
   render() {
     return (
-      <ScrollView style={{ padding: 20 }}>
-        <Text style={{ fontSize: 27 }}>Login</Text>
-        <TextInput
-          placeholder="Username"
-          type="text"
-          value={this.state.username}
-          onChange={(username) => this.setState({ username })}
+      <ScrollView style={{ alignSelf: 'stretch' }}>
+        <Header text="Login to PSA" />
+        <Text style={{ fontSize: 27, flex: 1 }}>Img</Text>
+        <Text style={{ fontSize: 27, flex: 1 }}>Date & Time</Text>
+        <CustomTextInput
+          controlFunc={this.handleUsernameChange}
+          name="Username"
         />
-        <TextInput
-          placeholder="Password"
-          type="text"
-          value={this.state.email}
-          onChange={(password) => this.setState({ password })}
+
+        <CustomTextInput
+          controlFunc={this.handlePasswordChange}
+          name="Password"
+          password
         />
         {!!this.state.msg && (
           <Text style={{ fontSize: 14, color: 'red', padding: 5 }}>
@@ -79,7 +91,6 @@ class Login extends Component {
           </Text>
         )}
         {this.state.isLoggingIn && <ActivityIndicator />}
-        <Button onPress={this.props.onLoginPress} title="Submit" />
         <Button
           disabled={
             this.state.isLoggingIn ||
