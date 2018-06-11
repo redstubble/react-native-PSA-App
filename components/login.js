@@ -1,9 +1,20 @@
 import React, { Component } from 'react';
+import DateTime from '../components/dateTime';
+import { Button } from 'react-native-elements';
 import PropTypes from 'prop-types';
-import { ActivityIndicator, ScrollView, Text, Button } from 'react-native';
+import {
+  ActivityIndicator,
+  ScrollView,
+  Text,
+  Image,
+  View,
+  Linking,
+  TouchableOpacity,
+} from 'react-native';
 import Environment from '../utils/environment';
 import Header from '../components/header';
 import CustomTextInput from '../components/customTextInput';
+import Images from '../assets/images';
 
 class Login extends Component {
   constructor(props) {
@@ -71,36 +82,83 @@ class Login extends Component {
 
   render() {
     return (
-      <ScrollView style={{ alignSelf: 'stretch' }}>
+      <View style={{ flex: 1 }}>
         <Header text="Login to PSA" />
-        <Text style={{ fontSize: 27, flex: 1 }}>Img</Text>
-        <Text style={{ fontSize: 27, flex: 1 }}>Date & Time</Text>
-        <CustomTextInput
-          controlFunc={this.handleUsernameChange}
-          name="Username"
-        />
+        <ScrollView
+          contentContainerStyle={{ margin: 40, flex: 1, alignSelf: 'stretch' }}
+        >
+          <View
+            style={{
+              justifyContent: 'center',
+              alignSelf: 'center',
+              flex: 2,
+            }}
+          >
+            <Image
+              source={Images.PSALogo}
+              style={{
+                height: 65,
+                width: 1000,
+                aspectRatio: 1.5,
+                resizeMode: 'contain',
+              }}
+            />
+          </View>
+          <DateTime />
+          <View style={{ flex: 2 }}>
+            <CustomTextInput
+              controlFunc={this.handleUsernameChange}
+              name="Username"
+            />
 
-        <CustomTextInput
-          controlFunc={this.handlePasswordChange}
-          name="Password"
-          password
-        />
-        {!!this.state.msg && (
-          <Text style={{ fontSize: 14, color: 'red', padding: 5 }}>
-            {this.state.msg}
-          </Text>
-        )}
-        {this.state.isLoggingIn && <ActivityIndicator />}
-        <Button
-          disabled={
-            this.state.isLoggingIn ||
-            !this.state.username ||
-            !this.state.password
-          }
-          onPress={this.userLogin}
-          title="Submit"
-        />
-      </ScrollView>
+            <CustomTextInput
+              controlFunc={this.handlePasswordChange}
+              name="Password"
+              password
+            />
+          </View>
+          <View style={{ flex: 2 }}>
+            {!!this.state.msg && (
+              <Text style={{ fontSize: 14, color: 'red', padding: 5 }}>
+                {this.state.msg}
+              </Text>
+            )}
+            {this.state.isLoggingIn && <ActivityIndicator />}
+            <Button
+              disabled={
+                this.state.isLoggingIn ||
+                !this.state.username ||
+                !this.state.password
+              }
+              onPress={this.userLogin}
+              style={{}}
+              title="Login"
+            />
+          </View>
+          <View style={{ flex: 2 }}>
+            <Text
+              style={{
+                textAlign: 'center',
+                color: '#fff',
+                fontSize: 15,
+              }}
+              onPress={() => Linking.openURL('http://google.com')}
+            >
+              Forgot Login
+            </Text>
+            <Text
+              style={{
+                textAlign: 'center',
+                color: '#fff',
+                fontSize: 15,
+              }}
+              onPress={() => Linking.openURL('http://google.com')}
+            >
+              Not Registered
+            </Text>
+          </View>
+        </ScrollView>
+      </View>
     );
   }
 }

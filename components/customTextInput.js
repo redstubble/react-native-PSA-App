@@ -14,7 +14,10 @@ class CustomTextInput extends Component {
     return (
       <TextInput
         style={{
-          flex: 1,
+          borderColor: 'grey',
+          borderWidth: 1,
+          marginLeft: 15,
+          marginRight: 15,
           backgroundColor: '#fff',
           padding: 20,
           color: '#000',

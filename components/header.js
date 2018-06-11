@@ -2,7 +2,6 @@ import React from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { red } from '../utils/colors';
 
 const HeaderText = styled.Text`
   font-size: 20;
@@ -15,13 +14,20 @@ export default function Header({ text }) {
   return (
     <View
       style={{
-        flex: 1,
-        backgroundColor: red,
+        backgroundColor: '#D01E1E',
         alignSelf: 'stretch',
         padding: 20,
+        shadowOpacity: 0.25,
+        shadowRadius: 3,
+        shadowColor: 'black',
+        shadowOffset: {
+          width: 0,
+          height: 5,
+        },
       }}
     >
       <HeaderText>{text}</HeaderText>
+      <View style={{}} />
     </View>
   );
 }
