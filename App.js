@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, SafeAreaView } from 'react-native';
-import Login from './components/login';
+import { createSwitchNavigator, createStackNavigator } from 'react-navigation';
+import Login from './layout/Login';
+import AuthLoadingScreen from './layout/AuthLoading';
 import { psalightred } from './utils/colors';
+import RootNav from './layout/RootNav';
 
 const styles = StyleSheet.create({
   container: {
@@ -12,19 +15,22 @@ const styles = StyleSheet.create({
   },
 });
 
-class App extends React.Component {
-  state = {
-    isLoggedIn: false,
-  };
+const LoginScreen = ({ navigation }) => (
+  <SafeAreaView style={[styles.container, { backgroundColor: '#ecf0f1' }]}>
+    <Login onLoginPress={() => this.setState({ isLoggedIn: true })} />
+  </SafeAreaView>
+);
 
-  render() {
-    if (this.state.isLoggedIn) return <div>Secured</div>;
-    return (
-      <SafeAreaView style={styles.container}>
-        <Login onLoginPress={() => this.setState({ isLoggedIn: true })} />
-      </SafeAreaView>
-    );
-  }
-}
+const AppStack = createStackNavigator({ Home: RootNav });
+const AuthStack = createStackNavigator({ LogIn: LoginScreen });
 
-export default App;
+export default createSwitchNavigator(
+  {
+    AuthLoading: AuthLoadingScreen,
+    App: AppStack,
+    Auth: AuthStack,
+  },
+  {
+    initialRouteName: 'AuthLoading',
+  },
+);

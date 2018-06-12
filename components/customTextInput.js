@@ -26,7 +26,7 @@ class CustomTextInput extends Component {
         placeholder={this.state.Name}
         type="text"
         secureTextEntry={password}
-        onChange={(e) => controlFunc(e.nativeEvent.text)}
+        onChangeText={(e) => controlFunc(e)}
       />
     );
   }

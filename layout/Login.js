@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-import DateTime from '../components/dateTime';
-import { Button } from 'react-native-elements';
-import PropTypes from 'prop-types';
 import {
   ActivityIndicator,
   ScrollView,
@@ -9,75 +6,60 @@ import {
   Image,
   View,
   Linking,
-  TouchableOpacity,
 } from 'react-native';
-import Environment from '../utils/environment';
+import base64 from 'base-64';
+import { Button } from 'react-native-elements';
+import PropTypes from 'prop-types';
+import DateTime from '../components/dateTime';
 import Header from '../components/header';
 import CustomTextInput from '../components/customTextInput';
 import Images from '../assets/images';
+import { signInAsync } from '../utils/storage';
+import * as PsaApi from '../utils/psaApi';
 
 class Login extends Component {
   constructor(props) {
     super(props);
-    this.handleUsernameChange = this.handleUsernameChange.bind(this);
+    this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
   }
 
   state = {
-    username: '',
+    email: '',
     password: '',
     isLoggingIn: false,
     msg: '',
   };
 
-  handleUsernameChange(n) {
-    console.log(n);
-    this.setState({ username: n });
+  getHeaders() {
+    const head = new Headers();
+    const auth = base64.encode(`${this.state.email}:${this.state.password}`);
+    head.append('Authorization', `Basic ${auth}`);
+    return head;
+  }
+
+  handleEmailChange(n) {
+    this.setState({ email: n });
   }
   handlePasswordChange(p) {
-    console.log(p);
     this.setState({ password: p });
   }
 
-  userLogin = () => {
+  userLogin = async () => {
+    // await PsaApi.logout();
     this.setState({ isLoggingIn: true, msg: '' });
-    const params = {
-      username: this.state.username,
-      password: this.state.password,
-      grant_type: 'password',
-    };
-    console.log(params);
-    let formBody = [];
-    Object.keys(params).forEach((prop) => {
-      const encodedKey = encodeURIComponent(prop);
-      const encodedValue = encodeURIComponent(params[prop]);
-      formBody.push(`${encodedKey}=${encodedValue}`);
-    });
-
-    formBody = formBody.join('&');
-
-    let proceed = false;
-    fetch(`https://${Environment.CLIENT_API}/oauth/token`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: formBody,
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        if (response.error) this.setState({ msg: response.message });
-        else proceed = true;
-      })
-      .then(() => {
-        this.setState({ isLoggingIn: false });
-        if (proceed) this.props.onLoginPress();
-      })
-      .catch((err) => {
-        this.setState({ msg: err.message });
-        this.setState({ isLoggingIn: false });
-      })
-      .done();
+    const headers = this.getHeaders();
+    const response = await PsaApi.login(headers);
+    this.setState({ isLoggingIn: false });
+    if (response.success) {
+      console.log(response.data.data);
+      signInAsync(response.data.data);
+      this.props.navigation.navigate('App');
+    } else {
+      const msg = response.data.msg || 'Login failed';
+      console.log(msg);
+      this.setState({ msg });
+    }
   };
 
   render() {
@@ -107,8 +89,8 @@ class Login extends Component {
           <DateTime />
           <View style={{ flex: 2 }}>
             <CustomTextInput
-              controlFunc={this.handleUsernameChange}
-              name="Username"
+              controlFunc={this.handleEmailChange}
+              name="Email"
             />
 
             <CustomTextInput
@@ -119,7 +101,14 @@ class Login extends Component {
           </View>
           <View style={{ flex: 2 }}>
             {!!this.state.msg && (
-              <Text style={{ fontSize: 14, color: 'red', padding: 5 }}>
+              <Text
+                style={{
+                  fontSize: 14,
+                  color: 'black',
+                  textAlign: 'center',
+                  padding: 5,
+                }}
+              >
                 {this.state.msg}
               </Text>
             )}
@@ -127,7 +116,7 @@ class Login extends Component {
             <Button
               disabled={
                 this.state.isLoggingIn ||
-                !this.state.username ||
+                !this.state.email ||
                 !this.state.password
               }
               onPress={this.userLogin}
