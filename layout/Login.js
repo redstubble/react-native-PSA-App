@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   },
 });
 
-class Login extends Component {
+class Login extends React.Component {
   constructor(props) {
     super(props);
     this.handleEmailChange = this.handleEmailChange.bind(this);
@@ -57,15 +57,16 @@ class Login extends Component {
     this.setState({ password: p });
   }
 
-  userLogin = async ({ navigation }) => {
+  userLogin = async () => {
     this.setState({ isLoggingIn: true, msg: '' });
     const headers = this.getHeaders();
     const response = await PsaApi.login(headers);
     this.setState({ isLoggingIn: false });
+    console.log(response);
     if (response.success) {
       console.log(response.data.data);
-      setMemberAsync(response.data.data);
-      navigation.navigate('App');
+      await setMemberAsync(response.data.data);
+      this.props.navigation.navigate('App');
     } else {
       const msg = response.data.msg || 'Login failed';
       console.log(msg);

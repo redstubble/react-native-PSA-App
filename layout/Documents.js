@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { SafeAreaView } from 'react-navigation';
-import { Text, StyleSheet } from 'react-native';
+import { SafeAreaView, DrawerActions } from 'react-navigation';
+import { Text, StyleSheet, View } from 'react-native';
+import Head from '../components/headerSignedIn';
 
 const styles = StyleSheet.create({
   container: {
@@ -22,15 +23,20 @@ export default class Documents extends Component {
     title: 'Home',
   };
 
-  render() {
+  render({ navigation } = this.props) {
     return (
-      <SafeAreaView style={[styles.container, { backgroundColor: '#6a51ae' }]}>
-        {/* <View> */}
-        <Text>Docs</Text>
-        {/* </View> */}
-        <Text style={[styles.paragraph, { color: '#fff' }]}>
-          Documents Screen
-        </Text>
+      <SafeAreaView style={[{ flex: 1, backgroundColor: '#6a51ae' }]}>
+        <Head
+          action={() => navigation.dispatch(DrawerActions.openDrawer())}
+          title="Documents"
+        />
+        <View style={styles.container}>
+          <Text>Docs</Text>
+
+          <Text style={[styles.paragraph, { color: '#fff' }]}>
+            Documents Screen
+          </Text>
+        </View>
       </SafeAreaView>
     );
   }

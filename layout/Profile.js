@@ -1,7 +1,8 @@
 import React from 'react';
 import { SafeAreaView, DrawerActions } from 'react-navigation';
-import { Text, Button, StyleSheet } from 'react-native';
+import { Text, Button, StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
+import Head from '../components/headerSignedIn';
 
 const styles = StyleSheet.create({
   container: {
@@ -18,17 +19,20 @@ const styles = StyleSheet.create({
   },
 });
 
-const Profile = (props) => {
-  debugger;
-
-  navigation.dispatch(DrawerActions.openDrawer());
+const Profile = ({ navigation, screenProps }) => {
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: '#ecf0f1' }]}>
-      <Text style={styles.paragraph}>Profile Screen</Text>
-      <Button
-        onPress={() => navigation.dispatch(DrawerActions.closeDrawer())}
-        title="Open drawer"
+    <SafeAreaView style={[{ flex: 1, backgroundColor: '#ecf0f1' }]}>
+      <Head
+        action={() => navigation.dispatch(DrawerActions.openDrawer())}
+        title="Profile Screen"
       />
+      <View style={styles.container}>
+        <Text style={styles.paragraph}>Profile Screen</Text>
+        <Button
+          onPress={() => navigation.dispatch(DrawerActions.closeDrawer())}
+          title="Open drawer"
+        />
+      </View>
     </SafeAreaView>
   );
 };

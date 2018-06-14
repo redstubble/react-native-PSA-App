@@ -48,21 +48,23 @@ const TabNav = createBottomTabNavigator(
   },
 );
 
-const LogoutButton = (props) => (
-  <View style={{ flex: 1 }}>
-    <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
-      {/* <DrawerItems {...props} /> */}
-      <Button
-        title="Logout"
-        onPress={() => {
-          props.navigation.dispatch(DrawerActions.closeDrawer());
-          props.navigation.navigate('Auth');
-          signOut().then(removeMemberAsync());
-        }}
-      />
-    </SafeAreaView>
-  </View>
-);
+const LogoutButton = (props) => {
+  return (
+    <View style={{ flex: 1 }}>
+      <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
+        {/* <DrawerItems {...props} /> */}
+        <Button
+          title="Logout"
+          onPress={() => {
+            props.navigation.dispatch(DrawerActions.closeDrawer());
+            props.navigation.navigate('Auth');
+            signOut().then(removeMemberAsync());
+          }}
+        />
+      </SafeAreaView>
+    </View>
+  );
+};
 
 LogoutButton.propTypes = {
   navigation: PropTypes.shape({
@@ -79,30 +81,18 @@ const DrawerNav = createDrawerNavigator(
       path: '/',
       screen: LogoutButton,
     },
-  },
-  {
-    // contentComponent: (props) => <LogoutButton {...props} />,
-    initialRouteName: 'Stack',
-    contentOptions: {
-      activeTintColor: '#e91e63',
-    },
-  },
-);
-//Change Order
-const StckNav = createStackNavigator(
-  {
-    DrawerNav: {
-      screen: DrawerNav,
-      headerMode: 'none',
-    },
     TabNav: {
       screen: TabNav,
       headerMode: 'none',
     },
   },
   {
+    contentComponent: (props) => <LogoutButton {...props} />,
     initialRouteName: 'TabNav',
+    contentOptions: {
+      activeTintColor: '#e91e63',
+    },
   },
 );
 
-export default StckNav;
+export default DrawerNav;
