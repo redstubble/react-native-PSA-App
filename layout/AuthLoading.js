@@ -1,5 +1,6 @@
 import React from 'react';
-import { ActivityIndicator, StatusBar, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StatusBar, View } from 'react-native';
+import { PropTypes } from 'prop-types';
 import { getMemberAsync } from '../utils/storage';
 
 class AuthLoadingScreen extends React.Component {
@@ -24,5 +25,10 @@ class AuthLoadingScreen extends React.Component {
     );
   }
 }
+AuthLoadingScreen.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
 export default AuthLoadingScreen;

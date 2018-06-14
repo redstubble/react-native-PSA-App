@@ -6,6 +6,8 @@ import {
   Image,
   View,
   Linking,
+  StyleSheet,
+  SafeAreaView,
 } from 'react-native';
 import base64 from 'base-64';
 import { Button } from 'react-native-elements';
@@ -14,8 +16,18 @@ import DateTime from '../components/dateTime';
 import Header from '../components/header';
 import CustomTextInput from '../components/customTextInput';
 import Images from '../assets/images';
-import { signInAsync } from '../utils/storage';
+import { psalightred } from '../utils/colors';
+import { setMemberAsync } from '../utils/storage';
 import * as PsaApi from '../utils/psaApi';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    display: 'flex',
+    backgroundColor: psalightred,
+    justifyContent: 'center',
+  },
+});
 
 class Login extends Component {
   constructor(props) {
@@ -45,16 +57,15 @@ class Login extends Component {
     this.setState({ password: p });
   }
 
-  userLogin = async () => {
-    // await PsaApi.logout();
+  userLogin = async ({ navigation }) => {
     this.setState({ isLoggingIn: true, msg: '' });
     const headers = this.getHeaders();
     const response = await PsaApi.login(headers);
     this.setState({ isLoggingIn: false });
     if (response.success) {
       console.log(response.data.data);
-      signInAsync(response.data.data);
-      this.props.navigation.navigate('App');
+      setMemberAsync(response.data.data);
+      navigation.navigate('App');
     } else {
       const msg = response.data.msg || 'Login failed';
       console.log(msg);
@@ -64,96 +75,103 @@ class Login extends Component {
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        <Header text="Login to PSA" />
-        <ScrollView
-          contentContainerStyle={{ margin: 40, flex: 1, alignSelf: 'stretch' }}
-        >
-          <View
-            style={{
-              justifyContent: 'center',
-              alignSelf: 'center',
-              flex: 2,
+      <SafeAreaView style={[styles.container, { backgroundColor: '#ecf0f1' }]}>
+        <View style={{ flex: 1 }}>
+          <Header text="Login to PSA" />
+          <ScrollView
+            contentContainerStyle={{
+              margin: 40,
+              flex: 1,
+              alignSelf: 'stretch',
             }}
           >
-            <Image
-              source={Images.PSALogo}
+            <View
               style={{
-                height: 65,
-                width: 1000,
-                aspectRatio: 1.5,
-                resizeMode: 'contain',
+                justifyContent: 'center',
+                alignSelf: 'center',
+                flex: 2,
               }}
-            />
-          </View>
-          <DateTime />
-          <View style={{ flex: 2 }}>
-            <CustomTextInput
-              controlFunc={this.handleEmailChange}
-              name="Email"
-            />
+            >
+              <Image
+                source={Images.PSALogo}
+                style={{
+                  height: 65,
+                  width: 1000,
+                  aspectRatio: 1.5,
+                  resizeMode: 'contain',
+                }}
+              />
+            </View>
+            <DateTime />
+            <View style={{ flex: 2 }}>
+              <CustomTextInput
+                controlFunc={this.handleEmailChange}
+                name="Email"
+              />
 
-            <CustomTextInput
-              controlFunc={this.handlePasswordChange}
-              name="Password"
-              password
-            />
-          </View>
-          <View style={{ flex: 2 }}>
-            {!!this.state.msg && (
+              <CustomTextInput
+                controlFunc={this.handlePasswordChange}
+                name="Password"
+                password
+              />
+            </View>
+            <View style={{ flex: 2 }}>
+              {!!this.state.msg && (
+                <Text
+                  style={{
+                    fontSize: 14,
+                    color: 'black',
+                    textAlign: 'center',
+                    padding: 5,
+                  }}
+                >
+                  {this.state.msg}
+                </Text>
+              )}
+              {this.state.isLoggingIn && <ActivityIndicator />}
+              <Button
+                disabled={
+                  this.state.isLoggingIn ||
+                  !this.state.email ||
+                  !this.state.password
+                }
+                onPress={this.userLogin}
+                style={{}}
+                title="Login"
+              />
+            </View>
+            <View style={{ flex: 2 }}>
               <Text
                 style={{
-                  fontSize: 14,
-                  color: 'black',
                   textAlign: 'center',
-                  padding: 5,
+                  color: '#fff',
+                  fontSize: 15,
                 }}
+                onPress={() => Linking.openURL('http://google.com')}
               >
-                {this.state.msg}
+                Forgot Login
               </Text>
-            )}
-            {this.state.isLoggingIn && <ActivityIndicator />}
-            <Button
-              disabled={
-                this.state.isLoggingIn ||
-                !this.state.email ||
-                !this.state.password
-              }
-              onPress={this.userLogin}
-              style={{}}
-              title="Login"
-            />
-          </View>
-          <View style={{ flex: 2 }}>
-            <Text
-              style={{
-                textAlign: 'center',
-                color: '#fff',
-                fontSize: 15,
-              }}
-              onPress={() => Linking.openURL('http://google.com')}
-            >
-              Forgot Login
-            </Text>
-            <Text
-              style={{
-                textAlign: 'center',
-                color: '#fff',
-                fontSize: 15,
-              }}
-              onPress={() => Linking.openURL('http://google.com')}
-            >
-              Not Registered
-            </Text>
-          </View>
-        </ScrollView>
-      </View>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  color: '#fff',
+                  fontSize: 15,
+                }}
+                onPress={() => Linking.openURL('http://google.com')}
+              >
+                Not Registered
+              </Text>
+            </View>
+          </ScrollView>
+        </View>
+      </SafeAreaView>
     );
   }
 }
-
-Login.propTypes = {
-  onLoginPress: PropTypes.func.isRequired,
-};
+// Login.propTypes = {
+//   navigation: PropTypes.shape({
+//     navigate: PropTypes.func.isRequired,
+//   }).isRequired,
+// };
 
 export default Login;

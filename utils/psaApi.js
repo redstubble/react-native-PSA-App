@@ -27,16 +27,16 @@ export const login = async (h) => {
   }
 };
 
-export const logout = () =>
-  fetch(Environment.LOGOUT_END_POINT)
-    .then((response) => {
-      console.log('Logout', response);
-      console.log('server logged out');
-    })
-    .catch((e) => {
-      console.log(e);
-      console.log('server log out failed');
-    });
+export const signOut = async () => {
+  try {
+    const response = await fetch(Environment.LOGOUT_END_POINT);
+    const body = await response.text();
+    body && console.log('server logged out');
+  } catch (e) {
+    console.log(e);
+    console.log('server log out failed');
+  }
+};
 
 //  public updateMember(credentials) {
 //     return Observable.create((observer) => {

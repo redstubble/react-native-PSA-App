@@ -1,36 +1,23 @@
-import React, { Component } from 'react';
-import { StyleSheet, SafeAreaView } from 'react-native';
+import React from 'react';
 import { createSwitchNavigator, createStackNavigator } from 'react-navigation';
 import Login from './layout/Login';
 import AuthLoadingScreen from './layout/AuthLoading';
-import { psalightred } from './utils/colors';
-import RootNav from './layout/RootNav';
+import HomeNav from './layout/HomeNav';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    display: 'flex',
-    backgroundColor: psalightred,
-    justifyContent: 'center',
-  },
-});
+const HomeNavRef = createStackNavigator({ Home: HomeNav });
 
-const LoginScreen = ({ navigation }) => (
-  <SafeAreaView style={[styles.container, { backgroundColor: '#ecf0f1' }]}>
-    <Login onLoginPress={() => this.setState({ isLoggedIn: true })} />
-  </SafeAreaView>
-);
+const LoginScreen = () => <Login />;
+const LoginNav = createStackNavigator({ LogIn: LoginScreen });
 
-const AppStack = createStackNavigator({ Home: RootNav });
-const AuthStack = createStackNavigator({ LogIn: LoginScreen });
-
-export default createSwitchNavigator(
+const checkAuth = createSwitchNavigator(
   {
     AuthLoading: AuthLoadingScreen,
-    App: AppStack,
-    Auth: AuthStack,
+    App: HomeNavRef,
+    Auth: LoginNav,
   },
   {
     initialRouteName: 'AuthLoading',
   },
 );
+
+export default checkAuth;

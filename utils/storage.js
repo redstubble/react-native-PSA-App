@@ -1,6 +1,6 @@
 import { AsyncStorage } from 'react-native';
 
-export const signInAsync = async (data) => {
+export const setMemberAsync = async (data) => {
   try {
     const result = await AsyncStorage.setItem(
       'PSAMember',
@@ -26,9 +26,11 @@ export const getMemberAsync = async () => {
   }
 };
 
-export const signOutAsync = async (data) => {
+export const removeMemberAsync = async () => {
   try {
-    await AsyncStorage.setItem('PSAMember', JSON.parse(data));
+    await AsyncStorage.removeItem('PSAMember');
+    // const result = await AsyncStorage.getItem('PSAMember');
+    // debugger;
   } catch (e) {
     console.log('Error', e.message);
   }
