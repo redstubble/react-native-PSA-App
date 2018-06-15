@@ -13,13 +13,13 @@ import { signOut } from '../utils/psaApi';
 import Home from '../layout/Home';
 import Profile from '../layout/Profile';
 import Documents from '../layout/Documents';
-import { removeMemberAsync } from '../utils/storage';
+import { removeMemberAsync } from '../utils/storageApi';
 import Header from '../components/headerSignedIn';
 
 const TabNav = createBottomTabNavigator(
   {
     Home: {
-      screen: (props) => <Home {...props} />,
+      screen: Home,
       // path: '/home',
       navigationOptions: {
         title: 'Home',

@@ -17,7 +17,7 @@ import Header from '../components/header';
 import CustomTextInput from '../components/customTextInput';
 import Images from '../assets/images';
 import { psalightred } from '../utils/colors';
-import { setMemberAsync } from '../utils/storage';
+import { setMemberAsync } from '../utils/storageApi';
 import * as PsaApi from '../utils/psaApi';
 
 const styles = StyleSheet.create({
@@ -57,7 +57,7 @@ class Login extends React.Component {
     this.setState({ password: p });
   }
 
-  userLogin = async () => {
+  userLogin = async ({ navigation } = this.props) => {
     this.setState({ isLoggingIn: true, msg: '' });
     const headers = this.getHeaders();
     const response = await PsaApi.login(headers);

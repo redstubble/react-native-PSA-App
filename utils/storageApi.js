@@ -19,7 +19,7 @@ export const getMemberAsync = async () => {
     const result = await AsyncStorage.getItem('PSAMember');
     const data = JSON.parse(result);
     console.info('AsyncGet', data);
-    return result;
+    return data;
   } catch (e) {
     console.log('getMemberAsync', e.message);
     return false;

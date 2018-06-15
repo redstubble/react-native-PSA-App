@@ -1,8 +1,9 @@
 import React from 'react';
 import { SafeAreaView, DrawerActions } from 'react-navigation';
-import { Text, Button, StyleSheet, View } from 'react-native';
+import { Text, Button, StyleSheet, View, WebView } from 'react-native';
 import PropTypes from 'prop-types';
 import Head from '../components/headerSignedIn';
+import { PROFILEPAGE } from '../utils/environment';
 
 const styles = StyleSheet.create({
   container: {
@@ -26,13 +27,7 @@ const Profile = ({ navigation, screenProps }) => {
         action={() => navigation.dispatch(DrawerActions.openDrawer())}
         title="Profile Screen"
       />
-      <View style={styles.container}>
-        <Text style={styles.paragraph}>Profile Screen</Text>
-        <Button
-          onPress={() => navigation.dispatch(DrawerActions.closeDrawer())}
-          title="Open drawer"
-        />
-      </View>
+      <WebView source={{ uri: PROFILEPAGE }} style={{ marginTop: 20 }} />
     </SafeAreaView>
   );
 };
