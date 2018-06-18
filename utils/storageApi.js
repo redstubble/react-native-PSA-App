@@ -1,11 +1,11 @@
+// @flow
 import { AsyncStorage } from 'react-native';
 
-export const setMemberAsync = async (data) => {
+export const MEMBER_KEY = 'PSAMember';
+
+export const setMemberAsync = async (JSONdata) => {
   try {
-    const result = await AsyncStorage.setItem(
-      'PSAMember',
-      JSON.stringify(data),
-    );
+    const result = await AsyncStorage.setItem(MEMBER_KEY, JSONdata);
     console.info('AsyncSet', result);
     return result;
   } catch (e) {
@@ -16,19 +16,19 @@ export const setMemberAsync = async (data) => {
 
 export const getMemberAsync = async () => {
   try {
-    const result = await AsyncStorage.getItem('PSAMember');
-    const data = JSON.parse(result);
-    console.info('AsyncGet', data);
-    return data;
+    const JSONdata = await AsyncStorage.getItem(MEMBER_KEY);
+    if (JSONdata && JSON.parse(JSONdata)) {
+      return JSON.parse(JSONdata);
+    }
   } catch (e) {
     console.log('getMemberAsync', e.message);
-    return false;
   }
+  return false;
 };
 
 export const removeMemberAsync = async () => {
   try {
-    await AsyncStorage.removeItem('PSAMember');
+    await AsyncStorage.removeItem(MEMBER_KEY);
     // const result = await AsyncStorage.getItem('PSAMember');
     // debugger;
   } catch (e) {

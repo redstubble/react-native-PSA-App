@@ -11,13 +11,12 @@ import {
 } from 'react-native';
 import base64 from 'base-64';
 import { Button } from 'react-native-elements';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import DateTime from '../components/dateTime';
 import Header from '../components/header';
 import CustomTextInput from '../components/customTextInput';
 import Images from '../assets/images';
 import { psalightred } from '../utils/colors';
-import { setMemberAsync } from '../utils/storageApi';
 import * as PsaApi from '../utils/psaApi';
 
 const styles = StyleSheet.create({
@@ -60,15 +59,12 @@ class Login extends React.Component {
   userLogin = async ({ navigation } = this.props) => {
     this.setState({ isLoggingIn: true, msg: '' });
     const headers = this.getHeaders();
-    const response = await PsaApi.login(headers);
+    const member = await PsaApi.login(headers);
     this.setState({ isLoggingIn: false });
-    console.log(response);
-    if (response.success) {
-      console.log(response.data.data);
-      await setMemberAsync(response.data.data);
+    if (member.valid) {
       this.props.navigation.navigate('App');
     } else {
-      const msg = response.data.msg || 'Login failed';
+      const msg = member.msg || 'Login failed';
       console.log(msg);
       this.setState({ msg });
     }

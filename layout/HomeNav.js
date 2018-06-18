@@ -5,8 +5,6 @@ import {
   SafeAreaView,
   createBottomTabNavigator,
   createDrawerNavigator,
-  createStackNavigator,
-  DrawerItems,
   DrawerActions,
 } from 'react-navigation';
 import { signOut } from '../utils/psaApi';
@@ -14,7 +12,6 @@ import Home from '../layout/Home';
 import Profile from '../layout/Profile';
 import Documents from '../layout/Documents';
 import { removeMemberAsync } from '../utils/storageApi';
-import Header from '../components/headerSignedIn';
 
 const TabNav = createBottomTabNavigator(
   {
@@ -48,23 +45,21 @@ const TabNav = createBottomTabNavigator(
   },
 );
 
-const LogoutButton = (props) => {
-  return (
-    <View style={{ flex: 1 }}>
-      <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
-        {/* <DrawerItems {...props} /> */}
-        <Button
-          title="Logout"
-          onPress={() => {
-            props.navigation.dispatch(DrawerActions.closeDrawer());
-            props.navigation.navigate('Auth');
-            signOut().then(removeMemberAsync());
-          }}
-        />
-      </SafeAreaView>
-    </View>
-  );
-};
+const LogoutButton = (props) => (
+  <View style={{ flex: 1 }}>
+    <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
+      {/* <DrawerItems {...props} /> */}
+      <Button
+        title="Logout"
+        onPress={() => {
+          props.navigation.dispatch(DrawerActions.closeDrawer());
+          props.navigation.navigate('Auth');
+          signOut().then(removeMemberAsync());
+        }}
+      />
+    </SafeAreaView>
+  </View>
+);
 
 LogoutButton.propTypes = {
   navigation: PropTypes.shape({

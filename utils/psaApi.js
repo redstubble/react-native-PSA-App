@@ -1,29 +1,34 @@
 import Environment from '../utils/environment';
+import { setMemberAsync } from '../utils/storageApi';
+import Member from './dataTypes';
 
 export const login = async (h) => {
   const options = {
     method: 'POST',
     headers: h,
   };
-  let [success, body, data] = ['', '', ''];
+
+  let member = {};
+  let body = '';
+
   try {
     const response = await fetch(Environment.LOGIN_END_POINT, options);
     body = await response.text();
-    data = JSON.parse(body);
-    success = data && data.success;
-    return {
-      success,
-      data,
-    };
+    if (body && JSON.parse(body)) {
+      member = new Member(body);
+      if (member.valid) {
+        debugger;
+        console.log(member.creds);
+        await setMemberAsync(member.export());
+      }
+    } else console.log({ member });
+    return member;
   } catch (e) {
     console.log('Error', e);
-    success = false;
     // Check if error on .json() returned string
-    data = { msg: e instanceof SyntaxError && body ? body : e.name };
-    return {
-      success,
-      data,
-    };
+    const msg = e instanceof SyntaxError && body ? body : e.name;
+    console.log(msg);
+    return member;
   }
 };
 
@@ -31,7 +36,7 @@ export const signOut = async () => {
   try {
     const response = await fetch(Environment.LOGOUT_END_POINT);
     const body = await response.text();
-    body && console.log('server logged out');
+    if (body) console.log('server logged out');
   } catch (e) {
     console.log(e);
     console.log('server log out failed');

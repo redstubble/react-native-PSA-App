@@ -1,4 +1,3 @@
-import React from 'react';
 import { createSwitchNavigator, createStackNavigator } from 'react-navigation';
 import LoginScreen from './layout/Login';
 import AuthLoadingScreen from './layout/AuthLoading';

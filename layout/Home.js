@@ -2,7 +2,6 @@ import React from 'react';
 import { SafeAreaView, DrawerActions } from 'react-navigation';
 import {
   Text,
-  Button,
   Platform,
   StyleSheet,
   View,
@@ -11,8 +10,6 @@ import {
 import { PropTypes } from 'prop-types';
 import Head from '../components/headerSignedIn';
 import { getMemberAsync } from '../utils/storageApi';
-
-const isAndroid = Platform.OS === 'android';
 
 const styles = StyleSheet.create({
   container: {
@@ -31,40 +28,19 @@ const styles = StyleSheet.create({
 
 class Home extends React.Component {
   state = {
-    memberDataRequestCompleted: 'false',
-    member: {
-      id: null,
-      password: null, // todo, build token system
-      first_name: null,
-      surname: null,
-      email: null,
-      member_no: null,
-      barcode_no: null,
-      expiry: null,
-      token: null,
-      collective_agreements: [],
-    },
+    memberRequestCompleted: false,
+    member: {},
   };
   componentDidMount() {
     this.populateMemberData();
   }
 
   populateMemberData = async () => {
-    const data = await getMemberAsync();
+    const member = await getMemberAsync();
+    if (!member.valid) console.error('Member Data Invalid Error');
     this.setState({
-      member: {
-        id: data.ID,
-        password: data.Password, // todo, build token system
-        first_name: data.FirstName,
-        surname: data.Surname,
-        email: data.Email,
-        member_no: data.PSAMemberNumber,
-        barcode_no: data.BarcodeNumber,
-        expiry: data.Expiry,
-        token: data.Token,
-        collective_agreements: [],
-      },
-      memberDataRequestCompleted: true,
+      member,
+      memberRequestCompleted: true,
     });
   };
 
@@ -75,7 +51,7 @@ class Home extends React.Component {
           action={() => navigation.dispatch(DrawerActions.openDrawer())}
           title="Home Screen"
         />
-        {!this.state.memberDataRequestCompleted ? (
+        {!this.state.memberRequestCompleted ? (
           <ActivityIndicator />
         ) : (
           <View style={styles.container}>

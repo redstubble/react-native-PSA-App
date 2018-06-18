@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { SafeAreaView, DrawerActions } from 'react-navigation';
-import { Text, StyleSheet, View } from 'react-native';
+import { Text, StyleSheet, View, Button } from 'react-native';
+import { FileSystem } from 'expo';
 import Head from '../components/headerSignedIn';
 
 const styles = StyleSheet.create({
@@ -23,7 +24,15 @@ export default class Documents extends Component {
     title: 'Home',
   };
 
+  // getPDF = async () => {
+  //   const { uri: localUri } = await FileSystem.downloadAsync(
+  //     remoteUri,
+  //     FileSystem.documentDirectory + 'name.ext',
+  //   );
+  // };
+
   render({ navigation } = this.props) {
+    debugger;
     return (
       <SafeAreaView style={[{ flex: 1, backgroundColor: '#6a51ae' }]}>
         <Head
@@ -36,6 +45,9 @@ export default class Documents extends Component {
           <Text style={[styles.paragraph, { color: '#fff' }]}>
             Documents Screen
           </Text>
+          {/* <Button onPress={() => getPDF()} title="Download PDF">
+            Download PDF
+          </Button> */}
         </View>
       </SafeAreaView>
     );
