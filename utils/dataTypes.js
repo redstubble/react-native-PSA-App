@@ -16,35 +16,14 @@ export default class ValidateMember {
   isValid = () => this.valid;
   export = () => JSON.stringify(this.creds);
 
-  checkType = (action, property) => {
-    let result = true;
-    switch (action.type) {
-      case 'number':
-        if (typeof property !== 'number') {
-          this.errMsg.push(`${property} is not of type ${action.type}`);
-          result = false;
-        }
-        break;
-      case 'string':
-        if (typeof property !== 'string') {
-          this.errMsg.push(`${property} is not of type ${action.type}`);
-          result = false;
-        }
-        break;
-      default:
-        result = true;
-    }
-    return result;
-  };
-
   validateMemberObj = (memberObj) => {
     Object.entries(this.schema).forEach(([k, v]) => {
-      const prop = memberObj[k];
-      if (v.required && !prop) {
+      const memberValue = memberObj[k];
+      if (v.required && !memberValue) {
         this.errMsg.push(`${k} not found in JSON response object as required`);
       }
-      if (prop.toString().length > 0) {
-        this.checkType(v, prop);
+      if (memberValue.toString().length > 0) {
+        this.checkType(v, memberValue);
       }
     });
 
@@ -64,6 +43,27 @@ export default class ValidateMember {
       };
     }
     return this.errMsg.length === 0;
+  };
+
+  checkType = (schema, value) => {
+    let result = true;
+    switch (schema.type) {
+      case 'number':
+        if (typeof value !== 'number') {
+          this.errMsg.push(`${value} is not of type ${schema.type}`);
+          result = false;
+        }
+        break;
+      case 'string':
+        if (typeof value !== 'string') {
+          this.errMsg.push(`${value} is not of type ${schema.type}`);
+          result = false;
+        }
+        break;
+      default:
+        result = true;
+    }
+    return result;
   };
 
   schema = {

@@ -14,19 +14,27 @@ export const setMemberAsync = async (JSONdata) => {
   }
 };
 
-export const getMemberAsync = async () => {
+export const getMemberDataAsync = async () => {
   try {
     const JSONdata = await AsyncStorage.getItem(MEMBER_KEY);
     if (JSONdata && JSON.parse(JSONdata)) {
       return JSON.parse(JSONdata);
     }
   } catch (e) {
-    console.log('getMemberAsync', e.message);
+    console.log('getMemberDataAsync', e.message);
   }
   return false;
 };
 
-export const removeMemberAsync = async () => {
+export const getMemberDocsAsync = async () => {
+  return '';
+};
+
+export const removeMemberDocsAsync = async () => {
+  return '';
+};
+
+export const removeMemberDataAsync = async () => {
   try {
     await AsyncStorage.removeItem(MEMBER_KEY);
     // const result = await AsyncStorage.getItem('PSAMember');

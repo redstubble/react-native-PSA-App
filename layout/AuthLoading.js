@@ -10,9 +10,7 @@ class AuthLoadingScreen extends React.Component {
 
   redirect = async () => {
     const member = await getMemberAsync();
-    this.props.navigation.navigate(member ? 'App' : 'Auth', {
-      member,
-    });
+    this.props.navigation.navigate(member ? 'App' : 'Login');
   };
 
   // Render any loading content that you like here
