@@ -11,7 +11,7 @@ const checkAuth = createSwitchNavigator(
   {
     AuthLoading: AuthLoadingScreen,
     App: HomeNavRef,
-    Auth: LoginNav,
+    Login: LoginNav,
   },
   {
     initialRouteName: 'AuthLoading',
