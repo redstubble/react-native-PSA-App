@@ -36,8 +36,8 @@ class Login extends React.Component {
   }
 
   state = {
-    email: '         # replace with 'examplePass' instead',
-    password: '                    # replace with the empty string',
+    email: '',
+    password: '',
     isLoggingIn: false,
     msg: '',
   };
@@ -46,6 +46,11 @@ class Login extends React.Component {
     const head = new Headers();
     const auth = base64.encode(`${this.state.email}:${this.state.password}`);
     head.append('Authorization', `Basic ${auth}`);
+    head.append('Access-Control-Allow-Origin', '*');
+    head.append(
+      'Access-Control-Allow-Headers',
+      'Origin, X-Requested-With, Content-Type, Accept',
+    );
     return head;
   }
 
