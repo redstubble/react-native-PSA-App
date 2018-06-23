@@ -36,8 +36,8 @@ class Login extends React.Component {
   }
 
   state = {
-    email: '',
-    password: '',
+    email: '         # replace with 'examplePass' instead',
+    password: '                    # replace with the empty string',
     isLoggingIn: false,
     msg: '',
   };

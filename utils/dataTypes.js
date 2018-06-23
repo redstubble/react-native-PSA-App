@@ -2,10 +2,8 @@
 // ideally use JSON schema validation tool.
 
 export default class ValidateMember {
-  constructor(JSONString) {
+  constructor(JSONObj) {
     this.creds = {};
-    const JSONObj = JSON.parse(JSONString);
-    debugger;
     if (JSONObj && this.validateMemberObj(JSONObj.data)) {
       this.valid = true;
     }
@@ -38,7 +36,7 @@ export default class ValidateMember {
         barcode_no: memberObj.BarcodeNumber,
         expiry: memberObj.Expiry,
         token: memberObj.Token,
-        collective_agreements: [],
+        collective_agreements: memberObj.CollectiveAgreement,
         valid: true,
       };
     }

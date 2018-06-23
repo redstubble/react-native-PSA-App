@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { PropTypes } from 'prop-types';
 import Head from '../components/headerSignedIn';
-import { getMemberAsync } from '../utils/storageApi';
+import { getMemberDataAsync } from '../utils/storageApi';
 
 const styles = StyleSheet.create({
   container: {
@@ -36,7 +36,7 @@ class Home extends React.Component {
   }
 
   populateMemberData = async () => {
-    const member = await getMemberAsync();
+    const member = await getMemberDataAsync();
     if (!member.valid) console.error('Member Data Invalid Error');
     this.setState({
       member,

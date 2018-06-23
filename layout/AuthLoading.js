@@ -1,7 +1,7 @@
 import React from 'react';
 import { ActivityIndicator, StatusBar, View } from 'react-native';
 import { PropTypes } from 'prop-types';
-import { getMemberAsync } from '../utils/storageApi';
+import { getMemberDataAsync } from '../utils/storageApi';
 
 class AuthLoadingScreen extends React.Component {
   componentDidMount() {
@@ -9,7 +9,7 @@ class AuthLoadingScreen extends React.Component {
   }
 
   redirect = async () => {
-    const member = await getMemberAsync();
+    const member = await getMemberDataAsync();
     this.props.navigation.navigate(member ? 'App' : 'Login');
   };
 

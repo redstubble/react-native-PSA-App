@@ -1,8 +1,17 @@
 import React, { Component } from 'react';
 import { SafeAreaView, DrawerActions } from 'react-navigation';
-import { Text, StyleSheet, View, Button } from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  View,
+  Button,
+  WebView,
+  ActivityIndicator,
+  Linking,
+} from 'react-native';
 import { FileSystem } from 'expo';
 import Head from '../components/headerSignedIn';
+import { getMemberDataAsync } from '../utils/storageApi';
 
 const styles = StyleSheet.create({
   container: {
@@ -20,35 +29,45 @@ const styles = StyleSheet.create({
 });
 
 export default class Documents extends Component {
-  static navigationOptions = {
-    title: 'Home',
+  state = {
+    memberRequestCompleted: false,
+    member: {},
   };
 
-  // getPDF = async () => {
-  //   const { uri: localUri } = await FileSystem.downloadAsync(
-  //     remoteUri,
-  //     FileSystem.documentDirectory + 'name.ext',
-  //   );
-  // };
+  componentDidMount() {
+    this.populateMemberData();
+  }
+
+  populateMemberData = async () => {
+    const member = await getMemberDataAsync();
+    if (!member.valid) console.error('Member Data Invalid Error');
+    this.setState({
+      member,
+      memberRequestCompleted: true,
+    });
+  };
 
   render({ navigation } = this.props) {
-    debugger;
     return (
-      <SafeAreaView style={[{ flex: 1, backgroundColor: '#6a51ae' }]}>
+      <SafeAreaView style={[{ flex: 1, backgroundColor: '#ecf0f1' }]}>
         <Head
           action={() => navigation.dispatch(DrawerActions.openDrawer())}
-          title="Documents"
+          title="Documents Screen"
         />
-        <View style={styles.container}>
-          <Text>Docs</Text>
-
-          <Text style={[styles.paragraph, { color: '#fff' }]}>
-            Documents Screen
-          </Text>
-          {/* <Button onPress={() => getPDF()} title="Download PDF">
-            Download PDF
-          </Button> */}
-        </View>
+        {!this.state.memberRequestCompleted ? (
+          <ActivityIndicator />
+        ) : (
+          <Button
+            onPress={() => {
+              Linking.openURL(this.state.member.collective_agreements[0].path);
+            }}
+            title="PDF"
+          />
+          // <WebView
+          //   source={{ uri: this.state.member.collective_agreements[0].path }}
+          //   style={{ marginTop: 20 }}
+          // />
+        )}
       </SafeAreaView>
     );
   }

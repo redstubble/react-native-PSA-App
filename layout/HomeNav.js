@@ -11,7 +11,7 @@ import { signOut } from '../utils/psaApi';
 import Home from '../layout/Home';
 import Profile from '../layout/Profile';
 import Documents from '../layout/Documents';
-import { removeMemberAsync } from '../utils/storageApi';
+import { removeMemberDataAsync } from '../utils/storageApi';
 
 const TabNav = createBottomTabNavigator(
   {
@@ -53,8 +53,8 @@ const LogoutButton = (props) => (
         title="Logout"
         onPress={() => {
           props.navigation.dispatch(DrawerActions.closeDrawer());
-          props.navigation.navigate('Auth');
-          signOut().then(removeMemberAsync());
+          signOut().then(removeMemberDataAsync());
+          props.navigation.navigate('Login');
         }}
       />
     </SafeAreaView>

@@ -1,7 +1,9 @@
-import RNFetchBlob from 'react-native-fetch-blob';
+import { FileSystem } from 'expo';
 import Environment from '../utils/environment';
 import { setMemberAsync } from '../utils/storageApi';
 import Member from './dataTypes';
+
+const DIR = `${FileSystem.documentDirectory}`;
 
 export const login = async (h) => {
   const options = {
@@ -15,17 +17,22 @@ export const login = async (h) => {
   try {
     const response = await fetch(Environment.LOGIN_END_POINT, options);
     body = await response.text();
-    if (body && JSON.parse(body)) {
-      member = new Member(body);
-      if (member.valid) {
-        debugger;
-        console.log(member.creds);
-        await setMemberAsync(member.export());
-        debugger;
-        this.getDocs(member.creds);
+    const JSONObj = body ? JSON.parse(body) || null : null;
+    member = new Member(JSONObj);
+    if (member.valid) {
+      await setMemberAsync(member.export());
+      // agreements
+      const agreementEntries = Object.entries(JSONObj.data.CollectiveAgreement);
+      if (agreementEntries.length > 0) {
+        member.creds.collective_agreements = await downloadCollectiveAgreements(
+          agreementEntries,
+        );
+        if (member.creds.collective_agreements.length > 0) {
+          await setMemberAsync(member.export());
+        }
       }
-    } else console.log({ member });
-    return member;
+      return member;
+    }
   } catch (e) {
     console.log('Error', e);
     // Check if error on .json() returned string
@@ -35,75 +42,63 @@ export const login = async (h) => {
   }
 };
 
+const downloadCollectiveAgreements = async (agreementEntries) => {
+  const agreements = await Promise.all(
+    agreementEntries.map(async ([key, value]) => {
+      const {
+        Doc: agreementMetaData,
+        BelongsTo: agreementChildrenMetaData,
+      } = value;
+      const agreement = await downloadDocs(agreementMetaData.link);
+      agreement.name = agreementMetaData.name;
+      agreement.children = await agreementChildrenMetaData.map(
+        async (childMetaData) => {
+          console.log('Child Agreement', childMetaData);
+          const child = downloadDocs(childMetaData.link);
+          child.name = childMetaData.name;
+        },
+      );
+      return agreement;
+    }),
+  );
+  return agreements;
+};
+
 const getFileNameFromHttpResponse = (disposition) => {
-  let result = disposition
+  const result = disposition
     .split(';')[1]
     .trim()
     .split('=')[1];
   return result.replace(/"/g, '');
 };
 
-const getCollectiveAgreement = async () => {};
-
-export const getDocs = async (creds) => {
-  const docs = creds.collective_agreements;
-  const docCollective = Object.keys(docs);
-  docCollective.map(async (id) => {
-    const { Doc: doc, BelongsTo: docChild } = docs[id];
-    try {
-      const data = await fetch(Doc.link);
-      const mime = data.headers.get('Content-Type');
-      const httpResponse = data.headers.get('Content-Disposition');
-      const fileName = this.getFileNameFromHttpResponse(httpResponse);
-      console.log(data.headers);
-      const pdfResponse = RNFetchBlob.fetch('GET', data.link);
-      const { status } = pdfResponse.info();
-      if (status == 200) {
-        debugger;
-        console.log(
-          `download complete: '${pdfResponse.toUrl()} + ${pdfResponse.getMetaData()}`,
-        );
-      }
-    } catch (e) {
-      return e.msg;
+const downloadDocs = async (link) => {
+  const data = await fetch(link);
+  const mime = data.headers.get('Content-Type');
+  const httpResponse = data.headers.get('Content-Disposition');
+  const fileName = getFileNameFromHttpResponse(httpResponse);
+  const path = `${DIR}${fileName}`;
+  // let agreement = {};
+  try {
+    const s = await FileSystem.readDirectoryAsync(DIR);
+  } catch (e) {
+    console.log(`Unable to readDirectory ${DIR}`);
+  }
+  try {
+    const url = await FileSystem.downloadAsync(link, path);
+    if (url.status === 200) {
+      console.log(`${fileName} downloaded to ${path}`);
+      return {
+        path,
+        fileName,
+        mime,
+      };
     }
-
-    return '';
-  });
+    throw new Error();
+  } catch (e) {
+    console.log('Error', `Unable to download ${fileName} to ${DIR}`);
+  }
 };
-
-//       fileTransfer
-//         .download(docData.link, this.file.dataDirectory + fileName)
-//         .then((entry) => {
-//           console.log(
-//             'download complete: ' +
-//               entry.toURL() +
-//               ' - ' +
-//               entry.getMetadata(),
-//           );
-//           this.storage.ready().then(() => {
-//             // set a key/value
-//             agreement.path = entry.toURL();
-//             agreement.mime = mime;
-//             this.currentMember.collective_agreements.push(agreement);
-//             this.storage.set('member', this.currentMember);
-//           });
-//         })
-//         .catch((error) => {
-//           // handle error
-//           console.log('download failed for ' + docData.link);
-//           console.log(error);
-//           this.currentMember.collective_agreements.push(agreement);
-//           this.storage.set('member', this.currentMember);
-//         });
-//     },
-//     (err) => {
-//       console.log(err);
-//       this.currentMember.collective_agreements.push(agreement);
-//       this.storage.set('member', this.currentMember);
-//     },
-//   );
-// });
 
 export const signOut = async () => {
   try {
