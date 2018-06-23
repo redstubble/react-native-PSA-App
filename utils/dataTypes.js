@@ -36,7 +36,7 @@ export default class ValidateMember {
         barcode_no: memberObj.BarcodeNumber,
         expiry: memberObj.Expiry,
         token: memberObj.Token,
-        collective_agreements: memberObj.CollectiveAgreement,
+        collective_agreements: [],
         valid: true,
       };
     }

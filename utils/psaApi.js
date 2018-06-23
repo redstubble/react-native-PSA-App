@@ -3,7 +3,7 @@ import Environment from '../utils/environment';
 import { setMemberAsync } from '../utils/storageApi';
 import Member from './dataTypes';
 
-const DIR = `${FileSystem.documentDirectory}`;
+const DIR = `${FileSystem.documentDirectory}childFolder`;
 
 export const login = async (h) => {
   const options = {
@@ -77,7 +77,15 @@ const downloadDocs = async (link) => {
   const mime = data.headers.get('Content-Type');
   const httpResponse = data.headers.get('Content-Disposition');
   const fileName = getFileNameFromHttpResponse(httpResponse);
-  const path = `${DIR}${fileName}`;
+  const f = await FileSystem.getInfoAsync(DIR);
+  if (f.exists === 0) {
+    const createDir = await FileSystem.makeDirectoryAsync(DIR, {
+      intermediates: true,
+    });
+  }
+  debugger;
+
+  const path = `${DIR}/${fileName}`;
   // let agreement = {};
   try {
     const s = await FileSystem.readDirectoryAsync(DIR);
@@ -87,6 +95,7 @@ const downloadDocs = async (link) => {
   try {
     const url = await FileSystem.downloadAsync(link, path);
     if (url.status === 200) {
+      debugger;
       console.log(`${fileName} downloaded to ${path}`);
       return {
         path,

@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
   Linking,
 } from 'react-native';
-import { FileSystem } from 'expo';
+import { FileSystem, DocumentPicker } from 'expo';
 import Head from '../components/headerSignedIn';
 import { getMemberDataAsync } from '../utils/storageApi';
 
@@ -45,9 +45,15 @@ export default class Documents extends Component {
       member,
       memberRequestCompleted: true,
     });
+    const t = this.state.member.collective_agreements[0].path;
+    console.log(t);
+    const m = await Linking.canOpenURL(t);
+    const f = await FileSystem.getInfoAsync(t);
+    // Linking.openURL(m);
   };
 
   render({ navigation } = this.props) {
+    // DocumentPicker.getDocumentAsync(options)
     return (
       <SafeAreaView style={[{ flex: 1, backgroundColor: '#ecf0f1' }]}>
         <Head
@@ -57,16 +63,10 @@ export default class Documents extends Component {
         {!this.state.memberRequestCompleted ? (
           <ActivityIndicator />
         ) : (
-          <Button
-            onPress={() => {
-              Linking.openURL(this.state.member.collective_agreements[0].path);
-            }}
-            title="PDF"
+          <WebView
+            source={{ uri: this.state.member.collective_agreements[0].path }} //'https://google.com'
+            style={{ marginTop: 20 }}
           />
-          // <WebView
-          //   source={{ uri: this.state.member.collective_agreements[0].path }}
-          //   style={{ marginTop: 20 }}
-          // />
         )}
       </SafeAreaView>
     );
