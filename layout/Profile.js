@@ -24,6 +24,7 @@ const Profile = ({ navigation, screenProps }) => {
   return (
     <SafeAreaView style={[{ flex: 1, backgroundColor: '#ecf0f1' }]}>
       <Head
+        icon="menu"
         action={() => navigation.dispatch(DrawerActions.openDrawer())}
         title="Profile Screen"
       />

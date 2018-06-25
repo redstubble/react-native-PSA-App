@@ -3,6 +3,7 @@
 
 export default class ValidateMember {
   constructor(JSONObj) {
+    console.log(JSONObj);
     this.creds = {};
     if (JSONObj && this.validateMemberObj(JSONObj.data)) {
       this.valid = true;
@@ -33,6 +34,7 @@ export default class ValidateMember {
         surname: memberObj.Surname,
         email: memberObj.Email,
         member_no: memberObj.PSAMemberNumber,
+        barcode_path: memberObj.BarcodeSource,
         barcode_no: memberObj.BarcodeNumber,
         expiry: memberObj.Expiry,
         token: memberObj.Token,

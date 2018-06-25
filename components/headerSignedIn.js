@@ -20,7 +20,8 @@ export default class HomeScreen extends React.Component {
     return (
       <Header
         leftComponent={{
-          icon: 'menu',
+          // https://www.materialui.co/icon/arrow-back
+          icon: this.props.icon,
           onPress: () => this.props.action(),
           color: '#fff',
         }}

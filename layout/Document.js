@@ -12,7 +12,6 @@ import {
 import { FileSystem, DocumentPicker } from 'expo';
 import Head from '../components/headerSignedIn';
 import { getMemberDataAsync } from '../utils/storageApi';
-import Document from '../layout/Document';
 
 const styles = StyleSheet.create({
   container: {
@@ -29,7 +28,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class Documents extends Component {
+export default class Document extends Component {
   state = {
     memberRequestCompleted: false,
     member: {},
@@ -54,34 +53,21 @@ export default class Documents extends Component {
   };
 
   render({ navigation } = this.props) {
-    let agreements;
-    debugger;
-    if (this.state.memberRequestCompleted) {
-      agreements = this.state.member.collective_agreements.map(
-        (agreement, k) => (
-          <Button
-            title={agreement.name}
-            key={k}
-            onPress={() => {
-              navigation.navigate('Agreement');
-            }}
-          >
-            Remove
-          </Button>
-        ),
-      );
-    } else {
-      agreements = <ActivityIndicator />;
-    }
     return (
       <SafeAreaView style={[{ flex: 1, backgroundColor: '#ecf0f1' }]}>
         <Head
-          icon="menu"
-          action={() => navigation.dispatch(DrawerActions.openDrawer())}
-          title="Documents Screen"
+          icon="arrow-back"
+          action={() => navigation.goBack()}
+          title="Document Screen"
         />
-        {agreements}
-        )
+        {!this.state.memberRequestCompleted ? (
+          <ActivityIndicator />
+        ) : (
+          <WebView
+            source={{ uri: this.state.member.collective_agreements[0].path }} //'https://google.com'
+            style={{ marginTop: 20 }}
+          />
+        )}
       </SafeAreaView>
     );
   }

@@ -21,6 +21,10 @@ export const login = async (h) => {
     member = new Member(JSONObj);
     if (member.valid) {
       await setMemberAsync(member.export());
+      // download barcode
+      const barCodeImg = await downloadDocs(JSONObj.data.BarcodeSource);
+      if (barCodeImg) member.creds.barcode_img = barCodeImg.path;
+      debugger;
       // agreements
       const agreementEntries = Object.entries(JSONObj.data.CollectiveAgreement);
       if (agreementEntries.length > 0) {
@@ -73,17 +77,20 @@ const getFileNameFromHttpResponse = (disposition) => {
 };
 
 const downloadDocs = async (link) => {
+  let fileName = '';
   const data = await fetch(link);
   const mime = data.headers.get('Content-Type');
   const httpResponse = data.headers.get('Content-Disposition');
-  const fileName = getFileNameFromHttpResponse(httpResponse);
+  if (httpResponse) fileName = getFileNameFromHttpResponse(httpResponse);
+  else if (mime.includes('png') && link.includes('barcode'))
+    fileName = 'barcode.png';
+  debugger;
   const f = await FileSystem.getInfoAsync(DIR);
   if (f.exists === 0) {
-    const createDir = await FileSystem.makeDirectoryAsync(DIR, {
+    await FileSystem.makeDirectoryAsync(DIR, {
       intermediates: true,
     });
   }
-  debugger;
 
   const path = `${DIR}/${fileName}`;
   // let agreement = {};
@@ -95,7 +102,6 @@ const downloadDocs = async (link) => {
   try {
     const url = await FileSystem.downloadAsync(link, path);
     if (url.status === 200) {
-      debugger;
       console.log(`${fileName} downloaded to ${path}`);
       return {
         path,
