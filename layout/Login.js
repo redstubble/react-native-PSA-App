@@ -64,7 +64,8 @@ class Login extends React.Component {
   userLogin = async ({ navigation } = this.props) => {
     this.setState({ isLoggingIn: true, msg: '' });
     const headers = this.getHeaders();
-    const member = await PsaApi.login(headers);
+    const psaApi = new PsaApi.LoginAPI(headers);
+    const member = await psaApi.signIn();
     this.setState({ isLoggingIn: false });
     if (member.valid) {
       this.props.navigation.navigate('App');

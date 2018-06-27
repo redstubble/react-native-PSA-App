@@ -38,6 +38,22 @@ class Home extends React.Component {
   populateMemberData = async () => {
     const member = await getMemberDataAsync();
     if (!member.valid) console.error('Member Data Invalid Error');
+    else {
+      debugger;
+      const a = await fetch(member.barcode_img);
+      debugger;
+      const b = await a.blob();
+      debugger;
+      const fileReaderInstance = new FileReader();
+      fileReaderInstance.readAsDataURL(b);
+      fileReaderInstance.onload = () => {
+        const base64data = fileReaderInstance.result;
+        this.setState({
+          blob: base64data,
+        })
+        console.log(base64data);
+      };
+    }
     this.setState({
       member,
       memberRequestCompleted: true,
@@ -64,7 +80,9 @@ class Home extends React.Component {
             <Text style={styles.paragraph}>Member No: {m.member_no}</Text>
             <Text style={styles.paragraph}>Barcode: {m.barcode_no}</Text>
             <Text style={styles.paragraph}>Barcode: {m.barcode_img}</Text>
-            <Image
+            <Image source={{ uri: this.state.blob }} style={{ height: 200, width: 200, flex: 1 }} />
+
+            {/* <Image
               style={{
                 height: 65,
                 width: 1000,
@@ -73,9 +91,9 @@ class Home extends React.Component {
               }}
               source={{
                 // uri: w,
-                uri: m.barcode_source,
+                uri: m.barcode_img,
               }}
-            />
+            /> */}
           </View>
         )}
       </SafeAreaView>
