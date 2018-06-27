@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
 import { SafeAreaView, DrawerActions } from 'react-navigation';
 import {
-  Text,
   StyleSheet,
-  View,
   Button,
-  WebView,
   ActivityIndicator,
-  Linking,
 } from 'react-native';
-import { FileSystem, DocumentPicker } from 'expo';
+import { FileSystem } from 'expo';
 import Head from '../components/headerSignedIn';
 import { getMemberDataAsync } from '../utils/storageApi';
 
@@ -31,7 +27,7 @@ const styles = StyleSheet.create({
 export default class Documents extends Component {
   state = {
     memberRequestCompleted: false,
-    member: {},
+    member: false,
   };
 
   componentDidMount() {
@@ -40,34 +36,42 @@ export default class Documents extends Component {
 
   populateMemberData = async () => {
     const member = await getMemberDataAsync();
+    debugger;
     if (!member.valid) console.error('Member Data Invalid Error');
     this.setState({
       member,
       memberRequestCompleted: true,
     });
-    const t = this.state.member.collective_agreements[0].path;
-    console.log(t);
-    const m = await Linking.canOpenURL(t);
     const f = await FileSystem.getInfoAsync(t);
-    // Linking.openURL(m);
+    console.log(f);
   };
 
   render({ navigation } = this.props) {
-    // DocumentPicker.getDocumentAsync(options)
+    let agreements = null;
+    if (this.state.memberRequestCompleted) {
+      agreements = this.state.member.collective_agreements.map(
+        (agreement) => (
+          <Button
+            title={agreement.name}
+            key={agreement.path}
+            onPress={() =>
+              navigation.navigate('Agreement', { link: agreement.path })
+            }
+          >
+            Remove
+          </Button>
+        ));
+    } else {
+      agreements = <ActivityIndicator />;
+    }
     return (
       <SafeAreaView style={[{ flex: 1, backgroundColor: '#ecf0f1' }]}>
         <Head
+          icon="menu"
           action={() => navigation.dispatch(DrawerActions.openDrawer())}
           title="Documents Screen"
         />
-        {!this.state.memberRequestCompleted ? (
-          <ActivityIndicator />
-        ) : (
-          <WebView
-            source={{ uri: this.state.member.collective_agreements[0].path }} //'https://google.com'
-            style={{ marginTop: 20 }}
-          />
-        )}
+        {agreements}
       </SafeAreaView>
     );
   }
