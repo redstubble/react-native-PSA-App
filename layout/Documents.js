@@ -1,18 +1,13 @@
 import React, { Component } from 'react';
 import { SafeAreaView, DrawerActions } from 'react-navigation';
 import {
-  Text,
   StyleSheet,
-  View,
   Button,
-  WebView,
   ActivityIndicator,
-  Linking,
 } from 'react-native';
-import { FileSystem, DocumentPicker } from 'expo';
+import { FileSystem } from 'expo';
 import Head from '../components/headerSignedIn';
 import { getMemberDataAsync } from '../utils/storageApi';
-import Document from '../layout/Document';
 
 const styles = StyleSheet.create({
   container: {
@@ -47,29 +42,25 @@ export default class Documents extends Component {
       member,
       memberRequestCompleted: true,
     });
-    debugger;
-    const t = this.state.member.collective_agreements[0].path;
-    console.log(t);
-    const m = await Linking.canOpenURL(t);
     const f = await FileSystem.getInfoAsync(t);
+    console.log(f);
   };
 
   render({ navigation } = this.props) {
     let agreements = null;
     if (this.state.memberRequestCompleted) {
       agreements = this.state.member.collective_agreements.map(
-        (agreement, k) => (
+        (agreement) => (
           <Button
             title={agreement.name}
-            key={k}
+            key={agreement.path}
             onPress={() =>
               navigation.navigate('Agreement', { link: agreement.path })
             }
           >
             Remove
           </Button>
-        ),
-      );
+        ));
     } else {
       agreements = <ActivityIndicator />;
     }
