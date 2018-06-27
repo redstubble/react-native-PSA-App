@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
 export default class Documents extends Component {
   state = {
     memberRequestCompleted: false,
-    member: {},
+    member: false,
   };
 
   componentDidMount() {
@@ -41,30 +41,30 @@ export default class Documents extends Component {
 
   populateMemberData = async () => {
     const member = await getMemberDataAsync();
+    debugger;
     if (!member.valid) console.error('Member Data Invalid Error');
     this.setState({
       member,
       memberRequestCompleted: true,
     });
+    debugger;
     const t = this.state.member.collective_agreements[0].path;
     console.log(t);
     const m = await Linking.canOpenURL(t);
     const f = await FileSystem.getInfoAsync(t);
-    // Linking.openURL(m);
   };
 
   render({ navigation } = this.props) {
-    let agreements;
-    debugger;
+    let agreements = null;
     if (this.state.memberRequestCompleted) {
       agreements = this.state.member.collective_agreements.map(
         (agreement, k) => (
           <Button
             title={agreement.name}
             key={k}
-            onPress={() => {
-              navigation.navigate('Agreement');
-            }}
+            onPress={() =>
+              navigation.navigate('Agreement', { link: agreement.path })
+            }
           >
             Remove
           </Button>
@@ -81,7 +81,6 @@ export default class Documents extends Component {
           title="Documents Screen"
         />
         {agreements}
-        )
       </SafeAreaView>
     );
   }

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { SafeAreaView, DrawerActions } from 'react-navigation';
+import PDFReader from 'rn-pdf-reader-js';
+
 import {
   Text,
   StyleSheet,
@@ -8,6 +10,7 @@ import {
   WebView,
   ActivityIndicator,
   Linking,
+  Platform,
 } from 'react-native';
 import { FileSystem, DocumentPicker } from 'expo';
 import Head from '../components/headerSignedIn';
@@ -49,10 +52,26 @@ export default class Document extends Component {
     console.log(t);
     const m = await Linking.canOpenURL(t);
     const f = await FileSystem.getInfoAsync(t);
+    debugger;
     // Linking.openURL(m);
   };
 
   render({ navigation } = this.props) {
+    debugger;
+    const pdfViewer =
+      Platform.OS === 'ios' ? (
+        <WebView
+          source={{ uri: this.props.navigation.getParam('link') }} //'https://google.com'
+          style={{ marginTop: 20 }}
+        />
+      ) : (
+        <PDFReader
+          source={{
+            uri: this.props.navigation.getParam('link'),
+          }}
+        />
+      );
+    debugger;
     return (
       <SafeAreaView style={[{ flex: 1, backgroundColor: '#ecf0f1' }]}>
         <Head
@@ -60,14 +79,7 @@ export default class Document extends Component {
           action={() => navigation.goBack()}
           title="Document Screen"
         />
-        {!this.state.memberRequestCompleted ? (
-          <ActivityIndicator />
-        ) : (
-          <WebView
-            source={{ uri: this.state.member.collective_agreements[0].path }} //'https://google.com'
-            style={{ marginTop: 20 }}
-          />
-        )}
+        {!this.state.memberRequestCompleted ? <ActivityIndicator /> : pdfViewer}
       </SafeAreaView>
     );
   }

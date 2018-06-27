@@ -47,10 +47,10 @@ class Login extends React.Component {
     const auth = base64.encode(`${this.state.email}:${this.state.password}`);
     head.append('Authorization', `Basic ${auth}`);
     head.append('Access-Control-Allow-Origin', '*');
-    head.append(
-      'Access-Control-Allow-Headers',
-      'Origin, X-Requested-With, Content-Type, Accept',
-    );
+    // head.append(
+    //   'Access-Control-Allow-Headers',
+    //   'Origin, X-Requested-With, Content-Type, Accept',
+    // );
     return head;
   }
 
@@ -64,7 +64,8 @@ class Login extends React.Component {
   userLogin = async ({ navigation } = this.props) => {
     this.setState({ isLoggingIn: true, msg: '' });
     const headers = this.getHeaders();
-    const member = await PsaApi.login(headers);
+    const psaApi = new PsaApi.LoginAPI(headers);
+    const member = await psaApi.signIn();
     this.setState({ isLoggingIn: false });
     if (member.valid) {
       this.props.navigation.navigate('App');
