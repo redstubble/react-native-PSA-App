@@ -2,10 +2,10 @@ import React from 'react';
 import { SafeAreaView, DrawerActions } from 'react-navigation';
 import {
   Text,
-  Platform,
   StyleSheet,
   View,
   ActivityIndicator,
+  Image,
 } from 'react-native';
 import { PropTypes } from 'prop-types';
 import Head from '../components/headerSignedIn';
@@ -45,9 +45,11 @@ class Home extends React.Component {
   };
 
   render({ navigation } = this.props) {
+    const m = this.state.member;
     return (
       <SafeAreaView style={[{ flex: 1, backgroundColor: '#ecf0f1' }]}>
         <Head
+          icon="menu"
           action={() => navigation.dispatch(DrawerActions.openDrawer())}
           title="Home Screen"
         />
@@ -55,9 +57,25 @@ class Home extends React.Component {
           <ActivityIndicator />
         ) : (
           <View style={styles.container}>
-            <Text style={[styles.paragraph, { color: '#000' }]}>
-              {JSON.stringify(this.state.member)}
+            <Text style={styles.paragraph}>
+              Name: {`${m.first_name} ${m.surname}`}
             </Text>
+            <Text style={styles.paragraph}>Email: {m.email}</Text>
+            <Text style={styles.paragraph}>Member No: {m.member_no}</Text>
+            <Text style={styles.paragraph}>Barcode: {m.barcode_no}</Text>
+            <Text style={styles.paragraph}>Barcode: {m.barcode_img}</Text>
+            <Image
+              style={{
+                height: 65,
+                width: 1000,
+                aspectRatio: 1.5,
+                resizeMode: 'contain',
+              }}
+              source={{
+                // uri: w,
+                uri: m.barcode_source,
+              }}
+            />
           </View>
         )}
       </SafeAreaView>
