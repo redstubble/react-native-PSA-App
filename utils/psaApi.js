@@ -80,7 +80,8 @@ const downloadDocs = async (link) => {
   const httpResponse = data.headers.get('Content-Disposition');
   const fileName = getFileNameFromHttpResponse(httpResponse);
   const f = await FileSystem.getInfoAsync(DIR);
-  if (f.exists === 0) {
+  debugger;
+  if (f.isDirectory === false) {
     const createDir = await FileSystem.makeDirectoryAsync(DIR, {
       intermediates: true,
     });
@@ -93,7 +94,7 @@ const downloadDocs = async (link) => {
     const s = await FileSystem.readDirectoryAsync(DIR);
   } catch (e) {
     console.log(`Unable to readDirectory ${DIR}`);
-    return new Error('Unable to read Directory to save assets');
+    throw new Error('Unable to read Directory to save assets');
   }
   try {
     const url = await FileSystem.downloadAsync(link, path);
@@ -106,7 +107,7 @@ const downloadDocs = async (link) => {
         mime,
       };
     }
-    throw new Error();
+    throw new Error('unable to download file');
   } catch (e) {
     console.log('Error', `Unable to download ${fileName} to ${DIR}`);
   }

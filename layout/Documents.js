@@ -36,24 +36,21 @@ export default class Documents extends Component {
 
   populateMemberData = async () => {
     const member = await getMemberDataAsync();
-    debugger;
     if (!member.valid) console.error('Member Data Invalid Error');
     this.setState({
       member,
       memberRequestCompleted: true,
     });
-    const f = await FileSystem.getInfoAsync(t);
-    console.log(f);
   };
 
   render({ navigation } = this.props) {
     let agreements = null;
     if (this.state.memberRequestCompleted) {
       agreements = this.state.member.collective_agreements.map(
-        (agreement) => (
+        (agreement, k) => (
           <Button
             title={agreement.name}
-            key={agreement.path}
+            key={k}
             onPress={() =>
               navigation.navigate('Agreement', { link: agreement.path })
             }

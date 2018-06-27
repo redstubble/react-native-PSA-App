@@ -10,7 +10,7 @@ import {
 import { signOut } from '../utils/psaApi';
 import Home from '../layout/Home';
 import Profile from '../layout/Profile';
-import Documents from '../layout/Documents';
+import Documents from '../layout/DocumentStackNav';
 import { removeMemberDataAsync } from '../utils/storageApi';
 
 const TabNav = createBottomTabNavigator(
