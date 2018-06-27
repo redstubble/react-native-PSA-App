@@ -1,9 +1,11 @@
 import { FileSystem } from 'expo';
+import { Platform } from 'react-native';
 import Environment from '../utils/environment';
 import { setMemberAsync } from '../utils/storageApi';
 import Member from './dataTypes';
 
-const DIR = `${FileSystem.documentDirectory}childFolder`;
+const subDir = Platform.OS === 'ios' ? 'childFolder' : 'childfolder/';
+const DIR = `${FileSystem.documentDirectory}${subDir}`;
 
 export const login = async (h) => {
   const options = {
@@ -91,6 +93,7 @@ const downloadDocs = async (link) => {
     const s = await FileSystem.readDirectoryAsync(DIR);
   } catch (e) {
     console.log(`Unable to readDirectory ${DIR}`);
+    return new Error('Unable to read Directory to save assets');
   }
   try {
     const url = await FileSystem.downloadAsync(link, path);
