@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
 import { createStackNavigator } from 'react-navigation';
-import Agreements from '../layout/Documents';
-import Agreement from '../layout/Document';
+import Agreements from '../layout/Agreements';
+import Agreement from '../layout/Agreement';
+
 export default (DrawNav = createStackNavigator(
   {
     Agreements: { screen: Agreements },

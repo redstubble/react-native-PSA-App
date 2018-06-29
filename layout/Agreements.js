@@ -1,15 +1,7 @@
 import React, { Component } from 'react';
 import { SafeAreaView, DrawerActions } from 'react-navigation';
-import {
-  Text,
-  StyleSheet,
-  View,
-  Button,
-  WebView,
-  ActivityIndicator,
-  Linking,
-} from 'react-native';
-import { FileSystem, DocumentPicker } from 'expo';
+import { StyleSheet, Button, ActivityIndicator } from 'react-native';
+import { FileSystem } from 'expo';
 import Head from '../components/headerSignedIn';
 import { getMemberDataAsync } from '../utils/storageApi';
 import Document from '../layout/Document';
@@ -32,7 +24,7 @@ const styles = StyleSheet.create({
 export default class Documents extends Component {
   state = {
     memberRequestCompleted: false,
-    member: {},
+    member: false,
   };
 
   componentDidMount() {
@@ -46,25 +38,19 @@ export default class Documents extends Component {
       member,
       memberRequestCompleted: true,
     });
-    const t = this.state.member.collective_agreements[0].path;
-    console.log(t);
-    const m = await Linking.canOpenURL(t);
-    const f = await FileSystem.getInfoAsync(t);
-    // Linking.openURL(m);
   };
 
   render({ navigation } = this.props) {
-    let agreements;
-    debugger;
+    let agreements = null;
     if (this.state.memberRequestCompleted) {
       agreements = this.state.member.collective_agreements.map(
         (agreement, k) => (
           <Button
             title={agreement.name}
             key={k}
-            onPress={() => {
-              navigation.navigate('Agreement');
-            }}
+            onPress={() =>
+              navigation.navigate('Agreement', { link: agreement.path })
+            }
           >
             Remove
           </Button>
@@ -81,7 +67,6 @@ export default class Documents extends Component {
           title="Documents Screen"
         />
         {agreements}
-        )
       </SafeAreaView>
     );
   }
