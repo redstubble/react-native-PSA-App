@@ -6,24 +6,20 @@
     "jest": true
   },
   "parser": "babel-eslint",
-  "extends": [
-    "airbnb"
-  ],
+  "extends": ["airbnb"],
   "rules": {
     "react/jsx-filename-extension": [
       1,
       {
-        "extensions": [
-          ".js",
-          ".jsx"
-        ]
+        "extensions": [".js", ".jsx"]
       }
     ],
     "react/no-multi-comp": 0,
-    "arrow-parens": [
-      2,
-      "always"
-    ]
+    "arrow-parens": [2, "always"],
+    "function-paren-newline": 0,
+    "comments": {
+      "function-paren-newline": "due to conflict between Prettier max length"
+    }
   },
   "globals": {
     "__DEV__": true

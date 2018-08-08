@@ -5,7 +5,7 @@ import Environment from '../utils/environment';
 import { setMemberAsync, setMemberBarcodeAsync } from '../utils/storageApi';
 import Member from './dataTypes';
 
-const subDir = Platform.OS === 'ios' ? 'childFolder' : 'childfolder/';
+const subDir = Platform.OS === 'ios' ? 'childFolder' : 'childFolder/';
 const DIR = `${FileSystem.documentDirectory}${subDir}`;
 
 export class LoginAPI {
@@ -31,7 +31,6 @@ export class LoginAPI {
   signIn = async () => {
     let member = {};
     let body = '';
-
     try {
       const response = await fetch(Environment.LOGIN_END_POINT, this.options);
       body = await response.text();
@@ -55,15 +54,14 @@ export class LoginAPI {
             await setMemberAsync(member.export());
           }
         }
-        return member;
       }
     } catch (e) {
       console.log('Error', e);
       // Check if error on .json() returned string
       const msg = e instanceof SyntaxError && body ? body : e.name;
       console.log(msg);
-      return member;
     }
+    return member;
   };
 
   downloadCollectiveAgreements = async (agreementEntries) => {
@@ -135,18 +133,16 @@ export class LoginAPI {
 
     if (httpResponse) fileName = this.getFileNameFromHttpResponse(httpResponse);
     const f = await FileSystem.getInfoAsync(DIR);
-    if (f.exists == false) {
-      //returns 0
+    if (f.exists === 0 || f.exists === false) {
       await FileSystem.makeDirectoryAsync(DIR, {
         intermediates: true,
       });
     }
     const path = `${DIR}/${fileName}`;
     try {
-      const s = await FileSystem.readDirectoryAsync(DIR);
+      await FileSystem.readDirectoryAsync(DIR);
     } catch (e) {
       return new Error([`Unable to create local Directory ${DIR}`.psaApi]);
-      console.log(`Unable to readDirectory ${DIR}`);
     }
 
     try {

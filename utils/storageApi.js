@@ -4,9 +4,9 @@ import { AsyncStorage } from 'react-native';
 export const MEMBER_KEY = 'PSAMember';
 export const BARCODE_KEY = 'PSABarcodeData';
 
-export const setMemberAsync = async (JSONdata) => {
+export const setMemberAsync = async (JSONData) => {
   try {
-    const result = await AsyncStorage.setItem(MEMBER_KEY, JSONdata);
+    const result = await AsyncStorage.setItem(MEMBER_KEY, JSONData);
     console.info('AsyncSetMember', result);
     return result;
   } catch (e) {
@@ -17,9 +17,9 @@ export const setMemberAsync = async (JSONdata) => {
 
 export const getMemberDataAsync = async () => {
   try {
-    const JSONdata = await AsyncStorage.getItem(MEMBER_KEY);
-    if (JSONdata && JSON.parse(JSONdata)) {
-      return JSON.parse(JSONdata);
+    const JSONData = await AsyncStorage.getItem(MEMBER_KEY);
+    if (JSONData && JSON.parse(JSONData)) {
+      return JSON.parse(JSONData);
     }
   } catch (e) {
     console.log('getMemberDataAsync', e.message);
@@ -28,14 +28,15 @@ export const getMemberDataAsync = async () => {
 };
 
 export const setMemberBarcodeAsync = async (BarcodeBase64) => {
+  let result = false;
   try {
     console.log(BARCODE_KEY);
-    const result = await AsyncStorage.setItem(BARCODE_KEY, BarcodeBase64);
+    result = await AsyncStorage.setItem(BARCODE_KEY, BarcodeBase64);
     console.info('AsyncSetBarcode', result);
   } catch (e) {
     console.log('AsyncSetBarcode', e.message);
-    return false;
   }
+  return result;
 };
 
 export const getMemberBarcodeAsync = async () => {
@@ -55,8 +56,6 @@ export const removeMemberBarcodeAsync = async () => {
 export const removeMemberDataAsync = async () => {
   try {
     await AsyncStorage.removeItem(MEMBER_KEY);
-    // const result = await AsyncStorage.getItem('PSAMember');
-    // debugger;
   } catch (e) {
     console.log('Error', e.message);
   }
