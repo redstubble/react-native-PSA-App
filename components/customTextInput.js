@@ -19,7 +19,7 @@ class CustomTextInput extends Component {
           marginLeft: 15,
           marginRight: 15,
           backgroundColor: '#fff',
-          padding: 20,
+          padding: 10,
           color: '#000',
         }}
         // placeholderTextColor="#000"

@@ -1,61 +1,31 @@
 import { FileSystem } from 'expo';
 import { Platform } from 'react-native';
+import base64 from 'base-64';
 import Environment from '../utils/environment';
-import { setMemberAsync } from '../utils/storageApi';
+import { setMemberAsync, setMemberBarcodeAsync } from '../utils/storageApi';
 import Member from './dataTypes';
-// import base64 from 'base-64';
 
 const subDir = Platform.OS === 'ios' ? 'childFolder' : 'childfolder/';
 const DIR = `${FileSystem.documentDirectory}${subDir}`;
 
-export const login = async (h) => {
-  const options = {
-    method: 'POST',
-    headers: h,
-  };
-
-  let member = {};
-  let body = '';
-
-  try {
-    const response = await fetch(Environment.LOGIN_END_POINT, options);
-    body = await response.text();
-    const JSONObj = body ? JSON.parse(body) || null : null;
-    member = new Member(JSONObj);
-    if (member.valid) {
-      await setMemberAsync(member.export());
-      // download barcode
-      const barCodeImg = await downloadDocs(JSONObj.data.BarcodeSource);
-      if (barCodeImg) member.creds.barcode_img = barCodeImg.path;
-      debugger;
-      // agreements
-      const agreementEntries = Object.entries(JSONObj.data.CollectiveAgreement);
-      if (agreementEntries.length > 0) {
-        member.creds.collective_agreements = await downloadCollectiveAgreements(
-          agreementEntries,
-        );
-        if (member.creds.collective_agreements.length > 0) {
-          await setMemberAsync(member.export());
-        }
-      }
-      return member;
-    }
-  } catch (e) {
-    console.log('Error', e);
-    // Check if error on .json() returned string
-    const msg = e instanceof SyntaxError && body ? body : e.name;
-    console.log(msg);
-    return member;
-  }
-};
-
 export class LoginAPI {
-  constructor(headers) {
+  constructor(e, p) {
+    this.populateHeaders(e, p);
     this.options = {
       method: 'POST',
-      headers,
-      // mode: 'no-cors',
+      headers: this.head,
     };
+  }
+
+  populateHeaders(email, password) {
+    this.head = new Headers();
+    const auth = base64.encode(`${email}:${password}`);
+    this.head.append('Authorization', `Basic ${auth}`);
+    this.head.append('Access-Control-Allow-Origin', '*');
+    this.head.append(
+      'Access-Control-Allow-Headers',
+      'Origin, X-Requested-With, Content-Type, Accept',
+    );
   }
   // Method
   signIn = async () => {
@@ -70,11 +40,8 @@ export class LoginAPI {
       if (member.valid) {
         await setMemberAsync(member.export());
         // download barcode
-        debugger;
-        const barCodeImg = await this.downloadDocs(JSONObj.data.BarcodeSource);
-
-        if (barCodeImg) member.creds.barcode_img = barCodeImg.path;
-        debugger;
+        const barCodeImg = await this.downloadBlob(JSONObj.data.BarcodeSource);
+        if (barCodeImg) member.creds.barcode_img = barCodeImg;
 
         // agreements
         const agreementEntries = Object.entries(
@@ -129,6 +96,37 @@ export class LoginAPI {
     return result.replace(/"/g, '');
   };
 
+  downloadBlob = async (link) => {
+    const data = await fetch(link, this.options);
+    const mime = data.headers.get('Content-Type');
+    let result = false;
+    if (mime.includes('png') && link.includes('barcode')) {
+      const b = await data.blob();
+      try {
+        result = await this.readBlob(b);
+        setMemberBarcodeAsync(result);
+      } catch (rej) {
+        console.log(rej);
+      }
+    }
+    return result;
+  };
+
+  readBlob = (blob) => {
+    const fileReaderInstance = new FileReader();
+    return new Promise((resolve, reject) => {
+      fileReaderInstance.onload = () => {
+        resolve(fileReaderInstance.result);
+      };
+
+      fileReaderInstance.onerror = () => {
+        fileReaderInstance.abort();
+        reject(new DOMException('Problem parsing input file.'));
+      };
+      fileReaderInstance.readAsDataURL(blob);
+    });
+  };
+
   downloadDocs = async (link) => {
     let fileName = null;
     const data = await fetch(link, this.options);
@@ -136,41 +134,24 @@ export class LoginAPI {
     const httpResponse = data.headers.get('Content-Disposition');
 
     if (httpResponse) fileName = this.getFileNameFromHttpResponse(httpResponse);
-    else if (mime.includes('png') && link.includes('barcode')) {
-      const d = await data.blob();
-      // debugger;
-      // link =
-      //   'https://vignette.wikia.nocookie.net/fantendo/images/6/6e/Small-mario.png';
-      // try {
-      //   const p = await data.blob();
-      //   const re = base64(p);
-      // } catch {
-      //   debugger;
-      // }
-      fileName = 'barcode.png';
-      debugger;
-    }
     const f = await FileSystem.getInfoAsync(DIR);
-    if (f.exists === false) {
+    if (f.exists == false) {
+      //returns 0
       await FileSystem.makeDirectoryAsync(DIR, {
         intermediates: true,
       });
     }
-
     const path = `${DIR}/${fileName}`;
-    // let agreement = {};
     try {
       const s = await FileSystem.readDirectoryAsync(DIR);
     } catch (e) {
-      debugger;
-      return new Error([`Unable to create local Directory ${DIR}`['psaApi']]);
+      return new Error([`Unable to create local Directory ${DIR}`.psaApi]);
       console.log(`Unable to readDirectory ${DIR}`);
     }
 
     try {
       const url = await FileSystem.downloadAsync(link, path);
       if (url.status === 200) {
-        const url = await FileSystem.downloadAsync(link, path);
         console.log(`${fileName} downloaded to ${path}`);
         return {
           path,

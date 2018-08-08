@@ -4,7 +4,7 @@ import { StyleSheet, Button, ActivityIndicator } from 'react-native';
 import { FileSystem } from 'expo';
 import Head from '../components/headerSignedIn';
 import { getMemberDataAsync } from '../utils/storageApi';
-import Document from '../layout/Document';
+import Agreement from '../layout/Agreement';
 
 const styles = StyleSheet.create({
   container: {

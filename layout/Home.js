@@ -4,7 +4,7 @@ import { Text, StyleSheet, View, ActivityIndicator, Image } from 'react-native';
 import { PropTypes } from 'prop-types';
 import Images from '../assets/images';
 import Head from '../components/headerSignedIn';
-import { getMemberDataAsync } from '../utils/storageApi';
+import { getMemberDataAsync, getMemberBarcodeAsync } from '../utils/storageApi';
 
 const styles = StyleSheet.create({
   container: {
@@ -46,25 +46,12 @@ class Home extends React.Component {
 
   populateMemberData = async () => {
     const member = await getMemberDataAsync();
+    const barcode = await getMemberBarcodeAsync();
     if (!member.valid) console.error('Member Data Invalid Error');
-    else {
-      debugger;
-      const a = await fetch(member.barcode_img);
-      debugger;
-      const b = await a.blob();
-      debugger;
-      const fileReaderInstance = new FileReader();
-      fileReaderInstance.readAsDataURL(b);
-      fileReaderInstance.onload = () => {
-        const base64data = fileReaderInstance.result;
-        this.setState({
-          blob: base64data,
-        });
-        console.log(base64data);
-      };
-    }
+    else console.log(barcode);
     this.setState({
       member,
+      barcode,
       memberRequestCompleted: true,
     });
   };
@@ -90,7 +77,7 @@ class Home extends React.Component {
             <Text style={styles.paragraph}>Barcode: {m.barcode_no}</Text>
             <Text style={styles.paragraph}>Barcode: {m.barcode_img}</Text>
             <Image
-              source={{ uri: this.state.blob }}
+              source={{ uri: this.state.barcode }}
               style={{ height: 200, width: 200, flex: 1 }}
             />
 

@@ -11,7 +11,10 @@ import { signOut } from '../utils/psaApi';
 import Home from '../layout/Home';
 import Profile from '../layout/Profile';
 import Documents from '../layout/DocumentStackNav';
-import { removeMemberDataAsync } from '../utils/storageApi';
+import {
+  removeMemberDataAsync,
+  removeMemberBarcodeAsync,
+} from '../utils/storageApi';
 
 const TabNav = createBottomTabNavigator(
   {
@@ -53,7 +56,10 @@ const LogoutButton = (props) => (
         title="Logout"
         onPress={() => {
           props.navigation.dispatch(DrawerActions.closeDrawer());
-          signOut().then(removeMemberDataAsync());
+          signOut().then(() => {
+            removeMemberDataAsync();
+            removeMemberBarcodeAsync();
+          });
           props.navigation.navigate('Login');
         }}
       />
