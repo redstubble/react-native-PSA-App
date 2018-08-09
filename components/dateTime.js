@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import moment from 'moment';
 import { textWhite, backgroundRed, backgroundWhite } from '../utils/colors';
-import { LoggedInHomeText } from '../style/Text';
+import { UserProp, UserValue } from '../style/Text';
 
 class DateTime extends Component {
   constructor(props) {
@@ -28,17 +28,17 @@ class DateTime extends Component {
 
   render() {
     return (
-      <LoggedInHomeText
+      <Text
         style={{
           textAlign: 'center',
           flex: 0.5,
         }}
       >
-        <Text style={{ fontWeight: 'bold' }}>Date: </Text>
-        {this.state.DateTime.format('DD/mm/YYYY')}
-        <Text style={{ fontWeight: 'bold' }}> Time: </Text>
-        {this.state.DateTime.format('LTS')}
-      </LoggedInHomeText>
+        <UserProp>Date: </UserProp>
+        <UserValue>{this.state.DateTime.format('DD/mm/YYYY')}</UserValue>
+        <UserProp> Time: </UserProp>
+        <UserValue>{this.state.DateTime.format('LTS')}</UserValue>
+      </Text>
     );
   }
 }

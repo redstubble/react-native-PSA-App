@@ -1,33 +1,10 @@
 import React, { Component } from 'react';
 import { SafeAreaView, DrawerActions } from 'react-navigation';
-import {
-  StyleSheet,
-  View,
-  Text,
-  Button,
-  ActivityIndicator,
-} from 'react-native';
+import { View, Text, Button, ActivityIndicator } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Head from '../components/headerSignedIn';
 import { getMemberDataAsync } from '../utils/storageApi';
-import Agreement from '../layout/Agreement';
 import { textWhite, backgroundRed, backgroundWhite } from '../utils/colors';
-import { LinkText } from '../style/Text';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'red',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  paragraph: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: '#34495e',
-  },
-});
 
 export default class Documents extends Component {
   state = {
