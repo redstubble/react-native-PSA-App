@@ -6,21 +6,6 @@ import { getMemberDataAsync } from '../utils/storageApi';
 import Head from '../components/headerSignedIn';
 import { PROFILEPAGE } from '../utils/environment';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#ecf0f1',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  paragraph: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: '#34495e',
-  },
-});
-
 class Profile extends React.Component {
   state = {
     memberRequestCompleted: false,

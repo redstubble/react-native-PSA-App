@@ -44,7 +44,7 @@ const TabNav = createBottomTabNavigator(
     },
   },
   {
-    initialRouteName: 'Home',
+    initialRouteName: 'Documents',
   },
 );
 

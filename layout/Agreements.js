@@ -1,15 +1,23 @@
 import React, { Component } from 'react';
 import { SafeAreaView, DrawerActions } from 'react-navigation';
-import { StyleSheet, Button, ActivityIndicator } from 'react-native';
-import { FileSystem } from 'expo';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Button,
+  ActivityIndicator,
+} from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Head from '../components/headerSignedIn';
 import { getMemberDataAsync } from '../utils/storageApi';
 import Agreement from '../layout/Agreement';
+import { textWhite, backgroundRed, backgroundWhite } from '../utils/colors';
+import { LinkText } from '../style/Text';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ecf0f1',
+    backgroundColor: 'red',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -45,28 +53,51 @@ export default class Documents extends Component {
     if (this.state.memberRequestCompleted) {
       agreements = this.state.member.collective_agreements.map(
         (agreement, k) => (
-          <Button
-            title={agreement.name}
+          <View
             key={k}
-            onPress={() =>
-              navigation.navigate('Agreement', { link: agreement.path })
-            }
+            style={{
+              margin: 20,
+              padding: 20,
+              backgroundColor: textWhite,
+            }}
           >
-            Remove
-          </Button>
+            <Text style={{ color: 'black' }}>
+              <MaterialCommunityIcons
+                name="file"
+                size={32}
+                color={backgroundRed}
+                style={{ margin: 20 }}
+              />
+              <Text>
+                <Button
+                  title={agreement.name}
+                  color="black"
+                  onPress={() =>
+                    navigation.navigate('Agreement', {
+                      link: agreement.path,
+                    })
+                  }
+                >
+                  Remove
+                </Button>
+              </Text>
+            </Text>
+          </View>
         ),
       );
     } else {
       agreements = <ActivityIndicator />;
     }
     return (
-      <SafeAreaView style={[{ flex: 1, backgroundColor: '#ecf0f1' }]}>
+      <SafeAreaView style={[{ flex: 1, backgroundColor: backgroundWhite }]}>
         <Head
           icon="menu"
           action={() => navigation.dispatch(DrawerActions.openDrawer())}
-          title="Documents Screen"
+          title="My Documents"
         />
-        {agreements}
+        <View style={{ backgroundColor: backgroundRed, flex: 1 }}>
+          {agreements}
+        </View>
       </SafeAreaView>
     );
   }
