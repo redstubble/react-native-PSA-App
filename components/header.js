@@ -2,16 +2,17 @@ import React from 'react';
 import { Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { textWhite, headerRed } from '../utils/colors';
 
 const HeaderText = styled.Text`
   font-size: 20;
-  color: #fff;
+  color: ${textWhite};
   align-items: center;
   text-align: left;
 `;
 
 const HeaderView = styled.View`
-  background-color: #d01e1e;
+  background-color: ${headerRed};
   align-self: stretch;
   padding: 20px;
   box-shadow: 20px 5px 20px #000;

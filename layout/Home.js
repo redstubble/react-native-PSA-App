@@ -1,20 +1,22 @@
 import React from 'react';
 import { SafeAreaView, DrawerActions } from 'react-navigation';
-import { Text, StyleSheet, View, ActivityIndicator, Image } from 'react-native';
+import {
+  Text,
+  ScrollView,
+  StyleSheet,
+  View,
+  ActivityIndicator,
+  Image,
+} from 'react-native';
 import { PropTypes } from 'prop-types';
-import Images from '../assets/images';
 import Head from '../components/headerSignedIn';
+import Images from '../assets/images';
 import { getMemberDataAsync, getMemberBarcodeAsync } from '../utils/storageApi';
+import { textWhite, backgroundRed, backgroundWhite } from '../utils/colors';
+import DateTime from '../components/dateTime';
+import { UserProp, UserValue } from '../style/Text';
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: '100%',
-    backgroundColor: '#ecf0f1',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
-  },
   paragraph: {
     width: '100%',
     textAlign: 'center',
@@ -59,41 +61,51 @@ class Home extends React.Component {
   render({ navigation } = this.props) {
     const m = this.state.member;
     return (
-      <SafeAreaView style={[{ flex: 1, backgroundColor: '#ecf0f1' }]}>
+      <SafeAreaView style={[{ flex: 1, backgroundColor: backgroundWhite }]}>
         <Head
           icon="menu"
           action={() => navigation.dispatch(DrawerActions.openDrawer())}
-          title="Home Screen"
+          title="Home"
         />
         {!this.state.memberRequestCompleted ? (
           <ActivityIndicator />
         ) : (
-          <View style={styles.container}>
-            <Text style={styles.paragraph}>
-              Name: {`${m.first_name} ${m.surname}`}
-            </Text>
-            <Text style={styles.paragraph}>Email: {m.email}</Text>
-            <Text style={styles.paragraph}>Member No: {m.member_no}</Text>
-            <Text style={styles.paragraph}>Barcode: {m.barcode_no}</Text>
-            <Text style={styles.paragraph}>Barcode: {m.barcode_img}</Text>
-            <Image
-              source={{ uri: this.state.barcode }}
-              style={{ height: 200, width: 200, flex: 1 }}
-            />
-
-            {/* <Image
-              style={{
-                height: 65,
-                width: 1000,
-                aspectRatio: 1.5,
-                resizeMode: 'contain',
-              }}
-              source={{
-                // uri: w,
-                uri: m.barcode_img,
-              }}
-            /> */}
-          </View>
+          <ScrollView
+            style={{ backgroundColor: backgroundRed }}
+            contentContainerStyle={{
+              margin: 40,
+              alignSelf: 'stretch',
+            }}
+          >
+            <View>
+              <Image
+                source={Images.PSALogo}
+                style={{
+                  height: 65,
+                  width: 1000,
+                  aspectRatio: 1.5,
+                  resizeMode: 'contain',
+                  justifyContent: 'center',
+                  alignSelf: 'center',
+                }}
+              />
+              <DateTime style={{ marginTop: 'auto' }} />
+            </View>
+            <View>
+              <Text>
+                <UserProp style={styles.paragraph}>Member No: </UserProp>
+                <UserValue>{m.member_no}</UserValue>
+              </Text>
+              <Text>
+                <UserProp style={styles.paragraph}>Name: </UserProp>
+                <UserValue>{`${m.first_name} ${m.surname}`}</UserValue>
+              </Text>
+              <Image
+                source={{ uri: this.state.barcode }}
+                style={{ height: 200, width: 200 }}
+              />
+            </View>
+          </ScrollView>
         )}
       </SafeAreaView>
     );

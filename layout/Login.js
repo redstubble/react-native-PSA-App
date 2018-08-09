@@ -9,9 +9,9 @@ import {
   StyleSheet,
   SafeAreaView,
 } from 'react-native';
-
 import { Button } from 'react-native-elements';
 import PropTypes from 'prop-types';
+import { textWhite, backgroundRed, backgroundWhite } from '../utils/colors';
 import DateTime from '../components/dateTime';
 import Header from '../components/header';
 import CustomTextInput from '../components/customTextInput';
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     flex: 1,
     display: 'flex',
     justifyContent: 'center',
-    backgroundColor: '#ecf0f1',
+    backgroundColor: backgroundWhite,
   },
 });
 
@@ -67,12 +67,8 @@ class Login extends Component {
       <SafeAreaView style={[styles.container]}>
         <Header text="Login to PSA" />
         <ScrollView
-          style={{ backgroundColor: 'red' }}
-          contentContainerStyle={{
-            margin: 40,
-            flex: 1,
-            alignSelf: 'stretch',
-          }}
+          style={{ backgroundColor: backgroundRed }}
+          contentContainerStyle={{ margin: 40, flex: 1, alignSelf: 'stretch' }}
         >
           <View style={{ flex: 2 }}>
             <Image
@@ -104,7 +100,7 @@ class Login extends Component {
               <Text
                 style={{
                   fontSize: 14,
-                  color: 'white',
+                  color: textWhite,
                   textAlign: 'center',
                   padding: 5,
                 }}
@@ -128,11 +124,7 @@ class Login extends Component {
           </View>
           <View style={{ flex: 1 }}>
             <Text
-              style={{
-                textAlign: 'center',
-                color: '#fff',
-                fontSize: 15,
-              }}
+              style={{ textAlign: 'center', color: textWhite, fontSize: 15 }}
               onPress={() =>
                 Linking.openURL(
                   'https://www.psa.org.nz/psasecurity/lostpassword',
@@ -142,11 +134,7 @@ class Login extends Component {
               Forgot Login
             </Text>
             <Text
-              style={{
-                textAlign: 'center',
-                color: '#fff',
-                fontSize: 15,
-              }}
+              style={{ textAlign: 'center', color: textWhite, fontSize: 15 }}
               onPress={() => Linking.openURL('https://www.psa.org.nz/register')}
             >
               Not Registered

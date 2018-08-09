@@ -66,7 +66,8 @@ export class LoginAPI {
 
   downloadCollectiveAgreements = async (agreementEntries) => {
     const agreements = await Promise.all(
-      agreementEntries.map(async ([key, value]) => {
+      agreementEntries.map(async (entry) => {
+        const value = entry.slice(1)[0]; // need second element of array
         const {
           Doc: agreementMetaData,
           BelongsTo: agreementChildrenMetaData,

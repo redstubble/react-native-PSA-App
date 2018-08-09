@@ -11,4 +11,8 @@ module.exports = {
   inactive: '#DDD',
   purple: '#292477',
   red: '#b71845',
+  headerRed: '#d01e1e',
+  backgroundRed: 'red',
+  backgroundWhite: '#ecf0f1',
+  textWhite: '#fff',
 };
