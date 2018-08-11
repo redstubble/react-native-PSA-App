@@ -7,6 +7,7 @@ import {
   createDrawerNavigator,
   DrawerActions,
 } from 'react-navigation';
+import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import { signOut } from '../utils/psaApi';
 import Home from '../layout/Home';
 import Profile from '../layout/Profile';
@@ -45,6 +46,28 @@ const TabNav = createBottomTabNavigator(
   },
   {
     initialRouteName: 'Documents',
+    navigationOptions: ({ navigation }) => ({
+      tabBarIcon: ({ focused, tintColor }) => {
+        const { routeName } = navigation.state;
+        let iconName;
+        if (routeName === 'Home') {
+          iconName = `home${focused ? '' : '-outline'}`;
+        } else if (routeName === 'Profile') {
+          iconName = `account${focused ? '' : '-outline'}`;
+        }
+        else if (routeName === 'Documents') {
+          iconName = `file${focused ? '' : '-outline'}`;
+        }
+
+        // You can return any component that you like here! We usually use an
+        // icon component from react-native-vector-icons
+        return <MaterialCommunityIcons name={iconName} size={25} color={tintColor} />;
+      },
+    }),
+    tabBarOptions: {
+      activeTintColor: 'tomato',
+      inactiveTintColor: 'gray',
+    },
   },
 );
 
