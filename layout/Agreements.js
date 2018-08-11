@@ -38,15 +38,13 @@ export default class Documents extends Component {
               backgroundColor: textWhite,
             }}
           >
-            <Text style={{ color: 'black' }}>
-              <MaterialCommunityIcons
-                name="file"
-                size={32}
-                color={backgroundRed}
-                style={{ margin: 20 }}
-              />
-              <Text>
-                <Button
+            <MaterialCommunityIcons
+            name="file"
+            size={32}
+            color={backgroundRed}
+            style={{ margin: 20 }}
+          />
+            <Button
                   title={agreement.name}
                   color="black"
                   onPress={() =>
@@ -57,8 +55,7 @@ export default class Documents extends Component {
                 >
                   Remove
                 </Button>
-              </Text>
-            </Text>
+
           </View>
         ),
       );
