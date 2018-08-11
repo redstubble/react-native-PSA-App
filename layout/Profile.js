@@ -2,6 +2,7 @@ import React from 'react';
 import { SafeAreaView, DrawerActions } from 'react-navigation';
 import { ActivityIndicator, StyleSheet, View, WebView } from 'react-native';
 import PropTypes from 'prop-types';
+import Spinner from 'react-native-loading-spinner-overlay';
 import { getMemberDataAsync } from '../utils/storageApi';
 import Head from '../components/headerSignedIn';
 import { PROFILEPAGE } from '../utils/environment';
@@ -9,10 +10,22 @@ import { PROFILEPAGE } from '../utils/environment';
 class Profile extends React.Component {
   state = {
     memberRequestCompleted: false,
+    visible: true,
   };
   componentDidMount() {
     this.populateMemberData();
   }
+
+  showSpinner() {
+    console.log('Show Spinner');
+    this.setState({ visible: true });
+}
+
+hideSpinner() {
+    console.log('Hide Spinner');
+    this.setState({ visible: false });
+}
+
 
   populateMemberData = async () => {
     const member = await getMemberDataAsync();
@@ -36,13 +49,20 @@ class Profile extends React.Component {
           action={() => navigation.dispatch(DrawerActions.openDrawer())}
           title="Profile Screen"
         />
+                  <Spinner
+                    visible={this.state.visible}
+                    textContent={'Loading...'}
+                    textStyle={{ color: '#FFF' }}
+                />
         {!this.state.memberRequestCompleted ? (
           <ActivityIndicator />
         ) : (
           <WebView
             source={{ uri: this.profileUrl() }}
             style={{ marginTop: 20 }}
-          />
+            onLoadStart={() => (this.showSpinner())}
+            onLoad={() => (this.hideSpinner())}
+          />   
         )}
       </SafeAreaView>
     );

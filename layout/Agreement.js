@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { SafeAreaView } from 'react-navigation';
 import PDFReader from 'rn-pdf-reader-js';
-import { StyleSheet, WebView, ActivityIndicator, Platform } from 'react-native';
+import { StyleSheet, View, WebView, ActivityIndicator, Platform } from 'react-native';
 import Head from '../components/headerSignedIn';
 
 const styles = StyleSheet.create({
