@@ -35,6 +35,10 @@ export default class Documents extends Component {
             style={{
               margin: 20,
               padding: 20,
+              // flex:1,
+              flexDirection: 'row',
+              alignItems:'center',
+              justifyContent: 'flex-start',
               backgroundColor: textWhite,
             }}
           >
@@ -42,7 +46,7 @@ export default class Documents extends Component {
             name="file"
             size={32}
             color={backgroundRed}
-            style={{ margin: 20 }}
+            style={{ marginRight: 10 }}
           />
             <Button
                   title={agreement.name}
