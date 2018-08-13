@@ -10,6 +10,7 @@ import {
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import { signOut } from '../utils/psaApi';
 import Home from '../layout/Home';
+import Header from '../components/header';
 import Profile from '../layout/Profile';
 import Documents from '../layout/DocumentStackNav';
 import {
@@ -45,7 +46,7 @@ const TabNav = createBottomTabNavigator(
     },
   },
   {
-    initialRouteName: 'Documents',
+    initialRouteName: 'Home',
     navigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, tintColor }) => {
         const { routeName } = navigation.state;
@@ -75,6 +76,7 @@ const LogoutButton = (props) => (
   <View style={{ flex: 1 }}>
     <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
       {/* <DrawerItems {...props} /> */}
+      <Header text="Pages" />
       <Button
         title="Logout"
         onPress={() => {

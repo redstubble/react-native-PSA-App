@@ -67,30 +67,32 @@ class Home extends React.Component {
           action={() => navigation.dispatch(DrawerActions.openDrawer())}
           title="Home"
         />
-        {/* {!this.state.memberRequestCompleted ? ( */}
-        <ActivityIndicator />
-        {/* ) : (
+        {!this.state.memberRequestCompleted ? (
+          <ActivityIndicator />
+        ) : (
           <ScrollView
             style={{ backgroundColor: backgroundRed }}
             contentContainerStyle={{
               margin: 40,
-              alignSelf: 'stretch',
+              flex:1,
+              justifyContent: 'center',
             }}
           >
-            <Image
-              source={Images.PSALogo}
-              style={{
-                height: 5,
-                width: 1000,
-                aspectRatio: 1.5,
-                resizeMode: 'contain',
-                justifyContent: 'center',
-                alignSelf: 'center',
-              }}
-            />
-            <DateTime style={{ marginTop: 'auto' }} />
-
-            <View>
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+              <Image
+                source={Images.PSALogo}
+                style={{
+                  height: 65,
+                  width: 1000,
+                  aspectRatio: 1.5,
+                  resizeMode: 'contain',
+                  justifyContent: 'center',
+                  alignSelf: 'center',
+                }}
+              />
+              </View>
+            <View style={{ flex: 2, justifyContent: 'center', alignItems: 'center' }}>
+               <DateTime />
               <Text>
                 <UserProp style={styles.paragraph}>Member No: </UserProp>
                 <UserValue>{m.member_no}</UserValue>
@@ -99,13 +101,20 @@ class Home extends React.Component {
                 <UserProp style={styles.paragraph}>Name: </UserProp>
                 <UserValue>{`${m.first_name} ${m.surname}`}</UserValue>
               </Text>
+              </View>
+              <View style={{ flex: 4, justifyContent: 'center', alignItems: 'center' }}>
+              <View style={{backgroundColor: 'white', padding:20, paddingLeft:40, paddingRight:40}}>
               <Image
                 source={{ uri: this.state.barcode }}
-                style={{ height: 200, width: 200 }}
+                style={{ height: 200, width: 280 }}
               />
+              </View>
+              <Text>
+                <UserValue>{`${m.barcode_no}`}</UserValue>
+              </Text>
             </View>
           </ScrollView>
-        )} */}
+        )}
       </SafeAreaView>
     );
   }
