@@ -67,9 +67,9 @@ class Home extends React.Component {
           action={() => navigation.dispatch(DrawerActions.openDrawer())}
           title="Home"
         />
-        {!this.state.memberRequestCompleted ? (
-          <ActivityIndicator />
-        ) : (
+        {/* {!this.state.memberRequestCompleted ? ( */}
+        <ActivityIndicator />
+        {/* ) : (
           <ScrollView
             style={{ backgroundColor: backgroundRed }}
             contentContainerStyle={{
@@ -77,20 +77,19 @@ class Home extends React.Component {
               alignSelf: 'stretch',
             }}
           >
-            <View>
-              <Image
-                source={Images.PSALogo}
-                style={{
-                  height: 65,
-                  width: 1000,
-                  aspectRatio: 1.5,
-                  resizeMode: 'contain',
-                  justifyContent: 'center',
-                  alignSelf: 'center',
-                }}
-              />
-              <DateTime style={{ marginTop: 'auto' }} />
-            </View>
+            <Image
+              source={Images.PSALogo}
+              style={{
+                height: 5,
+                width: 1000,
+                aspectRatio: 1.5,
+                resizeMode: 'contain',
+                justifyContent: 'center',
+                alignSelf: 'center',
+              }}
+            />
+            <DateTime style={{ marginTop: 'auto' }} />
+
             <View>
               <Text>
                 <UserProp style={styles.paragraph}>Member No: </UserProp>
@@ -106,7 +105,7 @@ class Home extends React.Component {
               />
             </View>
           </ScrollView>
-        )}
+        )} */}
       </SafeAreaView>
     );
   }

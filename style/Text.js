@@ -9,14 +9,15 @@ export const HeaderText = styled.Text`
 `;
 
 export const UserProp = styled.Text`
-  font-size: 20;
+  font-size: 16;
   color: ${textWhite};
   align-items: center;
   text-align: left;
+  font-weight: bold;
 `;
 
 export const UserValue = styled.Text`
-  font-size: 20;
+  font-size: 16;
   color: ${textWhite};
   align-items: center;
   text-align: left;

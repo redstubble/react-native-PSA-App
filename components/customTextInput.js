@@ -16,8 +16,6 @@ class CustomTextInput extends Component {
         style={{
           borderColor: 'grey',
           borderWidth: 1,
-          marginLeft: 15,
-          marginRight: 15,
           backgroundColor: '#fff',
           padding: 10,
           color: '#000',

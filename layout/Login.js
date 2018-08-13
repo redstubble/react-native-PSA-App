@@ -25,6 +25,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: backgroundWhite,
   },
+  textLink: {
+    margin: 5,
+    color: textWhite,
+    fontSize: 15,
+  },
 });
 
 class Login extends Component {
@@ -63,86 +68,44 @@ class Login extends Component {
   };
 
   render() {
-    return (
-      <SafeAreaView style={[styles.container]}>
+    return <SafeAreaView style={[styles.container]}>
         <Header text="Login to PSA" />
-        <ScrollView
-          style={{ backgroundColor: backgroundRed }}
-          contentContainerStyle={{ margin: 40, flex: 1, alignSelf: 'stretch' }}
-        >
-          <View style={{ flex: 2 }}>
-            <Image
-              source={Images.PSALogo}
-              style={{
-                height: 65,
-                width: 1000,
-                aspectRatio: 1.5,
-                resizeMode: 'contain',
-                justifyContent: 'center',
-                alignSelf: 'center',
-              }}
-            />
-            <View style={{ flexGrow: 1 }} />
-            <DateTime style={{ marginTop: 'auto' }} />
+        <ScrollView style={{ backgroundColor: backgroundRed }} contentContainerStyle={{ margin: 40, flex: 1 }}>
+          <View style={{ flex: 2, alignItems: 'center', justifyContent: 'center' }}>
+            <Image source={Images.PSALogo} style={{ height: 65, width: 1000, aspectRatio: 1.5, resizeMode: 'contain', justifyContent: 'center', alignSelf: 'center' }} />
           </View>
-          <View style={{ flex: 2, height: 200 }}>
-            <CustomTextInput
-              controlFunc={this.handleEmailChange}
-              name="Email"
-            />
-            <CustomTextInput
-              controlFunc={this.handlePasswordChange}
-              name="Password"
-              password
-            />
-            {/* cast string as boolean */}
-            {!!this.state.msg && (
-              <Text
-                style={{
-                  fontSize: 14,
-                  color: textWhite,
-                  textAlign: 'center',
-                  padding: 5,
-                }}
-              >
-                {this.state.msg}
-              </Text>
-            )}
-            {this.state.isLoggingIn && <ActivityIndicator />}
-            <View style={{ paddingTop: 10 }}>
-              <Button
-                disabled={
-                  this.state.isLoggingIn ||
-                  !this.state.email ||
-                  !this.state.password
-                }
-                onPress={this.userLogin}
-                style={{ marginTop: 10 }}
-                title="Login"
-              />
+          <View style={{ flex: 4, justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ flexGrow: 1 }}>
+              <DateTime />
+            </View>
+            <View style={{ flexGrow: 3, marginTop: '10%', width: '90%' }}>
+              <CustomTextInput controlFunc={this.handleEmailChange} name="Email" />
+              <CustomTextInput controlFunc={this.handlePasswordChange} name="Password" password />
+              {/* cast string as boolean */}
+              {!!this.state.msg && <Text style={{ fontSize: 14, color: textWhite, textAlign: 'center', padding: 5 }}>
+                  {this.state.msg}
+                </Text>}
+              {this.state.isLoggingIn && <ActivityIndicator />}
+            </View>
+            <View style={{ flexGrow: 3, paddingTop: 10, width: '100%' }}>
+              <Button disabled={this.state.isLoggingIn || !this.state.email || !this.state.password} onPress={this.userLogin} 
+              title="Login" 
+              color='white'
+              buttonStyle={{backgroundColor: 'darkred'}}
+              disabledStyle={{ backgroundColor: 'darkred' }} 
+              disabledTextStyle={{color:'red'}} />
             </View>
           </View>
-          <View style={{ flex: 1 }}>
-            <Text
-              style={{ textAlign: 'center', color: textWhite, fontSize: 15 }}
-              onPress={() =>
-                Linking.openURL(
-                  'https://www.psa.org.nz/psasecurity/lostpassword',
-                )
-              }
-            >
+          <View style={{ flex: 2, alignItems: 'center', justifyContent: 'center' }}>
+            <Text style={styles.textLink} onPress={() => Linking.openURL('https://www.psa.org.nz/psasecurity/lostpassword')}>
               Forgot Login
             </Text>
-            <Text
-              style={{ textAlign: 'center', color: textWhite, fontSize: 15 }}
-              onPress={() => Linking.openURL('https://www.psa.org.nz/register')}
-            >
+            <Text style={styles.textLink} onPress={() => Linking.openURL('https://www.psa.org.nz/register')}>
               Not Registered
             </Text>
           </View>
         </ScrollView>
-      </SafeAreaView>
-    );
+      </SafeAreaView>;
   }
 }
 

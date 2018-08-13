@@ -28,14 +28,9 @@ class DateTime extends Component {
 
   render() {
     return (
-      <Text
-        style={{
-          textAlign: 'center',
-          flex: 0.5,
-        }}
-      >
+      <Text>
         <UserProp>Date: </UserProp>
-        <UserValue>{this.state.DateTime.format('DD/mm/YYYY')}</UserValue>
+        <UserValue>{this.state.DateTime.format('DD/MM/YYYY')}</UserValue>
         <UserProp> Time: </UserProp>
         <UserValue>{this.state.DateTime.format('LTS')}</UserValue>
       </Text>
