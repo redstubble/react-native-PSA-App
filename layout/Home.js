@@ -9,6 +9,7 @@ import {
   Image,
 } from 'react-native';
 import { PropTypes } from 'prop-types';
+import { Font } from 'expo';
 import Head from '../components/headerSignedIn';
 import Images from '../assets/images';
 import { getMemberDataAsync, getMemberBarcodeAsync } from '../utils/storageApi';
@@ -17,21 +18,31 @@ import DateTime from '../components/dateTime';
 import { UserProp, UserValue } from '../style/Text';
 
 const styles = StyleSheet.create({
-  paragraph: {
-    width: '100%',
-    textAlign: 'center',
-    // flex: 1,
-  },
-  text: {
+  userProp: {
     fontSize: 18,
+    marginBottom: 5,
+    width: '100%',
+    color: 'pink',
+  },
+  userValue: {
+    fontSize: 20,
+    fontFamily: 'OCR A Std',
+    width: '100%',
+  },
+  dateProp: {
+    fontSize: 18,
+    marginBottom: 5,
+    width: '100%',
+    color: 'pink',
     fontWeight: 'bold',
-    color: '#34495e',
+    textAlign: 'left',
   },
 });
 
 class Home extends React.Component {
   state = {
     memberRequestCompleted: false,
+    fontLoaded: false,
     member: {
       first_name: '',
       surname: '',
@@ -43,6 +54,9 @@ class Home extends React.Component {
     },
   };
   componentDidMount() {
+    Font.loadAsync({
+      'OCR A Std': require('../assets/fonts/OCRAStd.ttf'),
+    }).then(() => this.setState({ fontLoaded: true }));
     this.populateMemberData();
   }
 
@@ -67,53 +81,103 @@ class Home extends React.Component {
           action={() => navigation.dispatch(DrawerActions.openDrawer())}
           title="Home"
         />
-        {!this.state.memberRequestCompleted ? (
-          <ActivityIndicator />
-        ) : (
+        {this.state.memberRequestCompleted && this.state.fontLoaded ? (
           <ScrollView
             style={{ backgroundColor: backgroundRed }}
             contentContainerStyle={{
               margin: 40,
-              flex:1,
-              justifyContent: 'center',
+              flex: 1,
+              justifyContent: 'flex-end',
             }}
           >
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <View style={{ flex: 2 }}>
               <Image
                 source={Images.PSALogo}
                 style={{
-                  height: 65,
-                  width: 1000,
+                  height: '100%',
+                  width: '100%',
                   aspectRatio: 1.5,
                   resizeMode: 'contain',
+                }}
+              />
+            </View>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+              }}
+            >
+              <DateTime prop={styles.dateProp} value={styles.userValue} />
+            </View>
+            <View
+              style={{
+                flex: 4,
+                justifyContent: 'space-around',
+                alignItems: 'flex-start',
+              }}
+            >
+              <View>
+                <UserProp style={styles.userProp}>MEMBER NO: </UserProp>
+                <UserValue style={styles.userValue}>{m.member_no}</UserValue>
+              </View>
+
+              <View>
+                <UserProp style={styles.userProp}>MEMBER NAME: </UserProp>
+                <UserValue style={styles.userValue}>
+                  {`${m.first_name.toUpperCase()} ${m.surname.toUpperCase()}`}
+                </UserValue>
+              </View>
+            </View>
+            <View
+              style={{
+                flex: 6,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <View
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  margin: 200,
+                  backgroundColor: 'white',
                   justifyContent: 'center',
                   alignSelf: 'center',
                 }}
-              />
+              >
+                <Image
+                  source={{ uri: this.state.barcode }}
+                  style={{
+                    flex: 0.8,
+                    height: '100%',
+                    width: '80%',
+                    justifyContent: 'center',
+                    alignSelf: 'center',
+                    backgroundColor: 'white',
+                  }}
+                  resizeMode="stretch"
+                />
+                <View style={{ paddingTop: 5, backgroundColor: 'white' }}>
+                  <Text>
+                    <UserValue
+                      style={[
+                        styles.userValue,
+                        {
+                          textAlign: 'center',
+                          fontSize: 22,
+                          color: 'black',
+                        },
+                      ]}
+                    >
+                      {`${m.barcode_no}`}
+                    </UserValue>
+                  </Text>
+                </View>
               </View>
-            <View style={{ flex: 2, justifyContent: 'center', alignItems: 'center' }}>
-               <DateTime />
-              <Text>
-                <UserProp style={styles.paragraph}>Member No: </UserProp>
-                <UserValue>{m.member_no}</UserValue>
-              </Text>
-              <Text>
-                <UserProp style={styles.paragraph}>Name: </UserProp>
-                <UserValue>{`${m.first_name} ${m.surname}`}</UserValue>
-              </Text>
-              </View>
-              <View style={{ flex: 4, justifyContent: 'center', alignItems: 'center' }}>
-              <View style={{backgroundColor: 'white', padding:20, paddingLeft:40, paddingRight:40}}>
-              <Image
-                source={{ uri: this.state.barcode }}
-                style={{ height: 200, width: 280 }}
-              />
-              </View>
-              <Text>
-                <UserValue>{`${m.barcode_no}`}</UserValue>
-              </Text>
             </View>
           </ScrollView>
+        ) : (
+          <ActivityIndicator />
         )}
       </SafeAreaView>
     );
