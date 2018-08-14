@@ -15,11 +15,10 @@ const HeaderView = styled.View`
   background-color: ${headerRed};
   align-self: stretch;
   padding: 20px;
-  box-shadow: 20px 5px 20px #000;
-  /* shadow-offset: { width: 0, height: 5px}; */
+  ${'' /* box-shadow: 20px 5px 20px #000; */} /* shadow-offset: { width: 0, height: 5px}; */
   /* shadow-opacity: 0.25; */
   /* shadow-radius: 3;
-  shadow-color: #000; */
+  shadow-color: #000; */;
 `;
 
 const HeaderViewAndroid = HeaderView.extend`

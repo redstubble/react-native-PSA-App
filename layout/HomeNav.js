@@ -82,16 +82,19 @@ const LogoutButton = (props) => (
   >
     {/* <DrawerItems {...props} /> */}
     <Header text="Pages" />
-    <View style={{ flex: 1, backgroundColor: 'red', flexDirection: 'row' }}>
-      <View style={{ backgroundColor: 'white' }}>
-        <MaterialCommunityIcons
-          name="file"
+    <View style={{ flex: 1, backgroundColor: 'red' }}>
+      <View
+        style={{ padding: 10, backgroundColor: 'white', flexDirection: 'row' }}
+      >
+        <Ionicons
+          name="md-log-out"
           size={32}
-          color={backgroundRed}
+          color="#000"
           style={{ marginRight: 10 }}
         />
         <Button
           title="Logout"
+          color="black"
           onPress={() => {
             props.navigation.dispatch(DrawerActions.closeDrawer());
             signOut().then(() => {
