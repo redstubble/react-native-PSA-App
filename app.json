@@ -12,5 +12,6 @@
     "xxxhdpi": "./assets/img/splash.png",
     "backgroundColor": "#AF0003",
     "resizeMode": "contain"
-  }
+  },
+  "orientation": "ALL_BUT_UPSIDE_DOWN"
 }

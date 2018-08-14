@@ -37,6 +37,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'left',
   },
+  dateValue: {
+    fontSize: 18,
+  },
 });
 
 class Home extends React.Component {
@@ -107,7 +110,7 @@ class Home extends React.Component {
                 justifyContent: 'center',
               }}
             >
-              <DateTime prop={styles.dateProp} value={styles.userValue} />
+              <DateTime prop={styles.dateProp} value={styles.dateValue} />
             </View>
             <View
               style={{

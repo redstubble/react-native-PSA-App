@@ -26,13 +26,17 @@ class DateTime extends Component {
     });
   }
 
-  render({ prop } = this.props) {
+  render({ prop, value } = this.props) {
     return (
       <Text>
         <UserProp style={prop}>DATE: </UserProp>
-        <UserValue>{this.state.DateTime.format('DD/MM/YYYY')}</UserValue>
+        <UserValue style={value}>
+          {this.state.DateTime.format('DD/MM/YYYY')}
+        </UserValue>
         <UserProp style={prop}> TIME: </UserProp>
-        <UserValue>{this.state.DateTime.format('LTS')}</UserValue>
+        <UserValue style={value}>
+          {this.state.DateTime.format('h:mm a')}
+        </UserValue>
       </Text>
     );
   }
