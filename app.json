@@ -1,5 +1,16 @@
 {
   "expo": {
     "sdkVersion": "27.0.0"
+  },
+  "splash": {
+    // "image": "./assets/img/splash.png",
+    "ldpi": "./assets/img/splash.png",
+    "mdpi": "./assets/img/splash.png",
+    "hdpi": "./assets/img/splash.png",
+    "xhdpi": "./assets/img/splash.png",
+    "xxhdpi": "./assets/img/splash.png",
+    "xxxhdpi": "./assets/img/splash.png",
+    "backgroundColor": "#AF0003",
+    "resizeMode": "contain"
   }
 }

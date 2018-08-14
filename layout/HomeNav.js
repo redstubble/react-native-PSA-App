@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Button } from 'react-native';
+
 import PropTypes from 'prop-types';
 import {
   SafeAreaView,
@@ -8,6 +9,7 @@ import {
   DrawerActions,
 } from 'react-navigation';
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
+import { textWhite, backgroundRed, backgroundWhite } from '../utils/colors';
 import { signOut } from '../utils/psaApi';
 import Home from '../layout/Home';
 import Header from '../components/header';
@@ -55,14 +57,15 @@ const TabNav = createBottomTabNavigator(
           iconName = `home${focused ? '' : '-outline'}`;
         } else if (routeName === 'Profile') {
           iconName = `account${focused ? '' : '-outline'}`;
-        }
-        else if (routeName === 'Documents') {
+        } else if (routeName === 'Documents') {
           iconName = `file${focused ? '' : '-outline'}`;
         }
 
         // You can return any component that you like here! We usually use an
         // icon component from react-native-vector-icons
-        return <MaterialCommunityIcons name={iconName} size={25} color={tintColor} />;
+        return (
+          <MaterialCommunityIcons name={iconName} size={25} color={tintColor} />
+        );
       },
     }),
     tabBarOptions: {
@@ -73,23 +76,34 @@ const TabNav = createBottomTabNavigator(
 );
 
 const LogoutButton = (props) => (
-  <View style={{ flex: 1 }}>
-    <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
-      {/* <DrawerItems {...props} /> */}
-      <Header text="Pages" />
-      <Button
-        title="Logout"
-        onPress={() => {
-          props.navigation.dispatch(DrawerActions.closeDrawer());
-          signOut().then(() => {
-            removeMemberDataAsync();
-            removeMemberBarcodeAsync();
-          });
-          props.navigation.navigate('Login');
-        }}
-      />
-    </SafeAreaView>
-  </View>
+  <SafeAreaView
+    forceInset={{ top: 'always', horizontal: 'never' }}
+    style={{ flex: 1 }}
+  >
+    {/* <DrawerItems {...props} /> */}
+    <Header text="Pages" />
+    <View style={{ flex: 1, backgroundColor: 'red', flexDirection: 'row' }}>
+      <View style={{ backgroundColor: 'white' }}>
+        <MaterialCommunityIcons
+          name="file"
+          size={32}
+          color={backgroundRed}
+          style={{ marginRight: 10 }}
+        />
+        <Button
+          title="Logout"
+          onPress={() => {
+            props.navigation.dispatch(DrawerActions.closeDrawer());
+            signOut().then(() => {
+              removeMemberDataAsync();
+              removeMemberBarcodeAsync();
+            });
+            props.navigation.navigate('Login');
+          }}
+        />
+      </View>
+    </View>
+  </SafeAreaView>
 );
 
 LogoutButton.propTypes = {
