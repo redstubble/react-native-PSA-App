@@ -7,6 +7,8 @@ import {
   View,
   ActivityIndicator,
   Image,
+  ImageBackground,
+  Dimensions,
 } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { Font } from 'expo';
@@ -47,6 +49,8 @@ class Home extends React.Component {
   state = {
     memberRequestCompleted: false,
     fontLoaded: false,
+    portraitOrientation: Orientation.isPortrait() === true,
+    devicetype: Orientation.isTablet() ? 'tablet' : 'phone',
     member: {
       first_name: '',
       surname: '',
@@ -57,7 +61,13 @@ class Home extends React.Component {
       barcode_img: '',
     },
   };
+
   componentDidMount() {
+    Dimensions.addEventListener('change', () => {
+      this.setState({
+        portraitOrientation: Orientation.isPortrait() === true,
+      });
+    });
     Font.loadAsync({
       'OCR A Std': require('../assets/fonts/OCRAStd.ttf'),
     }).then(() => this.setState({ fontLoaded: true }));
@@ -77,9 +87,28 @@ class Home extends React.Component {
   };
 
   landscapeView = (m) => (
-    <View style={{ flex: 1 }}>
-      <Text>Test</Text>
-    </View>
+    <ImageBackground
+      source={require('../assets/img/hor-bg.jpg')}
+      style={{
+        justifyContent: 'center',
+        alignItems: 'center',
+        flex: 1,
+        // paddingTop: 20,
+        // paddingBottom: 20,
+        // paddingLeft: 60,
+        // paddingRight: 60,
+      }}
+      resizeMode="cover"
+    >
+      <ImageBackground
+        source={require('../assets/img/credit-bg.png')}
+        style={{
+          width: 500,
+          height: 300,
+        }}
+        resizeMode="stretch"
+      />
+    </ImageBackground>
   );
 
   portraitView = (m) => (
@@ -180,20 +209,25 @@ class Home extends React.Component {
   );
 
   memberView = (m) => {
-    return Orientation.isPortrait()
-      ? this.portraitView(m)
-      : this.landscapeView(m);
+    if (this.state.portraitOrientation) {
+      return this.portraitView(m);
+    }
+    return this.landscapeView(m);
   };
+
+  header = (navigation) => (
+    <Head
+      icon="menu"
+      action={() => navigation.dispatch(DrawerActions.openDrawer())}
+      title="Home"
+    />
+  );
 
   render({ navigation } = this.props) {
     const m = this.state.member;
     return (
       <SafeAreaView style={[{ flex: 1, backgroundColor: backgroundWhite }]}>
-        <Head
-          icon="menu"
-          action={() => navigation.dispatch(DrawerActions.openDrawer())}
-          title="Home"
-        />
+        {this.state.portraitOrientation ? this.header(navigation) : null}
         {this.state.memberRequestCompleted && this.state.fontLoaded ? (
           this.memberView(m)
         ) : (
