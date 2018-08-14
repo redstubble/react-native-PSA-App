@@ -9,6 +9,7 @@ import {
   Image,
   ImageBackground,
   Dimensions,
+  Transforms,
 } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { Font } from 'expo';
@@ -86,6 +87,28 @@ class Home extends React.Component {
     });
   };
 
+  memberDetail = (m) => (
+    <View
+      style={{
+        flex: 4,
+        justifyContent: 'space-around',
+        alignItems: 'flex-start',
+      }}
+    >
+      <View>
+        <UserProp style={styles.userProp}>MEMBER NO: </UserProp>
+        <UserValue style={styles.userValue}>{m.member_no}</UserValue>
+      </View>
+
+      <View>
+        <UserProp style={styles.userProp}>MEMBER NAME: </UserProp>
+        <UserValue style={styles.userValue}>
+          {`${m.first_name.toUpperCase()} ${m.surname.toUpperCase()}`}
+        </UserValue>
+      </View>
+    </View>
+  );
+
   landscapeView = (m) => (
     <ImageBackground
       source={require('../assets/img/hor-bg.jpg')}
@@ -93,10 +116,6 @@ class Home extends React.Component {
         justifyContent: 'center',
         alignItems: 'center',
         flex: 1,
-        // paddingTop: 20,
-        // paddingBottom: 20,
-        // paddingLeft: 60,
-        // paddingRight: 60,
       }}
       resizeMode="cover"
     >
@@ -107,7 +126,81 @@ class Home extends React.Component {
           height: 300,
         }}
         resizeMode="stretch"
-      />
+      >
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'flex-end',
+            paddingLeft: 50,
+            paddingTop: 50,
+            paddingBottom: 50,
+          }}
+        >
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'column',
+            }}
+          >
+            <Image
+              source={Images.PSALogo}
+              resizeMode="contain"
+              style={{ flex: 1, width: '40%', height: '100%' }}
+            />
+            {this.memberDetail(m)}
+          </View>
+
+          <View
+            style={{
+              flex: 1,
+            }}
+          >
+            <View
+              style={{
+                flex: 1,
+                marginTop: 40,
+                marginBottom: 40,
+                marginLeft: 20,
+                backgroundColor: 'white',
+                paddingTop: 5,
+                paddingRight: 10,
+                paddingLeft: 10,
+                transform: [{ rotate: '90deg' }],
+              }}
+            >
+              <Image
+                source={{ uri: this.state.barcode }}
+                resizeMode="contain"
+                style={{ flex: 4 }}
+              />
+              <View
+                style={{
+                  paddingTop: 5,
+                  flex: 1,
+                }}
+              >
+                <Text>
+                  <UserValue
+                    style={[
+                      styles.userValue,
+                      {
+                        textAlign: 'center',
+                        fontSize: 20,
+                        color: 'black',
+                        width: '100%',
+                      },
+                    ]}
+                  >
+                    {`${m.barcode_no}`}
+                  </UserValue>
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </ImageBackground>
     </ImageBackground>
   );
 
@@ -139,25 +232,7 @@ class Home extends React.Component {
       >
         <DateTime prop={styles.dateProp} value={styles.dateValue} />
       </View>
-      <View
-        style={{
-          flex: 4,
-          justifyContent: 'space-around',
-          alignItems: 'flex-start',
-        }}
-      >
-        <View>
-          <UserProp style={styles.userProp}>MEMBER NO: </UserProp>
-          <UserValue style={styles.userValue}>{m.member_no}</UserValue>
-        </View>
-
-        <View>
-          <UserProp style={styles.userProp}>MEMBER NAME: </UserProp>
-          <UserValue style={styles.userValue}>
-            {`${m.first_name.toUpperCase()} ${m.surname.toUpperCase()}`}
-          </UserValue>
-        </View>
-      </View>
+      {this.memberDetail(m)}
       <View
         style={{
           flex: 6,
