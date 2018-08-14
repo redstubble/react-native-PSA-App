@@ -16,6 +16,7 @@ import { getMemberDataAsync, getMemberBarcodeAsync } from '../utils/storageApi';
 import { textWhite, backgroundRed, backgroundWhite } from '../utils/colors';
 import DateTime from '../components/dateTime';
 import { UserProp, UserValue } from '../style/Text';
+import Orientation from '../utils/orientation';
 
 const styles = StyleSheet.create({
   userProp: {
@@ -75,6 +76,115 @@ class Home extends React.Component {
     });
   };
 
+  landscapeView = (m) => (
+    <View style={{ flex: 1 }}>
+      <Text>Test</Text>
+    </View>
+  );
+
+  portraitView = (m) => (
+    <ScrollView
+      style={{ backgroundColor: backgroundRed }}
+      contentContainerStyle={{
+        margin: 40,
+        flex: 1,
+        justifyContent: 'flex-end',
+      }}
+    >
+      <View style={{ flex: 2 }}>
+        <Image
+          source={Images.PSALogo}
+          style={{
+            height: '100%',
+            width: '100%',
+            aspectRatio: 1.5,
+            resizeMode: 'contain',
+          }}
+        />
+      </View>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+        }}
+      >
+        <DateTime prop={styles.dateProp} value={styles.dateValue} />
+      </View>
+      <View
+        style={{
+          flex: 4,
+          justifyContent: 'space-around',
+          alignItems: 'flex-start',
+        }}
+      >
+        <View>
+          <UserProp style={styles.userProp}>MEMBER NO: </UserProp>
+          <UserValue style={styles.userValue}>{m.member_no}</UserValue>
+        </View>
+
+        <View>
+          <UserProp style={styles.userProp}>MEMBER NAME: </UserProp>
+          <UserValue style={styles.userValue}>
+            {`${m.first_name.toUpperCase()} ${m.surname.toUpperCase()}`}
+          </UserValue>
+        </View>
+      </View>
+      <View
+        style={{
+          flex: 6,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <View
+          style={{
+            width: '100%',
+            height: '100%',
+            margin: 200,
+            backgroundColor: 'white',
+            justifyContent: 'center',
+            alignSelf: 'center',
+          }}
+        >
+          <Image
+            source={{ uri: this.state.barcode }}
+            style={{
+              flex: 0.8,
+              height: '100%',
+              width: '80%',
+              justifyContent: 'center',
+              alignSelf: 'center',
+              backgroundColor: 'white',
+            }}
+            resizeMode="stretch"
+          />
+          <View style={{ paddingTop: 5, backgroundColor: 'white' }}>
+            <Text>
+              <UserValue
+                style={[
+                  styles.userValue,
+                  {
+                    textAlign: 'center',
+                    fontSize: 22,
+                    color: 'black',
+                  },
+                ]}
+              >
+                {`${m.barcode_no}`}
+              </UserValue>
+            </Text>
+          </View>
+        </View>
+      </View>
+    </ScrollView>
+  );
+
+  memberView = (m) => {
+    return Orientation.isPortrait()
+      ? this.portraitView(m)
+      : this.landscapeView(m);
+  };
+
   render({ navigation } = this.props) {
     const m = this.state.member;
     return (
@@ -85,100 +195,7 @@ class Home extends React.Component {
           title="Home"
         />
         {this.state.memberRequestCompleted && this.state.fontLoaded ? (
-          <ScrollView
-            style={{ backgroundColor: backgroundRed }}
-            contentContainerStyle={{
-              margin: 40,
-              flex: 1,
-              justifyContent: 'flex-end',
-            }}
-          >
-            <View style={{ flex: 2 }}>
-              <Image
-                source={Images.PSALogo}
-                style={{
-                  height: '100%',
-                  width: '100%',
-                  aspectRatio: 1.5,
-                  resizeMode: 'contain',
-                }}
-              />
-            </View>
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-              }}
-            >
-              <DateTime prop={styles.dateProp} value={styles.dateValue} />
-            </View>
-            <View
-              style={{
-                flex: 4,
-                justifyContent: 'space-around',
-                alignItems: 'flex-start',
-              }}
-            >
-              <View>
-                <UserProp style={styles.userProp}>MEMBER NO: </UserProp>
-                <UserValue style={styles.userValue}>{m.member_no}</UserValue>
-              </View>
-
-              <View>
-                <UserProp style={styles.userProp}>MEMBER NAME: </UserProp>
-                <UserValue style={styles.userValue}>
-                  {`${m.first_name.toUpperCase()} ${m.surname.toUpperCase()}`}
-                </UserValue>
-              </View>
-            </View>
-            <View
-              style={{
-                flex: 6,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <View
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  margin: 200,
-                  backgroundColor: 'white',
-                  justifyContent: 'center',
-                  alignSelf: 'center',
-                }}
-              >
-                <Image
-                  source={{ uri: this.state.barcode }}
-                  style={{
-                    flex: 0.8,
-                    height: '100%',
-                    width: '80%',
-                    justifyContent: 'center',
-                    alignSelf: 'center',
-                    backgroundColor: 'white',
-                  }}
-                  resizeMode="stretch"
-                />
-                <View style={{ paddingTop: 5, backgroundColor: 'white' }}>
-                  <Text>
-                    <UserValue
-                      style={[
-                        styles.userValue,
-                        {
-                          textAlign: 'center',
-                          fontSize: 22,
-                          color: 'black',
-                        },
-                      ]}
-                    >
-                      {`${m.barcode_no}`}
-                    </UserValue>
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </ScrollView>
+          this.memberView(m)
         ) : (
           <ActivityIndicator />
         )}
