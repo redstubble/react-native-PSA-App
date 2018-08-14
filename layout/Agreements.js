@@ -43,23 +43,21 @@ export default class Documents extends Component {
             }}
           >
             <MaterialCommunityIcons
-            name="file"
-            size={32}
-            color={backgroundRed}
-            style={{ marginRight: 10 }}
-          />
-            <Button
-                  title={agreement.name}
-                  color="black"
-                  onPress={() =>
+              name="file"
+              size={32}
+              color={backgroundRed}
+              style={{ marginRight: 10 }}
+            />
+            <Text
+              style={{ color: 'black' }}
+              onPress={() =>
                     navigation.navigate('Agreement', {
                       link: agreement.path,
                     })
                   }
-                >
-                  Remove
-                </Button>
-
+            >
+              {agreement.name}
+            </Text>
           </View>
         ),
       );

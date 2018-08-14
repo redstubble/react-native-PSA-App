@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Button } from 'react-native';
+import { View, Text } from 'react-native';
 
 import PropTypes from 'prop-types';
 import {
@@ -92,8 +92,7 @@ const LogoutButton = (props) => (
           color="#000"
           style={{ marginRight: 10 }}
         />
-        <Button
-          title="Logout"
+        <Text
           color="black"
           onPress={() => {
             props.navigation.dispatch(DrawerActions.closeDrawer());
@@ -103,7 +102,9 @@ const LogoutButton = (props) => (
             });
             props.navigation.navigate('Login');
           }}
-        />
+        >
+Logout
+</Text>
       </View>
     </View>
   </SafeAreaView>

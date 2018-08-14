@@ -75,6 +75,14 @@ class Home extends React.Component {
     this.populateMemberData();
   }
 
+  componentWillUnmount() {
+    Dimensions.removeEventListener('change', () => {
+      this.setState({
+        portraitOrientation: Orientation.isPortrait() === true,
+      });
+    });
+  }
+
   populateMemberData = async () => {
     const member = await getMemberDataAsync();
     const barcode = await getMemberBarcodeAsync();
@@ -262,7 +270,7 @@ class Home extends React.Component {
             }}
             resizeMode="stretch"
           />
-          <View style={{ paddingTop: 5, backgroundColor: 'white' }}>
+          <View style={{ alignSelf: 'center', paddingTop: 5, backgroundColor: 'white' }}>
             <Text>
               <UserValue
                 style={[
