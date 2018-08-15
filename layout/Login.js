@@ -8,6 +8,7 @@ import {
   Linking,
   StyleSheet,
   SafeAreaView,
+  Row,
 } from 'react-native';
 import { Button } from 'react-native-elements';
 import PropTypes from 'prop-types';
@@ -20,9 +21,8 @@ import * as PsaApi from '../utils/psaApi';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    display: 'flex',
-    justifyContent: 'center',
+    flex: 0,
+    height: '100%',
     backgroundColor: backgroundWhite,
   },
   textLink: {
@@ -68,44 +68,106 @@ class Login extends Component {
   };
 
   render() {
-    return <SafeAreaView style={[styles.container]}>
+    return (
+      <SafeAreaView style={[styles.container]}>
         <Header text="Login to PSA" />
-        <ScrollView style={{ backgroundColor: backgroundRed }} contentContainerStyle={{ margin: 40, flex: 1 }}>
-          <View style={{ flex: 2, alignItems: 'center', justifyContent: 'center' }}>
-            <Image source={Images.PSALogo} style={{ height: 65, width: 1000, aspectRatio: 1.5, resizeMode: 'contain', justifyContent: 'center', alignSelf: 'center' }} />
+        <ScrollView
+          style={{ backgroundColor: backgroundRed }}
+          contentContainerStyle={{
+            padding: 40,
+            flexGrow: 1,
+            justifyContent: 'space-between',
+          }}
+        >
+          <View
+            style={{
+              flex: 2,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Image
+              source={Images.PSALogo}
+              style={{
+                height: 65,
+                width: 1000,
+                aspectRatio: 1.5,
+                resizeMode: 'contain',
+                justifyContent: 'center',
+                alignSelf: 'center',
+              }}
+            />
           </View>
-          <View style={{ flex: 4, justifyContent: 'center', alignItems: 'center' }}>
-            <View style={{ flexGrow: 1 }}>
+          <View
+            style={{ flex: 4, justifyContent: 'center', alignItems: 'center' }}
+          >
+            <View style={{ flex: 1 }}>
               <DateTime />
             </View>
-            <View style={{ flexGrow: 3, marginTop: '10%', width: '90%' }}>
-              <CustomTextInput controlFunc={this.handleEmailChange} name="Email" />
-              <CustomTextInput controlFunc={this.handlePasswordChange} name="Password" password />
+            <View style={{ flex: 3, marginTop: '10%', width: '90%' }}>
+              <CustomTextInput
+                controlFunc={this.handleEmailChange}
+                name="Email"
+              />
+              <CustomTextInput
+                controlFunc={this.handlePasswordChange}
+                name="Password"
+                password
+              />
               {/* cast string as boolean */}
-              {!!this.state.msg && <Text style={{ fontSize: 14, color: textWhite, textAlign: 'center', padding: 5 }}>
+              {!!this.state.msg && (
+                <Text
+                  style={{
+                    fontSize: 14,
+                    color: textWhite,
+                    textAlign: 'center',
+                    padding: 5,
+                  }}
+                >
                   {this.state.msg}
-                </Text>}
+                </Text>
+              )}
               {this.state.isLoggingIn && <ActivityIndicator />}
             </View>
-            <View style={{ flexGrow: 3, paddingTop: 10, width: '100%' }}>
-              <Button disabled={this.state.isLoggingIn || !this.state.email || !this.state.password} onPress={this.userLogin} 
-              title="Login" 
-              color='white'
-              buttonStyle={{backgroundColor: 'darkred'}}
-              disabledStyle={{ backgroundColor: 'darkred' }} 
-              disabledTextStyle={{color:'red'}} />
+            <View style={{ flex: 3, paddingTop: 10, width: '100%' }}>
+              <Button
+                disabled={
+                  this.state.isLoggingIn ||
+                  !this.state.email ||
+                  !this.state.password
+                }
+                onPress={this.userLogin}
+                title="Login"
+                color="white"
+                buttonStyle={{ backgroundColor: 'darkred' }}
+                disabledStyle={{ backgroundColor: 'darkred' }}
+                disabledTextStyle={{ color: 'red' }}
+              />
             </View>
           </View>
-          <View style={{ flex: 2, alignItems: 'center', justifyContent: 'center' }}>
-            <Text style={styles.textLink} onPress={() => Linking.openURL('https://www.psa.org.nz/psasecurity/lostpassword')}>
+          <View
+            style={{ flex: 2, alignItems: 'center', justifyContent: 'center' }}
+          >
+            <Text
+              style={styles.textLink}
+              onPress={() =>
+                Linking.openURL(
+                  'https://www.psa.org.nz/psasecurity/lostpassword',
+                )
+              }
+            >
               Forgot Login
             </Text>
-            <Text style={styles.textLink} onPress={() => Linking.openURL('https://www.psa.org.nz/register')}>
+            <Text
+              style={styles.textLink}
+              onPress={() => Linking.openURL('https://www.psa.org.nz/register')}
+            >
               Not Registered
             </Text>
           </View>
         </ScrollView>
-      </SafeAreaView>;
+      </SafeAreaView>
+    );
   }
 }
 
