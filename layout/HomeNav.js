@@ -103,8 +103,8 @@ const LogoutButton = (props) => (
             props.navigation.navigate('Login');
           }}
         >
-Logout
-</Text>
+          Logout
+        </Text>
       </View>
     </View>
   </SafeAreaView>

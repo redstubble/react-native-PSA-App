@@ -1,9 +1,18 @@
 {
   "expo": {
-    "sdkVersion": "27.0.0"
+    "name": "PSA NZ App",
+    "sdkVersion": "27.0.0",
+    "icon": "./assets/img/icon.png",
+    "description": "Members App",
+    "version": "2.0.0",
+    "ios": {
+      "bundleIdentifier": "com.redstubble.PSANZ"
+    },
+    "android": {
+      "package": "com.redstubble.PSANZ"
+    }
   },
   "splash": {
-    // "image": "./assets/img/splash.png",
     "ldpi": "./assets/img/splash.png",
     "mdpi": "./assets/img/splash.png",
     "hdpi": "./assets/img/splash.png",
