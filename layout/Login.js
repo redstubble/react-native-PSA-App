@@ -74,16 +74,18 @@ class Login extends Component {
         <ScrollView
           style={{ backgroundColor: backgroundRed }}
           contentContainerStyle={{
-            padding: 40,
+            paddingLeft: 40,
+            paddingRight: 40,
+            paddingBottom: 40,
+            paddingTop: 20,
             flexGrow: 1,
-            justifyContent: 'space-between',
+            // justifyContent: 'space-between',
           }}
         >
           <View
             style={{
               flex: 2,
               alignItems: 'center',
-              justifyContent: 'center',
             }}
           >
             <Image
@@ -99,12 +101,18 @@ class Login extends Component {
             />
           </View>
           <View
-            style={{ flex: 4, justifyContent: 'center', alignItems: 'center' }}
+            style={{
+              flex: 4,
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+              paddingTop: 20,
+              paddingBottom: 20,
+            }}
           >
             <View style={{ flex: 1 }}>
               <DateTime />
             </View>
-            <View style={{ flex: 3, marginTop: '10%', width: '90%' }}>
+            <View style={{ flex: 1, marginTop: 20, width: '100%' }}>
               <CustomTextInput
                 controlFunc={this.handleEmailChange}
                 name="Email"
@@ -114,22 +122,36 @@ class Login extends Component {
                 name="Password"
                 password
               />
-              {/* cast string as boolean */}
-              {!!this.state.msg && (
-                <Text
-                  style={{
-                    fontSize: 14,
-                    color: textWhite,
-                    textAlign: 'center',
-                    padding: 5,
-                  }}
-                >
-                  {this.state.msg}
-                </Text>
-              )}
-              {this.state.isLoggingIn && <ActivityIndicator />}
+              <View style={{ flexBasis: 1, paddingTop: 10, minHeight: 40 }}>
+                {this.state.isLoggingIn ? (
+                  <ActivityIndicator
+                    size="large"
+                    hidesWhenStopped
+                    color="#fff"
+                    animating={this.state.isLoggingIn}
+                  />
+                ) : (
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      color: textWhite,
+                      textAlign: 'center',
+                      marginTop: 'auto',
+                    }}
+                  >
+                    {this.state.msg || ''}
+                  </Text>
+                )}
+              </View>
             </View>
-            <View style={{ flex: 3, paddingTop: 10, width: '100%' }}>
+            <View
+              style={{
+                flex: 2,
+                justifyContent: 'center',
+                paddingTop: 10,
+                width: '100%',
+              }}
+            >
               <Button
                 disabled={
                   this.state.isLoggingIn ||
