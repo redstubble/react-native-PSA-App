@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "PSA NZ App",
     "sdkVersion": "27.0.0",
+    "name": "PSA NZ App",
+    "slug": "PSA-NZ-App",
     "icon": "./assets/img/icon.png",
     "description": "Members App",
     "version": "2.0.0",
@@ -13,6 +14,7 @@
     }
   },
   "splash": {
+    "image": "./assets/img/splash.png",
     "ldpi": "./assets/img/splash.png",
     "mdpi": "./assets/img/splash.png",
     "hdpi": "./assets/img/splash.png",
