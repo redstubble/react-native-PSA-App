@@ -2,7 +2,7 @@
   "expo": {
     "sdkVersion": "27.0.0",
     "name": "PSA NZ App",
-    "slug": "PSA-NZ-App",
+    "slug": "psa-nz-app",
     "icon": "./assets/img/icon.png",
     "description": "Members App",
     "version": "2.0.0",
@@ -11,18 +11,17 @@
     },
     "android": {
       "package": "com.redstubble.PSANZ"
+    },
+    "splash": {
+      "image": "./assets/img/splash.png",
+      "ldpi": "./assets/img/splash.png",
+      "mdpi": "./assets/img/splash.png",
+      "hdpi": "./assets/img/splash.png",
+      "xhdpi": "./assets/img/splash.png",
+      "xxhdpi": "./assets/img/splash.png",
+      "xxxhdpi": "./assets/img/splash.png",
+      "backgroundColor": "#AF0003",
+      "resizeMode": "contain"
     }
-  },
-  "splash": {
-    "image": "./assets/img/splash.png",
-    "ldpi": "./assets/img/splash.png",
-    "mdpi": "./assets/img/splash.png",
-    "hdpi": "./assets/img/splash.png",
-    "xhdpi": "./assets/img/splash.png",
-    "xxhdpi": "./assets/img/splash.png",
-    "xxxhdpi": "./assets/img/splash.png",
-    "backgroundColor": "#AF0003",
-    "resizeMode": "contain"
-  },
-  "orientation": "ALL_BUT_UPSIDE_DOWN"
+  }
 }

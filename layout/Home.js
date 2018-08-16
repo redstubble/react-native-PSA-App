@@ -73,7 +73,6 @@ class Home extends React.Component {
       'OCR A Std': require('../assets/fonts/OCRAStd.ttf'),
     }).then(() => this.setState({ fontLoaded: true }));
     this.populateMemberData();
-    this.props.navigation.setParams({ tabBar: { visible: false } });
   }
 
   componentWillUnmount() {
@@ -317,12 +316,10 @@ class Home extends React.Component {
     const m = this.state.member;
     return (
       <SafeAreaView
-        style={[
-          {
-            flex: 1,
-            backgroundColor: backgroundWhite,
-          },
-        ]}
+        style={{
+          flex: 1,
+          backgroundColor: backgroundWhite,
+        }}
       >
         {this.state.portraitOrientation ? this.header(navigation) : null}
         {this.state.memberRequestCompleted && this.state.fontLoaded ? (
@@ -335,7 +332,7 @@ class Home extends React.Component {
               justifyContent: 'center',
             }}
           >
-            <ActivityIndicator size="large" hidesWhenStopped color="#000" />{' '}
+            <ActivityIndicator size="large" hidesWhenStopped color="#000" />
           </View>
         )}
       </SafeAreaView>
