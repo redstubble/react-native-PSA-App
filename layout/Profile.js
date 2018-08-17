@@ -1,9 +1,18 @@
 import React from 'react';
 import { SafeAreaView, DrawerActions } from 'react-navigation';
-import { UserProp, UserValue, CustomSafeAreaView } from '../style/Text';
-import { ActivityIndicator, StyleSheet, View, WebView } from 'react-native';
+import {
+  ActivityIndicator,
+  StyleSheet,
+  View,
+  WebView,
+  NetInfo,
+  Text,
+} from 'react-native';
+import { Permissions } from 'expo';
 import PropTypes from 'prop-types';
+import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { UserProp, UserValue, CustomSafeAreaView } from '../style/Text';
 import { textWhite, backgroundRed, backgroundWhite } from '../utils/colors';
 import { getMemberDataAsync } from '../utils/storageApi';
 import Head from '../components/headerSignedIn';
@@ -13,10 +22,27 @@ class Profile extends React.Component {
   state = {
     memberRequestCompleted: false,
     visible: true,
+    isConnected: false,
   };
   componentDidMount() {
+    NetInfo.isConnected.addEventListener(
+      'connectionChange',
+      this.handleConnectionChange,
+    );
     this.populateMemberData();
   }
+
+  componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener(
+      'connectionChange',
+      this.handleConnectionChange,
+    );
+  }
+
+  handleConnectionChange = (isConnected) => {
+    debugger;
+    this.setState({ isConnected });
+  };
 
   showSpinner() {
     console.log('Show Spinner');
@@ -43,28 +69,54 @@ class Profile extends React.Component {
     }`;
 
   render({ navigation, screenProps } = this.props) {
-    return (
-      <CustomSafeAreaView style={[{ flex: 1, backgroundColor: backgroundRed }]}>
-        <Head
-          icon="menu"
-          action={() => navigation.dispatch(DrawerActions.openDrawer())}
-          title="Profile Screen"
-        />
-        <Spinner
-          visible={this.state.visible}
-          textContent={'Loading...'}
-          textStyle={{ color: '#FFF' }}
-        />
-        {!this.state.memberRequestCompleted ? (
-          <ActivityIndicator />
-        ) : (
-          <WebView
-            source={{ uri: this.profileUrl() }}
-            onLoadStart={() => this.showSpinner()}
-            onLoad={() => this.hideSpinner()}
+    if (true || this.state.isConnected) {
+      return (
+        <CustomSafeAreaView
+          style={[{ flex: 1, backgroundColor: backgroundRed }]}
+        >
+          <Head
+            icon="menu"
+            action={() => navigation.dispatch(DrawerActions.openDrawer())}
+            title="Profile Screen"
           />
-        )}
-      </CustomSafeAreaView>
+          <Spinner
+            visible={this.state.visible}
+            textContent={'Loading...'}
+            textStyle={{ color: '#FFF' }}
+          />
+          {!this.state.memberRequestCompleted ? (
+            <ActivityIndicator />
+          ) : (
+            <WebView
+              source={{ uri: this.profileUrl() }}
+              onLoadStart={() => this.showSpinner()}
+              onLoad={() => this.hideSpinner()}
+            />
+          )}
+        </CustomSafeAreaView>
+      );
+    }
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: backgroundRed,
+        }}
+      >
+        <View>
+          <Ionicons
+            name="ios-wifi"
+            size={60}
+            color="#fff"
+            style={{ marginRight: 'auto', marginLeft: 'auto' }}
+          />
+          <Text style={{ color: 'white', fontSize: 20 }}>
+            Please check your network connection.
+          </Text>
+        </View>
+      </View>
     );
   }
 }
