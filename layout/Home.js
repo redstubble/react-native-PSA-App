@@ -146,8 +146,9 @@ class Home extends React.Component {
       <ImageBackground
         source={require('../assets/img/credit-bg.png')}
         style={{
+          marginTop: Platform.OS === 'android' ? 20 : 0,
           width: 500,
-          height: 300,
+          height: 280,
         }}
         resizeMode="stretch"
       >
@@ -166,6 +167,7 @@ class Home extends React.Component {
             style={{
               flex: 1,
               flexDirection: 'column',
+              justifyContent: 'center',
             }}
           >
             <Image
@@ -179,39 +181,41 @@ class Home extends React.Component {
           <View
             style={{
               flex: 1,
+              height: 220,
             }}
           >
             <View
               style={{
                 flex: 1,
-                marginTop: 40,
-                marginBottom: 40,
+                marginTop: 60,
+                marginBottom: 20,
                 marginLeft: 20,
                 backgroundColor: 'white',
-                paddingTop: 5,
-                paddingRight: 10,
-                paddingLeft: 10,
+                paddingTop: 20,
+                paddingRight: 20,
+                paddingLeft: 20,
                 transform: [{ rotate: '90deg' }],
               }}
             >
               <Image
                 source={{ uri: this.state.barcode }}
-                resizeMode="contain"
+                resizeMode="stretch"
                 style={{ flex: 4 }}
               />
               <View
                 style={{
                   paddingTop: 5,
+                  paddingBottom: 5,
                   flex: 1,
                 }}
               >
                 <Text>
                   <UserValue
                     style={[
-                      styles.userValue,
+                      styles.barcodeValue,
                       {
                         textAlign: 'center',
-                        fontSize: 20,
+                        fontSize: 18,
                         color: 'black',
                         width: '100%',
                       },

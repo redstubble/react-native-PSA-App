@@ -3,18 +3,18 @@ import { View, Text } from 'react-native';
 
 import PropTypes from 'prop-types';
 import {
-  SafeAreaView,
   createBottomTabNavigator,
   createDrawerNavigator,
   DrawerActions,
 } from 'react-navigation';
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
-import { textWhite, backgroundRed, backgroundWhite } from '../utils/colors';
+import { backgroundRed } from '../utils/colors';
 import { signOut } from '../utils/psaApi';
 import Home from '../layout/Home';
 import Header from '../components/header';
 import Profile from '../layout/Profile';
 import Documents from '../layout/DocumentStackNav';
+import { CustomSafeAreaView } from '../style/Text';
 import {
   removeMemberDataAsync,
   removeMemberBarcodeAsync,
@@ -76,15 +76,20 @@ const TabNav = createBottomTabNavigator(
 );
 
 const LogoutButton = (props) => (
-  <SafeAreaView
+  <CustomSafeAreaView
     forceInset={{ top: 'always', horizontal: 'never' }}
     style={{ flex: 1 }}
   >
     {/* <DrawerItems {...props} /> */}
     <Header text="Pages" />
-    <View style={{ flex: 1, backgroundColor: 'red' }}>
+    <View style={{ flex: 1, backgroundColor: backgroundRed }}>
       <View
-        style={{ padding: 10, backgroundColor: 'white', flexDirection: 'row' }}
+        style={{
+          padding: 10,
+          backgroundColor: 'white',
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}
       >
         <Ionicons
           name="md-log-out"
@@ -107,7 +112,7 @@ const LogoutButton = (props) => (
         </Text>
       </View>
     </View>
-  </SafeAreaView>
+  </CustomSafeAreaView>
 );
 
 LogoutButton.propTypes = {

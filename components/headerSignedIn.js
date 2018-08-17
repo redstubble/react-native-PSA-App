@@ -21,7 +21,11 @@ export default class HomeScreen extends React.Component {
             textAlign: 'left',
           },
         }}
-        outerContainerStyles={{ backgroundColor: headerRed, height: 60 }}
+        outerContainerStyles={{
+          backgroundColor: headerRed,
+          height: 60,
+          borderBottomWidth: 0,
+        }}
       />
     );
   }

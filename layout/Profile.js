@@ -4,6 +4,7 @@ import { UserProp, UserValue, CustomSafeAreaView } from '../style/Text';
 import { ActivityIndicator, StyleSheet, View, WebView } from 'react-native';
 import PropTypes from 'prop-types';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { textWhite, backgroundRed, backgroundWhite } from '../utils/colors';
 import { getMemberDataAsync } from '../utils/storageApi';
 import Head from '../components/headerSignedIn';
 import { PROFILEPAGE } from '../utils/environment';
@@ -43,7 +44,7 @@ class Profile extends React.Component {
 
   render({ navigation, screenProps } = this.props) {
     return (
-      <CustomSafeAreaView style={[{ flex: 1, backgroundColor: '#ecf0f1' }]}>
+      <CustomSafeAreaView style={[{ flex: 1, backgroundColor: backgroundRed }]}>
         <Head
           icon="menu"
           action={() => navigation.dispatch(DrawerActions.openDrawer())}
@@ -59,7 +60,6 @@ class Profile extends React.Component {
         ) : (
           <WebView
             source={{ uri: this.profileUrl() }}
-            style={{ marginTop: 20 }}
             onLoadStart={() => this.showSpinner()}
             onLoad={() => this.hideSpinner()}
           />

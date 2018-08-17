@@ -7,11 +7,10 @@ import {
   View,
   Linking,
   StyleSheet,
-  SafeAreaView,
-  Row,
 } from 'react-native';
 import { Button } from 'react-native-elements';
 import PropTypes from 'prop-types';
+import { CustomSafeAreaView } from '../style/Text';
 import { textWhite, backgroundRed, backgroundWhite } from '../utils/colors';
 import DateTime from '../components/dateTime';
 import Header from '../components/header';
@@ -23,7 +22,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 0,
     height: '100%',
-    backgroundColor: backgroundWhite,
+    backgroundColor: '#000',
   },
   textLink: {
     margin: 5,
@@ -70,7 +69,7 @@ class Login extends Component {
 
   render() {
     return (
-      <SafeAreaView style={[styles.container]}>
+      <CustomSafeAreaView style={[styles.container]}>
         <Header text="Login to PSA" />
         <ScrollView
           style={{ backgroundColor: backgroundRed }}
@@ -162,8 +161,8 @@ class Login extends Component {
                 title="Login"
                 color="white"
                 buttonStyle={{
-                  marginLeft: -35,
-                  marginRight: -35,
+                  marginLeft: -25,
+                  marginRight: -25,
                   backgroundColor: 'darkred',
                   borderRadius: 4,
                 }}
@@ -193,7 +192,7 @@ class Login extends Component {
             </Text>
           </View>
         </ScrollView>
-      </SafeAreaView>
+      </CustomSafeAreaView>
     );
   }
 }

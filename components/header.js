@@ -9,25 +9,24 @@ const HeaderText = styled.Text`
   color: ${textWhite};
   align-items: center;
   text-align: left;
-  font-weight: bold;
+  font-weight: 500;
 `;
 
 const HeaderView = styled.View`
   background-color: ${headerRed};
   align-self: stretch;
-  padding: 20px;
-  ${'' /* box-shadow: 20px 5px 20px #000; */} /* shadow-offset: { width: 0, height: 5px}; */;
-`;
-
-const HeaderViewAndroid = HeaderView.extend`
-  padding-top: 40px;
+  padding-left: 20px;
+  padding-top: 20px;
+  height: 60px;
+  ${{
+    shadowColor: 'black',
+    shadowOffset: '20px 10px',
+    shadowRadius: 50,
+  }};
 `;
 
 class Header extends React.Component {
-  renderView = (content) => {
-    if (Platform.OS === 'ios') return <HeaderView>{content}</HeaderView>;
-    return <HeaderViewAndroid>{content}</HeaderViewAndroid>;
-  };
+  renderView = (content) => <HeaderView>{content}</HeaderView>;
 
   render({ text } = this.props) {
     const content = <HeaderText>{text}</HeaderText>;
