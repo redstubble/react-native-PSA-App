@@ -1,5 +1,6 @@
 import React from 'react';
 import { SafeAreaView, DrawerActions } from 'react-navigation';
+import { UserProp, UserValue, CustomSafeAreaView } from '../style/Text';
 import { ActivityIndicator, StyleSheet, View, WebView } from 'react-native';
 import PropTypes from 'prop-types';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -19,13 +20,12 @@ class Profile extends React.Component {
   showSpinner() {
     console.log('Show Spinner');
     this.setState({ visible: true });
-}
+  }
 
-hideSpinner() {
+  hideSpinner() {
     console.log('Hide Spinner');
     this.setState({ visible: false });
-}
-
+  }
 
   populateMemberData = async () => {
     const member = await getMemberDataAsync();
@@ -43,28 +43,28 @@ hideSpinner() {
 
   render({ navigation, screenProps } = this.props) {
     return (
-      <SafeAreaView style={[{ flex: 1, backgroundColor: '#ecf0f1' }]}>
+      <CustomSafeAreaView style={[{ flex: 1, backgroundColor: '#ecf0f1' }]}>
         <Head
           icon="menu"
           action={() => navigation.dispatch(DrawerActions.openDrawer())}
           title="Profile Screen"
         />
-                  <Spinner
-                    visible={this.state.visible}
-                    textContent={'Loading...'}
-                    textStyle={{ color: '#FFF' }}
-                />
+        <Spinner
+          visible={this.state.visible}
+          textContent={'Loading...'}
+          textStyle={{ color: '#FFF' }}
+        />
         {!this.state.memberRequestCompleted ? (
           <ActivityIndicator />
         ) : (
           <WebView
             source={{ uri: this.profileUrl() }}
             style={{ marginTop: 20 }}
-            onLoadStart={() => (this.showSpinner())}
-            onLoad={() => (this.hideSpinner())}
-          />   
+            onLoadStart={() => this.showSpinner()}
+            onLoad={() => this.hideSpinner()}
+          />
         )}
-      </SafeAreaView>
+      </CustomSafeAreaView>
     );
   }
 }

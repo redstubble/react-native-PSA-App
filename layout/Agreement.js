@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
 import { SafeAreaView } from 'react-navigation';
 import PDFReader from 'rn-pdf-reader-js';
-import { StyleSheet, View, WebView, ActivityIndicator, Platform } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  WebView,
+  ActivityIndicator,
+  Platform,
+} from 'react-native';
 import Head from '../components/headerSignedIn';
+import { UserProp, UserValue, CustomSafeAreaView } from '../style/Text';
 
 const styles = StyleSheet.create({
   container: {
@@ -37,14 +44,14 @@ export default class Document extends Component {
         />
       );
     return (
-      <SafeAreaView style={[{ flex: 1, backgroundColor: '#ecf0f1' }]}>
+      <CustomSafeAreaView style={[{ flex: 1, backgroundColor: '#ecf0f1' }]}>
         <Head
           icon="arrow-back"
           action={() => navigation.goBack()}
           title="Document Screen"
         />
         {pdfViewer}
-      </SafeAreaView>
+      </CustomSafeAreaView>
     );
   }
 }

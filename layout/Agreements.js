@@ -5,6 +5,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Head from '../components/headerSignedIn';
 import { getMemberDataAsync } from '../utils/storageApi';
 import { textWhite, backgroundRed, backgroundWhite } from '../utils/colors';
+import { UserProp, UserValue, CustomSafeAreaView } from '../style/Text';
 
 export default class Documents extends Component {
   state = {
@@ -37,7 +38,7 @@ export default class Documents extends Component {
               padding: 20,
               // flex:1,
               flexDirection: 'row',
-              alignItems:'center',
+              alignItems: 'center',
               justifyContent: 'flex-start',
               backgroundColor: textWhite,
             }}
@@ -51,10 +52,10 @@ export default class Documents extends Component {
             <Text
               style={{ color: 'black' }}
               onPress={() =>
-                    navigation.navigate('Agreement', {
-                      link: agreement.path,
-                    })
-                  }
+                navigation.navigate('Agreement', {
+                  link: agreement.path,
+                })
+              }
             >
               {agreement.name}
             </Text>
@@ -65,7 +66,9 @@ export default class Documents extends Component {
       agreements = <ActivityIndicator />;
     }
     return (
-      <SafeAreaView style={[{ flex: 1, backgroundColor: backgroundWhite }]}>
+      <CustomSafeAreaView
+        style={[{ flex: 1, backgroundColor: backgroundWhite }]}
+      >
         <Head
           icon="menu"
           action={() => navigation.dispatch(DrawerActions.openDrawer())}
@@ -74,7 +77,7 @@ export default class Documents extends Component {
         <View style={{ backgroundColor: backgroundRed, flex: 1 }}>
           {agreements}
         </View>
-      </SafeAreaView>
+      </CustomSafeAreaView>
     );
   }
 }

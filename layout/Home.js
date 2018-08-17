@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, DrawerActions } from 'react-navigation';
+import { DrawerActions } from 'react-navigation';
 import {
   Text,
   ScrollView,
@@ -9,6 +9,7 @@ import {
   Image,
   ImageBackground,
   Dimensions,
+  Platform,
   Transforms,
 } from 'react-native';
 import { PropTypes } from 'prop-types';
@@ -18,23 +19,38 @@ import Images from '../assets/images';
 import { getMemberDataAsync, getMemberBarcodeAsync } from '../utils/storageApi';
 import { textWhite, backgroundRed, backgroundWhite } from '../utils/colors';
 import DateTime from '../components/dateTime';
-import { UserProp, UserValue } from '../style/Text';
+import { UserProp, UserValue, CustomSafeAreaView } from '../style/Text';
 import Orientation from '../utils/orientation';
 
 const styles = StyleSheet.create({
+  droidSafeArea: {
+    flex: 1,
+    backgroundColor: 'black',
+    paddingTop: Platform.OS === 'android' ? 25 : 0,
+  },
   userProp: {
-    fontSize: 18,
+    fontSize: 14,
     marginBottom: 5,
     width: '100%',
-    color: 'pink',
+    color: '#FEC2C2',
+    fontWeight: '400',
+    fontStyle: 'normal',
   },
   userValue: {
-    fontSize: 20,
+    fontSize: 18,
+    fontFamily: 'OCR A Std',
+    width: '100%',
+    textShadowColor: 'rgba(0, 0, 0, 1)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 2,
+  },
+  barcodeValue: {
+    fontSize: 18,
     fontFamily: 'OCR A Std',
     width: '100%',
   },
   dateProp: {
-    fontSize: 18,
+    fontSize: 14,
     marginBottom: 5,
     width: '100%',
     color: 'pink',
@@ -42,7 +58,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   dateValue: {
-    fontSize: 18,
+    fontSize: 14,
   },
 });
 
@@ -238,11 +254,7 @@ class Home extends React.Component {
           justifyContent: 'center',
         }}
       >
-        <DateTime
-          prop={styles.dateProp}
-          value={styles.dateValue}
-          toUpper={true}
-        />
+        <DateTime prop={styles.dateProp} value={styles.dateValue} toUpper />
       </View>
       {this.memberDetail(m)}
       <View
@@ -284,7 +296,7 @@ class Home extends React.Component {
             <Text>
               <UserValue
                 style={[
-                  styles.userValue,
+                  styles.barcodeValue,
                   {
                     textAlign: 'center',
                     fontSize: 22,
@@ -319,12 +331,7 @@ class Home extends React.Component {
   render({ navigation } = this.props) {
     const m = this.state.member;
     return (
-      <SafeAreaView
-        style={{
-          flex: 1,
-          backgroundColor: backgroundWhite,
-        }}
-      >
+      <CustomSafeAreaView>
         {this.state.portraitOrientation ? this.header(navigation) : null}
         {this.state.memberRequestCompleted && this.state.fontLoaded ? (
           this.memberView(m)
@@ -339,7 +346,7 @@ class Home extends React.Component {
             <ActivityIndicator size="large" hidesWhenStopped color="#000" />
           </View>
         )}
-      </SafeAreaView>
+      </CustomSafeAreaView>
     );
   }
 }

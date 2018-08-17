@@ -6,6 +6,7 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <Header
+        placement="left"
         leftComponent={{
           // https://www.materialui.co/icon/arrow-back
           icon: this.props.icon,
@@ -16,17 +17,12 @@ export default class HomeScreen extends React.Component {
           text: this.props.title,
           style: {
             color: textWhite,
-            fontSize: 20,
+            fontSize: 18,
+            textAlign: 'left',
           },
         }}
-        outerContainerStyles={{ backgroundColor: headerRed }}
+        outerContainerStyles={{ backgroundColor: headerRed, height: 60 }}
       />
     );
-
-    // <Left>
-    //   <Button onPress={() => this.props.navigation.navigate('DrawerOpen')}>
-    //     <Icon name="menu" />
-    //   </Button>
-    // </Left>
   }
 }
