@@ -10,21 +10,22 @@ class CustomTextInput extends Component {
     };
   }
 
-  render({ controlFunc, password } = this.props) {
+  render({ controlFunc, password, styles } = this.props) {
     return (
       <TextInput
-        style={{
-          borderColor: 'grey',
-          borderWidth: 1,
-          backgroundColor: '#fff',
-          padding: 10,
-          color: '#000',
-        }}
-        // placeholderTextColor="#000"
+        style={[
+          {
+            backgroundColor: '#fff',
+            padding: 10,
+            color: '#000',
+          },
+          styles,
+        ]} // placeholderTextColor="#000"
         placeholder={this.state.Name}
         type="text"
         secureTextEntry={password}
         onChangeText={(e) => controlFunc(e)}
+        autoCorrect={false}
       />
     );
   }

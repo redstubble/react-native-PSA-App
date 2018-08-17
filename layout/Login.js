@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
     margin: 5,
     color: textWhite,
     fontSize: 15,
+    textDecorationLine: 'underline',
   },
 });
 
@@ -73,21 +74,18 @@ class Login extends Component {
         <Header text="Login to PSA" />
         <ScrollView
           style={{ backgroundColor: backgroundRed }}
-          contentContainerStyle={{
-            paddingLeft: 40,
-            paddingRight: 40,
-            paddingBottom: 40,
-            paddingTop: 20,
-            flexGrow: 1,
+          contentContainerStyle={
+            {
+              paddingLeft: 20,
+              paddingRight: 20,
+              paddingBottom: 40,
+              paddingTop: 20,
+              flexGrow: 1,
+            }
             // justifyContent: 'space-between',
-          }}
+          }
         >
-          <View
-            style={{
-              flex: 2,
-              alignItems: 'center',
-            }}
-          >
+          <View style={{ flex: 2, alignItems: 'center' }}>
             <Image
               source={Images.PSALogo}
               style={{
@@ -105,8 +103,7 @@ class Login extends Component {
               flex: 4,
               justifyContent: 'flex-start',
               alignItems: 'center',
-              paddingTop: 20,
-              paddingBottom: 20,
+              padding: 20,
             }}
           >
             <View style={{ flex: 1 }}>
@@ -116,11 +113,21 @@ class Login extends Component {
               <CustomTextInput
                 controlFunc={this.handleEmailChange}
                 name="Email"
+                styles={{
+                  borderTopLeftRadius: 2,
+                  borderTopRightRadius: 2,
+                  borderColor: 'darkred',
+                  borderBottomWidth: 2,
+                }}
               />
               <CustomTextInput
                 controlFunc={this.handlePasswordChange}
                 name="Password"
                 password
+                styles={{
+                  borderBottomLeftRadius: 2,
+                  borderBottomRightRadius: 2,
+                }}
               />
               <View style={{ flexBasis: 1, paddingTop: 10, minHeight: 40 }}>
                 {this.state.isLoggingIn ? (
@@ -139,19 +146,12 @@ class Login extends Component {
                       marginTop: 'auto',
                     }}
                   >
-                    {this.state.msg || ''}
+                    {this.state.msg}
                   </Text>
                 )}
               </View>
             </View>
-            <View
-              style={{
-                flex: 2,
-                justifyContent: 'center',
-                paddingTop: 10,
-                width: '100%',
-              }}
-            >
+            <View style={{ flex: 2, paddingTop: 10, width: '100%' }}>
               <Button
                 disabled={
                   this.state.isLoggingIn ||
@@ -161,7 +161,12 @@ class Login extends Component {
                 onPress={this.userLogin}
                 title="Login"
                 color="white"
-                buttonStyle={{ backgroundColor: 'darkred' }}
+                buttonStyle={{
+                  marginLeft: -35,
+                  marginRight: -35,
+                  backgroundColor: 'darkred',
+                  borderRadius: 4,
+                }}
                 disabledStyle={{ backgroundColor: 'darkred' }}
                 disabledTextStyle={{ color: 'red' }}
               />
@@ -178,13 +183,13 @@ class Login extends Component {
                 )
               }
             >
-              Forgot Login
+              Forgot Login?
             </Text>
             <Text
               style={styles.textLink}
               onPress={() => Linking.openURL('https://www.psa.org.nz/register')}
             >
-              Not Registered
+              Not Registered?
             </Text>
           </View>
         </ScrollView>

@@ -5,10 +5,11 @@ import styled from 'styled-components';
 import { textWhite, headerRed } from '../utils/colors';
 
 const HeaderText = styled.Text`
-  font-size: 20;
+  font-size: 18;
   color: ${textWhite};
   align-items: center;
   text-align: left;
+  font-weight: bold;
 `;
 
 const HeaderView = styled.View`

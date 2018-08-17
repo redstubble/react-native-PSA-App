@@ -238,7 +238,11 @@ class Home extends React.Component {
           justifyContent: 'center',
         }}
       >
-        <DateTime prop={styles.dateProp} value={styles.dateValue} />
+        <DateTime
+          prop={styles.dateProp}
+          value={styles.dateValue}
+          toUpper={true}
+        />
       </View>
       {this.memberDetail(m)}
       <View

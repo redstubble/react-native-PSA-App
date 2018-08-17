@@ -20,20 +20,26 @@ class DateTime extends Component {
     clearInterval(this.intervalID);
   }
 
+  getDateTimeStrings = (upper) =>
+    ['Date', 'Time'].map((a) => (upper ? a.toUpperCase() : a));
+
   tick() {
     this.setState({
       DateTime: moment(),
     });
   }
 
-  render({ prop, value } = this.props) {
+  render({ prop, value, toUpper = false } = this.props) {
+    const dateTimeStrings = this.getDateTimeStrings(toUpper);
     return (
       <Text>
-        <UserProp style={prop}>DATE: </UserProp>
+        <UserProp style={prop}>{dateTimeStrings[0]}: </UserProp>
         <UserValue style={value}>
-          {this.state.DateTime.format('DD/MM/YYYY')}
+          {`${this.state.DateTime.format('DD/MM/YYYY')} `}
         </UserValue>
-        <UserProp style={prop}> TIME: </UserProp>
+        <UserProp style={({ marginLeft: 50 }, prop)}>
+          {dateTimeStrings[1]}:
+        </UserProp>
         <UserValue style={value}>
           {this.state.DateTime.format('h:mm a')}
         </UserValue>

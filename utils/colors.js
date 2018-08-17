@@ -12,7 +12,7 @@ module.exports = {
   purple: '#292477',
   red: '#b71845',
   headerRed: '#d01e1e',
-  backgroundRed: 'red',
+  backgroundRed: '#A60003',
   backgroundWhite: '#ecf0f1',
   textWhite: '#fff',
 };

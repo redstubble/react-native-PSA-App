@@ -9,7 +9,7 @@ export const HeaderText = styled.Text`
 `;
 
 export const UserProp = styled.Text`
-  font-size: 16;
+  font-size: 14;
   color: ${textWhite};
   align-items: center;
   text-align: left;
@@ -17,7 +17,7 @@ export const UserProp = styled.Text`
 `;
 
 export const UserValue = styled.Text`
-  font-size: 16;
+  font-size: 14;
   color: ${textWhite};
   align-items: center;
   text-align: left;
