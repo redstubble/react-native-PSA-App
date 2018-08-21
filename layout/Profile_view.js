@@ -28,7 +28,7 @@ export class ProfileView extends Component {
         <Spinner
           visible={this.state.spinnerVisible}
           textContent="Loading..."
-          textStyle={{ color: '#000' }}
+          textStyle={{ color: '#FFF' }}
         />
         <WebView
           source={{ uri: sourceURL }}
