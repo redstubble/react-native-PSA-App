@@ -2,7 +2,7 @@ import React from 'react';
 import { DrawerActions } from 'react-navigation';
 import {Dimensions } from 'react-native';
 import { PropTypes } from 'prop-types';
-import { Font } from 'expo';
+import { Font, Asset, AppLoading } from 'expo';
 import Head from '../components/headerSignedIn';
 import Images from '../assets/images';
 import { getMemberDataAsync, getMemberBarcodeAsync } from '../utils/storageApi';
@@ -12,11 +12,26 @@ import { HomeLoader, LandscapeView, PortraitView, MemberDetail } from '../layout
 
 const landscapeBackground = require('../assets/img/hor-bg.jpg');
 const landscapeBackgroundCard = require('../assets/img/credit-bg.png');
+const OCRAStd = require('../assets/fonts/OCRAStd.ttf');
+
+function cacheImages(images) {
+  return images.map(image => {
+    if (typeof image === 'string') {
+      return Image.prefetch(image);
+    } else {
+      return Asset.fromModule(image).downloadAsync();
+    }
+  });
+}
+
+function cacheFonts(fonts) {
+  return fonts.map(font => Font.loadAsync(font));
+}
 
 class Home extends React.Component {
   state = {
     memberRequestCompleted: false,
-    fontLoaded: false,
+    isReady: false,
     portraitOrientation: Orientation.isPortrait() === true,
     member: {
       first_name: '',
@@ -31,15 +46,25 @@ class Home extends React.Component {
 
   componentDidMount() {
     Dimensions.addEventListener('change', this.handleOrientation);
-    Font.loadAsync({
-      'OCR A Std': require('../assets/fonts/OCRAStd.ttf'),
-    }).then(() => this.setState({ fontLoaded: true }));
     this.populateMemberData();
   }
 
   componentWillUnmount() {
     Dimensions.removeEventListener('change', this.handleOrientation);
   }
+  
+  loadAssetsAsync = async () => {
+    const imageAssets = cacheImages([
+      landscapeBackground, landscapeBackgroundCard,
+    ]);
+
+    const fontAssets = cacheFonts([{
+      'OCR A Std': OCRAStd,
+    }]);
+
+    await Promise.all([...imageAssets, ...fontAssets]);
+  }
+
 
   handleOrientation = () =>
     this.setState({
@@ -95,10 +120,20 @@ class Home extends React.Component {
 
   render({ navigation } = this.props) {
     const m = this.state.member;
+    if (!this.state.isReady) {
+      return (
+        <AppLoading
+          startAsync={this.loadAssetsAsync}
+          onFinish={() => this.setState({ isReady: true })}
+          onError={console.warn}
+        />
+      );
+    }
+
     return (
       <CustomSafeAreaView>
         {this.state.portraitOrientation ? this.header(navigation) : null}
-        {this.state.memberRequestCompleted && this.state.fontLoaded ? (
+        {this.state.memberRequestCompleted && this.state.isReady ? (
           this.memberView(m)
         ) : <HomeLoader />
         }
