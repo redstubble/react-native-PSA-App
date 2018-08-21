@@ -66,9 +66,7 @@ export default class Documents extends Component {
       agreements = <ActivityIndicator />;
     }
     return (
-      <CustomSafeAreaView
-        style={[{ flex: 1, backgroundColor: backgroundWhite }]}
-      >
+      <CustomSafeAreaView style={[{ flex: 1 }]}>
         <Head
           icon="menu"
           action={() => navigation.dispatch(DrawerActions.openDrawer())}

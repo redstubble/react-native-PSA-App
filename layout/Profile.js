@@ -1,28 +1,19 @@
 import React from 'react';
-import { SafeAreaView, DrawerActions } from 'react-navigation';
-import {
-  ActivityIndicator,
-  StyleSheet,
-  View,
-  WebView,
-  NetInfo,
-  Text,
-} from 'react-native';
-import { Permissions } from 'expo';
+import { DrawerActions } from 'react-navigation';
+import { NetInfo } from 'react-native';
 import PropTypes from 'prop-types';
-import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
-import Spinner from 'react-native-loading-spinner-overlay';
-import { UserProp, UserValue, CustomSafeAreaView } from '../style/Text';
-import { textWhite, backgroundRed, backgroundWhite } from '../utils/colors';
 import { getMemberDataAsync } from '../utils/storageApi';
-import Head from '../components/headerSignedIn';
 import { PROFILEPAGE } from '../utils/environment';
+import {
+  NoInternetView,
+  ProfileView,
+  ProfileViewLoader,
+} from '../layout/Profile_view';
 
 class Profile extends React.Component {
   state = {
     memberRequestCompleted: false,
-    visible: true,
-    isConnected: false,
+    isConnected: 0,
   };
   componentDidMount() {
     NetInfo.isConnected.addEventListener(
@@ -40,19 +31,8 @@ class Profile extends React.Component {
   }
 
   handleConnectionChange = (isConnected) => {
-    debugger;
-    this.setState({ isConnected });
+    this.setState({ isConnected: isConnected ? 1 : -1 });
   };
-
-  showSpinner() {
-    console.log('Show Spinner');
-    this.setState({ visible: true });
-  }
-
-  hideSpinner() {
-    console.log('Hide Spinner');
-    this.setState({ visible: false });
-  }
 
   populateMemberData = async () => {
     const member = await getMemberDataAsync();
@@ -63,68 +43,26 @@ class Profile extends React.Component {
     });
   };
 
+  nav = (nav) => nav.dispatch.bind(DrawerActions.openDrawer());
+
   profileUrl = () =>
     `${PROFILEPAGE}?api=1&u=${this.state.member.id}&p=${
       this.state.member.token
     }`;
 
-  render({ navigation, screenProps } = this.props) {
-    let viewState = null;
-    NetInfo.isConnected.fetch().then((isConnected) => {
-      if (isConnected) {
-        console.log('Internet is connected');
-
-        viewState = (
-          <CustomSafeAreaView
-            style={[{ flex: 1, backgroundColor: backgroundRed }]}
-          >
-            <Head
-              icon="menu"
-              action={() => navigation.dispatch(DrawerActions.openDrawer())}
-              title="Profile Screen"
-            />
-            <Spinner
-              visible={this.state.visible}
-              textContent={'Loading...'}
-              textStyle={{ color: '#FFF' }}
-            />
-            {!this.state.memberRequestCompleted ? (
-              <ActivityIndicator />
-            ) : (
-              <WebView
-                source={{ uri: this.profileUrl() }}
-                onLoadStart={() => this.showSpinner()}
-                onLoad={() => this.hideSpinner()}
-              />
-            )}
-          </CustomSafeAreaView>
-        );
-      } else {
-        viewState = (
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: backgroundRed,
-            }}
-          >
-            <View>
-              <Ionicons
-                name="ios-wifi"
-                size={60}
-                color="#fff"
-                style={{ marginRight: 'auto', marginLeft: 'auto' }}
-              />
-              <Text style={{ color: 'white', fontSize: 20 }}>
-                Please check your network connection.
-              </Text>
-            </View>
-          </View>
-        );
-      }
-    });
-    return viewState;
+  render({ navigation } = this.props) {
+    if (this.state.isConnected === 0 || !this.state.memberRequestCompleted) {
+      return <ProfileViewLoader navigationAction={this.nav(navigation)} />;
+    }
+    if (this.state.isConnected === 1 && this.state.memberRequestCompleted) {
+      return (
+        <ProfileView
+          sourceURL={this.profileUrl}
+          navigationAction={this.nav(navigation)}
+        />
+      );
+    }
+    return <NoInternetView />;
   }
 }
 

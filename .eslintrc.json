@@ -17,6 +17,12 @@
     "react/no-multi-comp": 0,
     "arrow-parens": [2, "always"],
     "function-paren-newline": 0,
+    "react/prefer-stateless-function": [
+      2,
+      {
+        "ignorePureComponents": true
+      }
+    ],
     "comments": {
       "function-paren-newline": "due to conflict between Prettier max length"
     }
