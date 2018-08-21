@@ -19,6 +19,7 @@ import {
   removeMemberDataAsync,
   removeMemberBarcodeAsync,
 } from '../utils/storageApi';
+import myTabBarComponent from '../components/myTabBarComponent';
 
 const TabNav = createBottomTabNavigator(
   {
@@ -72,6 +73,7 @@ const TabNav = createBottomTabNavigator(
       activeTintColor: 'tomato',
       inactiveTintColor: 'gray',
     },
+    tabBarComponent: myTabBarComponent,
   },
 );
 

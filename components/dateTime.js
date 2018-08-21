@@ -38,7 +38,7 @@ class DateTime extends Component {
           {`${this.state.DateTime.format('DD/MM/YYYY')} `}
         </UserValue>
         <UserProp style={({ marginLeft: 50 }, prop)}>
-          {dateTimeStrings[1]}:
+          {dateTimeStrings[1]}:{' '}
         </UserProp>
         <UserValue style={value}>
           {this.state.DateTime.format('h:mm a')}

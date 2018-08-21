@@ -80,11 +80,7 @@ class Home extends React.Component {
   };
 
   componentDidMount() {
-    Dimensions.addEventListener('change', () => {
-      this.setState({
-        portraitOrientation: Orientation.isPortrait() === true,
-      });
-    });
+    Dimensions.addEventListener('change', this.handleOrientation);
     Font.loadAsync({
       'OCR A Std': require('../assets/fonts/OCRAStd.ttf'),
     }).then(() => this.setState({ fontLoaded: true }));
@@ -92,12 +88,13 @@ class Home extends React.Component {
   }
 
   componentWillUnmount() {
-    Dimensions.removeEventListener('change', () => {
-      this.setState({
-        portraitOrientation: Orientation.isPortrait() === true,
-      });
-    });
+    Dimensions.removeEventListener('change', this.handleOrientation);
   }
+
+  handleOrientation = () =>
+    this.setState({
+      portraitOrientation: Orientation.isPortrait() === true,
+    });
 
   populateMemberData = async () => {
     const member = await getMemberDataAsync();

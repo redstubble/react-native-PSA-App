@@ -69,55 +69,62 @@ class Profile extends React.Component {
     }`;
 
   render({ navigation, screenProps } = this.props) {
-    if (true || this.state.isConnected) {
-      return (
-        <CustomSafeAreaView
-          style={[{ flex: 1, backgroundColor: backgroundRed }]}
-        >
-          <Head
-            icon="menu"
-            action={() => navigation.dispatch(DrawerActions.openDrawer())}
-            title="Profile Screen"
-          />
-          <Spinner
-            visible={this.state.visible}
-            textContent={'Loading...'}
-            textStyle={{ color: '#FFF' }}
-          />
-          {!this.state.memberRequestCompleted ? (
-            <ActivityIndicator />
-          ) : (
-            <WebView
-              source={{ uri: this.profileUrl() }}
-              onLoadStart={() => this.showSpinner()}
-              onLoad={() => this.hideSpinner()}
+    let viewState = null;
+    NetInfo.isConnected.fetch().then((isConnected) => {
+      if (isConnected) {
+        console.log('Internet is connected');
+
+        viewState = (
+          <CustomSafeAreaView
+            style={[{ flex: 1, backgroundColor: backgroundRed }]}
+          >
+            <Head
+              icon="menu"
+              action={() => navigation.dispatch(DrawerActions.openDrawer())}
+              title="Profile Screen"
             />
-          )}
-        </CustomSafeAreaView>
-      );
-    }
-    return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: backgroundRed,
-        }}
-      >
-        <View>
-          <Ionicons
-            name="ios-wifi"
-            size={60}
-            color="#fff"
-            style={{ marginRight: 'auto', marginLeft: 'auto' }}
-          />
-          <Text style={{ color: 'white', fontSize: 20 }}>
-            Please check your network connection.
-          </Text>
-        </View>
-      </View>
-    );
+            <Spinner
+              visible={this.state.visible}
+              textContent={'Loading...'}
+              textStyle={{ color: '#FFF' }}
+            />
+            {!this.state.memberRequestCompleted ? (
+              <ActivityIndicator />
+            ) : (
+              <WebView
+                source={{ uri: this.profileUrl() }}
+                onLoadStart={() => this.showSpinner()}
+                onLoad={() => this.hideSpinner()}
+              />
+            )}
+          </CustomSafeAreaView>
+        );
+      } else {
+        viewState = (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: backgroundRed,
+            }}
+          >
+            <View>
+              <Ionicons
+                name="ios-wifi"
+                size={60}
+                color="#fff"
+                style={{ marginRight: 'auto', marginLeft: 'auto' }}
+              />
+              <Text style={{ color: 'white', fontSize: 20 }}>
+                Please check your network connection.
+              </Text>
+            </View>
+          </View>
+        );
+      }
+    });
+    return viewState;
   }
 }
 
