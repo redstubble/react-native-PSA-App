@@ -21,7 +21,7 @@ class AuthLoadingScreen extends React.Component {
           resizeMode="cover"
           resizeMethod="resize"
           style={{
-            backgroundColor: '#AF0003',
+            backgroundColor: '#A60000',
             width: '100%',
             height: '100%',
           }}
