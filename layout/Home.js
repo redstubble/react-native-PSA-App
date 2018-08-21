@@ -1,27 +1,17 @@
 import React from 'react';
 import { DrawerActions } from 'react-navigation';
-import {
-  Text,
-  ScrollView,
-  StyleSheet,
-  View,
-  ActivityIndicator,
-  Image,
-  ImageBackground,
-  Dimensions,
-  Platform,
-  Transforms,
-} from 'react-native';
+import {Dimensions } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { Font } from 'expo';
 import Head from '../components/headerSignedIn';
 import Images from '../assets/images';
 import { getMemberDataAsync, getMemberBarcodeAsync } from '../utils/storageApi';
-import { textWhite, backgroundRed, backgroundWhite } from '../utils/colors';
-import DateTime from '../components/dateTime';
-import { UserProp, UserValue, CustomSafeAreaView } from '../style/Text';
+import { CustomSafeAreaView } from '../style/Text';
 import Orientation from '../utils/orientation';
 import { HomeLoader, LandscapeView, PortraitView, MemberDetail } from '../layout/Home_view';
+
+const landscapeBackground = require('../assets/img/hor-bg.jpg');
+const landscapeBackgroundCard = require('../assets/img/credit-bg.png');
 
 class Home extends React.Component {
   state = {
@@ -82,10 +72,16 @@ class Home extends React.Component {
         </PortraitView>);
     }
     return (
-      <LandscapeView barcodeValue={barcodeValue} barcodeImg={barcodeImg} logo={logo} >
+      <LandscapeView
+        background={landscapeBackground} 
+        backgroundCard={landscapeBackgroundCard} 
+        barcodeValue={barcodeValue} 
+        barcodeImg={barcodeImg} 
+        logo={logo} 
+      >
         <MemberDetail memberNo={memberNo} memberValue={memberValue} />
       </LandscapeView>
-    )
+    );
   };
 
 

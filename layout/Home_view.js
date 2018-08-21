@@ -1,5 +1,4 @@
 import React, { PureComponent, Component } from 'react';
-import { DrawerActions } from 'react-navigation';
 import {
   Text,
   ScrollView,
@@ -8,19 +7,11 @@ import {
   ActivityIndicator,
   Image,
   ImageBackground,
-  Dimensions,
   Platform,
-  Transforms,
 } from 'react-native';
-import { PropTypes } from 'prop-types';
-import { Font } from 'expo';
-import Head from '../components/headerSignedIn';
-import Images from '../assets/images';
-import { getMemberDataAsync, getMemberBarcodeAsync } from '../utils/storageApi';
-import { textWhite, backgroundRed, backgroundWhite } from '../utils/colors';
+import { backgroundRed } from '../utils/colors';
 import DateTime from '../components/dateTime';
-import { UserProp, UserValue, CustomSafeAreaView } from '../style/Text';
-import Orientation from '../utils/orientation';
+import { UserProp, UserValue } from '../style/Text';
 
 const styles = StyleSheet.create({
   droidSafeArea: {
@@ -62,30 +53,8 @@ const styles = StyleSheet.create({
   },
 });
 
-// class HomeView extends React.Component {
-//   state = {
-//     memberRequestCompleted: false,
-//     fontLoaded: false,
-//     portraitOrientation: Orientation.isPortrait() === true,
-//     devicetype: Orientation.isTablet() ? 'tablet' : 'phone',
-//     member: {
-//       first_name: '',
-//       surname: '',
-//       email: '',
-//       member_no: '',
-//       barcode_source: '',
-//       barcode_no: 0,
-//       barcode_img: '',
-//     },
-//   };
 
-//   componentDidMount() {
-//     Font.loadAsync({
-//       'OCR A Std': require('../assets/fonts/OCRAStd.ttf'),
-//     }).then(() => this.setState({ fontLoaded: true }));
-//   }
-
-  export class memberDetail extends Component {
+  export class MemberDetail extends Component {
     render({memberNo, memberValue} = this.props ) {
       return (
         <View
@@ -113,10 +82,10 @@ const styles = StyleSheet.create({
 
 
 export class LandscapeView extends Component {
-  render({barcodeValue, barcodeImg, logo } = this.props) {
+  render({background, backgroundCard, barcodeValue, barcodeImg, logo } = this.props) {
     return (
       <ImageBackground
-      source={require('../assets/img/hor-bg.jpg')}
+      source={background}
       style={{
         justifyContent: 'center',
         alignItems: 'center',
@@ -125,7 +94,7 @@ export class LandscapeView extends Component {
       resizeMode="cover"
     >
       <ImageBackground
-        source={require('../assets/img/credit-bg.png')}
+        source={backgroundCard}
         style={{
           marginTop: Platform.OS === 'android' ? 20 : 0,
           width: 500,
