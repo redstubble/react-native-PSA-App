@@ -34,7 +34,6 @@ class Profile extends React.Component {
   }
 
   handleConnectionChange = (isConnected) => {
-    debugger;
     this.setState({ isConnected: isConnected ? 1 : -1 });
   };
 
@@ -55,14 +54,13 @@ class Profile extends React.Component {
     }`;
 
   render({ navigation } = this.props) {
-    debugger;
     if (this.state.isConnected === 0 || !this.state.memberRequestCompleted) {
       return <ProfileViewLoader navigationAction={this.nav(navigation)} />;
     }
     if (this.state.isConnected === 1 && this.state.memberRequestCompleted) {
       return (
         <ProfileView
-          sourceURL={this.profileUrl}
+          sourceURL={this.profileUrl()}
           navigationAction={this.nav(navigation)}
         />
       );

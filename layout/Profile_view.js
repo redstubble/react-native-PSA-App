@@ -18,7 +18,6 @@ export class ProfileView extends Component {
   }
 
   render({ sourceURL, navigationAction } = this.props) {
-    debugger;
     return (
       <CustomSafeAreaView style={[{ flex: 1 }]}>
         <Head
@@ -32,7 +31,7 @@ export class ProfileView extends Component {
           textStyle={{ color: '#000' }}
         />
         <WebView
-          source={{ uri: () => sourceURL() }}
+          source={{ uri: sourceURL }}
           onLoadStart={() => this.showSpinner()}
           onLoad={() => this.hideSpinner()}
         />
