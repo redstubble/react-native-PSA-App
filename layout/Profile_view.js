@@ -55,7 +55,6 @@ export class ProfileViewLoader extends PureComponent {
           textContent="Loading..."
           textStyle={{ color: '#FFF' }}
         />
-        <ActivityIndicator />
       </CustomSafeAreaView>
     );
   }

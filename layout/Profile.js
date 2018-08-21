@@ -20,6 +20,9 @@ class Profile extends React.Component {
       'connectionChange',
       this.handleConnectionChange,
     );
+    NetInfo.isConnected.fetch().done(
+      (isConnected) => { this.handleConnectionChange(isConnected); },
+    );
     this.populateMemberData();
   }
 
@@ -31,6 +34,7 @@ class Profile extends React.Component {
   }
 
   handleConnectionChange = (isConnected) => {
+    debugger;
     this.setState({ isConnected: isConnected ? 1 : -1 });
   };
 
@@ -51,6 +55,7 @@ class Profile extends React.Component {
     }`;
 
   render({ navigation } = this.props) {
+    debugger;
     if (this.state.isConnected === 0 || !this.state.memberRequestCompleted) {
       return <ProfileViewLoader navigationAction={this.nav(navigation)} />;
     }
