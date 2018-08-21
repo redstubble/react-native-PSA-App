@@ -45,6 +45,10 @@ class Home extends React.Component {
   };
 
   componentDidMount() {
+    this.handleOrientation = () =>
+      this.setState({
+        portraitOrientation: Orientation.isPortrait() === true,
+      });
     Dimensions.addEventListener('change', this.handleOrientation);
     this.populateMemberData();
   }
@@ -66,10 +70,7 @@ class Home extends React.Component {
   }
 
 
-  handleOrientation = () =>
-    this.setState({
-      portraitOrientation: Orientation.isPortrait() === true,
-    });
+
 
   populateMemberData = async () => {
     const member = await getMemberDataAsync();

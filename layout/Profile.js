@@ -16,6 +16,9 @@ class Profile extends React.Component {
     isConnected: 0,
   };
   componentDidMount() {
+    this.handleConnectionChange = (isConnected) => {
+      this.setState({ isConnected: isConnected ? 1 : -1 });
+    };
     NetInfo.isConnected.addEventListener(
       'connectionChange',
       this.handleConnectionChange,
@@ -33,9 +36,7 @@ class Profile extends React.Component {
     );
   }
 
-  handleConnectionChange = (isConnected) => {
-    this.setState({ isConnected: isConnected ? 1 : -1 });
-  };
+
 
   populateMemberData = async () => {
     const member = await getMemberDataAsync();
