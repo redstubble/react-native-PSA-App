@@ -58,7 +58,7 @@ class Profile extends React.Component {
     if (this.state.isConnected === 0 || !this.state.memberRequestCompleted) {
       return <ProfileViewLoader navigationAction={this.nav(navigation)} />;
     }
-    if (this.state.isConnected === 1 && this.state.memberRequestCompleted) {
+    if (this.state.isConnected === 1) {
       return (
         <ProfileView
           sourceURL={this.profileUrl()}
