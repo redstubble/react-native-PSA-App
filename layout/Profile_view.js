@@ -1,9 +1,11 @@
 import React, { Component, PureComponent } from 'react';
-import { ActivityIndicator, WebView, Text, View } from 'react-native';
+import { WebView, Text, View } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { Ionicons } from '@expo/vector-icons';
 import { CustomSafeAreaView } from '../style/Text';
 import Head from '../components/headerSignedIn';
+import { backgroundRed } from '../utils/colors';
+
 
 export class ProfileView extends Component {
   state = { spinnerVisible: true };
