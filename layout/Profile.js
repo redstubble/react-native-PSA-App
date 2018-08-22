@@ -23,9 +23,9 @@ class Profile extends React.Component {
       'connectionChange',
       this.handleConnectionChange,
     );
-    NetInfo.isConnected.fetch().done(
-      (isConnected) => { this.handleConnectionChange(isConnected); },
-    );
+    NetInfo.isConnected.fetch().done((isConnected) => {
+      this.handleConnectionChange(isConnected);
+    });
     this.populateMemberData();
   }
 
@@ -36,8 +36,6 @@ class Profile extends React.Component {
     );
   }
 
-
-
   populateMemberData = async () => {
     const member = await getMemberDataAsync();
     if (!member.valid) console.error('Member Data Invalid Error');
@@ -47,7 +45,7 @@ class Profile extends React.Component {
     });
   };
 
-  nav = (nav) => nav.dispatch.bind(DrawerActions.openDrawer());
+  nav = (nav) => () => nav.dispatch(DrawerActions.openDrawer()); // Closure
 
   profileUrl = () =>
     `${PROFILEPAGE}?api=1&u=${this.state.member.id}&p=${
