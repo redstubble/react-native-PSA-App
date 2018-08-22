@@ -1,16 +1,10 @@
 import React, { Component } from 'react';
-import { SafeAreaView, DrawerActions } from 'react-navigation';
-import { View, Text, Button, ActivityIndicator } from 'react-native';
+import { DrawerActions } from 'react-navigation';
+import { View, Text } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import Head from '../components/headerSignedIn';
 import { getMemberDataAsync } from '../utils/storageApi';
 import { textWhite, backgroundRed, backgroundWhite } from '../utils/colors';
-import { UserProp, UserValue, CustomSafeAreaView } from '../style/Text';
-import {
-  CustomSpinner,
-  CustomContainer,
-  CustomWiFiConnectionError,
-} from '../components/CustomSnippets';
+import { CustomSpinner, CustomContainer } from '../components/CustomSnippets';
 
 const hashCode = (str) =>
   str

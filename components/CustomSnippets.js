@@ -9,7 +9,7 @@ import { backgroundRed } from '../utils/colors';
 export const CustomContainer = (
   { title, navigationAction, hideHeader, children, icon } = this.props,
 ) => (
-  <CustomSafeAreaView style={[{ flex: 1 }]}>
+  <CustomSafeAreaView>
     {!hideHeader && (
       <Head
         icon={icon || 'menu'}
@@ -17,7 +17,7 @@ export const CustomContainer = (
         title={title}
       />
     )}
-    {children}
+    <View style={{ flex: 1, backgroundColor: 'darkred' }}>{children}</View>
   </CustomSafeAreaView>
 );
 

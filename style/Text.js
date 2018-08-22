@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import { SafeAreaView, Platform } from 'react-native';
-import { textWhite, textBlack, backgroundWhite } from '../utils/colors';
+import { Platform } from 'react-native';
+import { textWhite } from '../utils/colors';
 
 export const CustomSafeAreaView = styled.SafeAreaView`
   flex: 1;
-  background-color: darkred;
+  background-color: #000;
   padding-top: ${Platform.OS === 'android' ? 25 : 0};
 `;
 
