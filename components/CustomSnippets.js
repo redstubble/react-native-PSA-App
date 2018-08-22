@@ -7,11 +7,15 @@ import Head from './headerSignedIn';
 import { backgroundRed } from '../utils/colors';
 
 export const CustomContainer = (
-  { title, navigationAction, hideHeader, children } = this.props,
+  { title, navigationAction, hideHeader, children, icon } = this.props,
 ) => (
   <CustomSafeAreaView style={[{ flex: 1 }]}>
     {!hideHeader && (
-      <Head icon="menu" action={() => navigationAction()} title={title} />
+      <Head
+        icon={icon || 'menu'}
+        action={() => navigationAction()}
+        title={title}
+      />
     )}
     {children}
   </CustomSafeAreaView>

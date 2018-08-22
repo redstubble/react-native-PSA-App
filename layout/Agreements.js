@@ -12,19 +12,6 @@ import {
   CustomWiFiConnectionError,
 } from '../components/CustomSnippets';
 
-const Container = ({ navigation } = this.props) => (
-  <CustomSafeAreaView style={[{ flex: 1 }]}>
-    <Head
-      icon="menu"
-      action={() => navigation.dispatch(DrawerActions.openDrawer())}
-      title="My Documents"
-    />
-    <View style={{ backgroundColor: backgroundRed, flex: 1 }}>
-      {this.props.children}
-    </View>
-  </CustomSafeAreaView>
-);
-
 const hashCode = (str) =>
   str
     .split('')
@@ -36,16 +23,14 @@ const hashCode = (str) =>
 
 const CollectiveAgreement = ({ navigation, agreement } = this.props) => (
   <View
-    style={
-      {
-        margin: 20,
-        padding: 20,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        backgroundColor: textWhite,
-      } // flex:1,
-    }
+    style={{
+      margin: 20,
+      padding: 20,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+      backgroundColor: textWhite,
+    }}
   >
     <MaterialCommunityIcons
       name="file"
@@ -58,6 +43,7 @@ const CollectiveAgreement = ({ navigation, agreement } = this.props) => (
       onPress={() =>
         navigation.navigate('Agreement', {
           link: agreement.path,
+          name: agreement.name,
         })
       }
     >

@@ -10,6 +10,7 @@ export default class HomeScreen extends React.Component {
         leftComponent={{
           // https://www.materialui.co/icon/arrow-back
           icon: this.props.icon,
+          underlayColor: headerRed,
           onPress: () => this.props.action(),
           color: textWhite,
         }}

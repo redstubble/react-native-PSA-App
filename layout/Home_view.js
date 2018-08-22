@@ -78,9 +78,16 @@ export class MemberDetail extends Component {
   }
 }
 
-export class LandscapeView extends Component {
+export class LandscapeView extends PureComponent {
   render(
-    { background, backgroundCard, barcodeValue, barcodeImg, logo } = this.props,
+    {
+      background,
+      backgroundCard,
+      barcodeValue,
+      barcodeImg,
+      logo,
+      children,
+    } = this.props,
   ) {
     const { height, width } = Dimensions.get('window');
     return (
@@ -89,90 +96,88 @@ export class LandscapeView extends Component {
         style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
         resizeMode="cover"
       >
-        <ImageBackground
-          source={backgroundCard}
+        <View
           style={{
             flex: 0.9,
-            justifyContent: 'center', // marginTop: 'auto',
-            // marginBottom: 'auto',
-            width: width * 0.8,
+            width: '80%',
           }}
-          resizeMode="stretch"
         >
-          <View
+          <ImageBackground
+            source={backgroundCard}
             style={{
-              flex: 0.9,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'flex-end',
-              paddingLeft: 50,
+              flex: 1,
+              justifyContent: 'center',
+              width: '100%',
             }}
+            resizeMode="stretch"
           >
             <View
               style={{
-                flex: 1,
-                flexDirection: 'column',
-                justifyContent: 'center',
+                flex: 0.9,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                paddingLeft: 50,
               }}
             >
-              <Image
-                source={logo}
-                resizeMode="contain"
-                style={{ flex: 2, width: '40%', height: '100%' }}
-              />
-              {this.props.children}
-            </View>
-
-            <View style={{ flex: 1 }}>
               <View
-                style={
-                  {
-                    backgroundColor: 'white',
-                    flex: 1,
-                    //alignItems: 'center',
-                  }
-                  // marginTop: 60,
-                  // marginBottom: 20,
-                  // marginLeft: 20,
-                  // paddingTop: 20,
-                  // paddingRight: 20,
-                  // paddingLeft: 20,
-                  // transform: [{ rotate: '90deg' }],
-                }
+                style={{
+                  flex: 1,
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                }}
               >
                 <Image
-                  source={{ uri: barcodeImg }}
-                  resizeMode="stretch"
-                  style={{ flex: 4 }}
+                  source={logo}
+                  resizeMode="contain"
+                  style={{ flex: 2, width: '40%', height: '100%' }}
                 />
+                {children}
+              </View>
+
+              <View style={{ flex: 1 }}>
                 <View
                   style={{
-                    paddingTop: 5,
-                    paddingBottom: 5,
-                    flex: 1,
-                    alignSelf: 'center',
+                    backgroundColor: 'white',
+                    flex: 0.6,
+                    padding: 20,
+                    alignItems: 'center',
+                    transform: [{ rotate: '90deg' }],
                   }}
                 >
-                  <Text>
-                    <UserValue
-                      style={[
-                        styles.barcodeValue,
-                        {
-                          textAlign: 'center',
-                          fontSize: 18,
-                          color: 'black',
-                          width: '100%',
-                        },
-                      ]}
-                    >
-                      {`${barcodeValue}`}
-                    </UserValue>
-                  </Text>
+                  <Image
+                    source={{ uri: barcodeImg }}
+                    resizeMode="stretch"
+                    style={{ flex: 0.9, width: '100%', height: '80%' }}
+                  />
+                  <View
+                    style={{
+                      paddingTop: 10,
+                      paddingBottom: 10,
+                      flex: 0.1,
+                      alignSelf: 'center',
+                    }}
+                  >
+                    <Text>
+                      <UserValue
+                        style={[
+                          styles.barcodeValue,
+                          {
+                            fontSize: 18,
+                            color: 'black',
+                            width: '100%',
+                          },
+                        ]}
+                      >
+                        {`${barcodeValue}`}
+                      </UserValue>
+                    </Text>
+                  </View>
                 </View>
               </View>
             </View>
-          </View>
-        </ImageBackground>
+          </ImageBackground>
+        </View>
       </ImageBackground>
     );
   }

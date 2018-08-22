@@ -1,30 +1,7 @@
 import React, { Component } from 'react';
-import { SafeAreaView } from 'react-navigation';
 import PDFReader from 'rn-pdf-reader-js';
-import {
-  StyleSheet,
-  View,
-  WebView,
-  ActivityIndicator,
-  Platform,
-} from 'react-native';
-import Head from '../components/headerSignedIn';
-import { UserProp, UserValue, CustomSafeAreaView } from '../style/Text';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#ecf0f1',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  paragraph: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: '#34495e',
-  },
-});
+import { WebView, Platform } from 'react-native';
+import { CustomContainer } from '../components/CustomSnippets';
 
 export default class Document extends Component {
   render({ navigation } = this.props) {
@@ -44,14 +21,13 @@ export default class Document extends Component {
         />
       );
     return (
-      <CustomSafeAreaView style={[{ flex: 1, backgroundColor: '#ecf0f1' }]}>
-        <Head
-          icon="arrow-back"
-          action={() => navigation.goBack()}
-          title="Document Screen"
-        />
+      <CustomContainer
+        title={this.props.navigation.getParam('name')}
+        navigationAction={() => navigation.goBack()}
+        icon="arrow-back"
+      >
         {pdfViewer}
-      </CustomSafeAreaView>
+      </CustomContainer>
     );
   }
 }
