@@ -1,11 +1,10 @@
 import React, { Component, PureComponent } from 'react';
-import { WebView, Text, View } from 'react-native';
-import Spinner from 'react-native-loading-spinner-overlay';
-import { Ionicons } from '@expo/vector-icons';
-import { CustomSafeAreaView } from '../style/Text';
-import Head from '../components/headerSignedIn';
-import { backgroundRed } from '../utils/colors';
-
+import { WebView } from 'react-native';
+import {
+  CustomSpinner,
+  CustomContainer,
+  CustomWiFiConnectionError,
+} from '../components/CustomSnippets';
 
 export class ProfileView extends Component {
   state = { spinnerVisible: true };
@@ -21,23 +20,17 @@ export class ProfileView extends Component {
 
   render({ sourceURL, navigationAction } = this.props) {
     return (
-      <CustomSafeAreaView style={[{ flex: 1 }]}>
-        <Head
-          icon="menu"
-          action={() => navigationAction()}
-          title="Profile Screen"
-        />
-        <Spinner
-          visible={this.state.spinnerVisible}
-          textContent="Loading..."
-          textStyle={{ color: '#FFF' }}
-        />
+      <CustomContainer
+        title="Profile Screen"
+        navigationAction={navigationAction}
+      >
+        <CustomSpinner visible={this.state.spinnerVisible} />
         <WebView
           source={{ uri: sourceURL }}
           onLoadStart={() => this.showSpinner()}
           onLoad={() => this.hideSpinner()}
         />
-      </CustomSafeAreaView>
+      </CustomContainer>
     );
   }
 }
@@ -45,45 +38,25 @@ export class ProfileView extends Component {
 export class ProfileViewLoader extends PureComponent {
   render({ navigationAction } = this.props) {
     return (
-      <CustomSafeAreaView style={[{ flex: 1 }]}>
-        <Head
-          icon="menu"
-          action={() => navigationAction()}
-          title="Profile Screen"
-        />
-        <Spinner
-          visible
-          textContent="Loading..."
-          textStyle={{ color: '#FFF' }}
-        />
-      </CustomSafeAreaView>
+      <CustomContainer
+        title="Profile Screen"
+        navigationAction={navigationAction}
+      >
+        <CustomSpinner visible />
+      </CustomContainer>
     );
   }
 }
 
 export class NoInternetView extends PureComponent {
-  render() {
+  render({ navigationAction } = this.props) {
     return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: backgroundRed,
-        }}
+      <CustomContainer
+        title="Profile Screen"
+        navigationAction={navigationAction}
       >
-        <View>
-          <Ionicons
-            name="ios-wifi"
-            size={60}
-            color="#fff"
-            style={{ marginRight: 'auto', marginLeft: 'auto' }}
-          />
-          <Text style={{ color: 'white', fontSize: 20 }}>
-            Please check your network connection.
-          </Text>
-        </View>
-      </View>
+        <CustomWiFiConnectionError />
+      </CustomContainer>
     );
   }
 }
