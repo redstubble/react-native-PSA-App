@@ -1,31 +1,35 @@
 import React from 'react';
 import { DrawerActions } from 'react-navigation';
-import {Dimensions } from 'react-native';
+import { Dimensions } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { Font, Asset, AppLoading } from 'expo';
 import Head from '../components/headerSignedIn';
 import Images from '../assets/images';
 import { getMemberDataAsync, getMemberBarcodeAsync } from '../utils/storageApi';
-import { CustomSafeAreaView } from '../style/Text';
 import Orientation from '../utils/orientation';
-import { HomeLoader, LandscapeView, PortraitView, MemberDetail } from '../layout/Home_view';
+import {
+  HomeLoader,
+  LandscapeView,
+  PortraitView,
+  MemberDetail,
+} from '../layout/Home_view';
+import { CustomContainer } from '../components/CustomSnippets';
 
 const landscapeBackground = require('../assets/img/hor-bg.jpg');
 const landscapeBackgroundCard = require('../assets/img/credit-bg.png');
 const OCRAStd = require('../assets/fonts/OCRAStd.ttf');
 
 function cacheImages(images) {
-  return images.map(image => {
+  return images.map((image) => {
     if (typeof image === 'string') {
       return Image.prefetch(image);
-    } else {
-      return Asset.fromModule(image).downloadAsync();
     }
+    return Asset.fromModule(image).downloadAsync();
   });
 }
 
 function cacheFonts(fonts) {
-  return fonts.map(font => Font.loadAsync(font));
+  return fonts.map((font) => Font.loadAsync(font));
 }
 
 class Home extends React.Component {
@@ -56,21 +60,21 @@ class Home extends React.Component {
   componentWillUnmount() {
     Dimensions.removeEventListener('change', this.handleOrientation);
   }
-  
+
   loadAssetsAsync = async () => {
     const imageAssets = cacheImages([
-      landscapeBackground, landscapeBackgroundCard,
+      landscapeBackground,
+      landscapeBackgroundCard,
     ]);
 
-    const fontAssets = cacheFonts([{
-      'OCR A Std': OCRAStd,
-    }]);
+    const fontAssets = cacheFonts([
+      {
+        'OCR A Std': OCRAStd,
+      },
+    ]);
 
     await Promise.all([...imageAssets, ...fontAssets]);
-  }
-
-
-
+  };
 
   populateMemberData = async () => {
     const member = await getMemberDataAsync();
@@ -84,7 +88,6 @@ class Home extends React.Component {
     });
   };
 
-
   memberView = (m) => {
     const barcodeValue = m.barcode_no;
     const barcodeImg = this.state.barcode;
@@ -93,23 +96,30 @@ class Home extends React.Component {
     const memberValue = `${m.first_name.toUpperCase()} ${m.surname.toUpperCase()}`;
     if (this.state.portraitOrientation) {
       return (
-        <PortraitView barcodeValue={barcodeValue} barcodeImg={barcodeImg} logo={logo} >
-          <MemberDetail memberNo={m.member_no} memberValue={`${m.first_name.toUpperCase()} ${m.surname.toUpperCase()}`} />
-        </PortraitView>);
+        <PortraitView
+          barcodeValue={barcodeValue}
+          barcodeImg={barcodeImg}
+          logo={logo}
+        >
+          <MemberDetail
+            memberNo={m.member_no}
+            memberValue={`${m.first_name.toUpperCase()} ${m.surname.toUpperCase()}`}
+          />
+        </PortraitView>
+      );
     }
     return (
       <LandscapeView
-        background={landscapeBackground} 
-        backgroundCard={landscapeBackgroundCard} 
-        barcodeValue={barcodeValue} 
-        barcodeImg={barcodeImg} 
-        logo={logo} 
+        background={landscapeBackground}
+        backgroundCard={landscapeBackgroundCard}
+        barcodeValue={barcodeValue}
+        barcodeImg={barcodeImg}
+        logo={logo}
       >
         <MemberDetail memberNo={memberNo} memberValue={memberValue} />
       </LandscapeView>
     );
   };
-
 
   header = (navigation) => (
     <Head
@@ -132,13 +142,17 @@ class Home extends React.Component {
     }
 
     return (
-      <CustomSafeAreaView>
-        {this.state.portraitOrientation ? this.header(navigation) : null}
+      <CustomContainer
+        title="Home"
+        navigationAction={() => navigation.dispatch(DrawerActions.openDrawer())}
+        hideHeader={!this.state.portraitOrientation}
+      >
         {this.state.memberRequestCompleted && this.state.isReady ? (
           this.memberView(m)
-        ) : <HomeLoader />
-        }
-      </CustomSafeAreaView>
+        ) : (
+          <HomeLoader />
+        )}
+      </CustomContainer>
     );
   }
 }

@@ -21,7 +21,7 @@ export const CustomSpinner = ({ visible } = this.props) => (
   <Spinner
     visible={visible}
     textContent="Loading..."
-    textStyle={{ color: '#FFF' }}
+    textStyle={{ color: '#fff' }}
   />
 );
 

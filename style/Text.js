@@ -4,7 +4,7 @@ import { textWhite, textBlack, backgroundWhite } from '../utils/colors';
 
 export const CustomSafeAreaView = styled.SafeAreaView`
   flex: 1;
-  background-color: black;
+  background-color: darkred;
   padding-top: ${Platform.OS === 'android' ? 25 : 0};
 `;
 

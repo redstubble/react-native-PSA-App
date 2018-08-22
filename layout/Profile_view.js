@@ -26,6 +26,7 @@ export class ProfileView extends Component {
       >
         <CustomSpinner visible={this.state.spinnerVisible} />
         <WebView
+          style={{ backgroundColor: 'darkred' }}
           source={{ uri: sourceURL }}
           onLoadStart={() => this.showSpinner()}
           onLoad={() => this.hideSpinner()}
