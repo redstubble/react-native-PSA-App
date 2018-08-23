@@ -1,11 +1,11 @@
 import styled from 'styled-components';
-import { Platform, Dimensions } from 'react-native';
+import { Platform } from 'react-native';
 import { textWhite } from '../utils/colors';
 
 export const CustomSafeAreaView = styled.SafeAreaView`
+  flex: 1;
   background-color: #000;
   padding-top: ${Platform.OS === 'android' ? 25 : 0};
-  height: ${Dimensions.get('screen').height};
 `;
 
 export const HeaderText = styled.Text`
