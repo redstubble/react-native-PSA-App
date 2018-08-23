@@ -56,7 +56,7 @@ class Login extends Component {
   userLogin = async ({ navigation } = this.props) => {
     this.setState({ isLoggingIn: true, msg: '' });
     const psaApi = new PsaApi.LoginAPI(this.state.email, this.state.password);
-    const member = await psaApi.signIn();
+    const member = await psaApi.signIn(); // timeout 10 seconds,
     this.setState({ isLoggingIn: false });
     if (member.valid) {
       this.props.navigation.navigate('App');
@@ -166,7 +166,6 @@ class Login extends Component {
                   backgroundColor: 'darkred',
                   borderRadius: 4,
                 }}
-
                 disabledStyle={{ backgroundColor: 'darkred' }}
                 disabledTextStyle={{ color: 'red' }}
               />

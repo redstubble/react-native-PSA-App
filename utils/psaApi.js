@@ -8,6 +8,20 @@ import Member from './dataTypes';
 const subDir = Platform.OS === 'ios' ? 'childFolder' : 'childFolder/';
 const DIR = `${FileSystem.documentDirectory}${subDir}`;
 
+// https://davidwalsh.name/fetch-timeout - see comments
+const fetchWithTimeout = (url, options) =>
+  new Promise((resolve, reject) => {
+    // Set timeout timer
+    const timer = setTimeout(
+      () => reject(new Error('Unable to connect')),
+      10000,
+    ); // 10 seconds
+
+    fetch(url, options)
+      .then((response) => resolve(response), (err) => reject(err))
+      .finally(() => clearTimeout(timer));
+  });
+
 export class LoginAPI {
   constructor(e, p) {
     this.populateHeaders(e, p);
@@ -30,12 +44,16 @@ export class LoginAPI {
   // Method
   signIn = async () => {
     let member = {};
-    let body = '';
+    let responseBody = '';
     try {
-      const response = await fetch(Environment.LOGIN_END_POINT, this.options);
-      body = await response.text();
-      const JSONObj = body ? JSON.parse(body) || null : null;
+      const response = await fetchWithTimeout(
+        Environment.LOGIN_END_POINT,
+        this.options,
+      );
+      responseBody = await response.text();
+      const JSONObj = responseBody ? JSON.parse(responseBody) || null : null;
       member = new Member(JSONObj);
+      debugger;
       if (member.valid) {
         await setMemberAsync(member.export());
         // download barcode
@@ -58,8 +76,17 @@ export class LoginAPI {
     } catch (e) {
       console.log('Error', e);
       // Check if error on .json() returned string
-      const msg = e instanceof SyntaxError && body ? body : e.name;
-      console.log(msg);
+      if (e instanceof SyntaxError && responseBody) {
+        if (responseBody.startsWith('<!DOCTYPE html>')) {
+          member.msg = 'Login Failed'; // username correct password wrong
+        }
+        if (responseBody === 'not authorized') {
+          member.msg = 'Login Failed'; // username password incorrect
+        }
+      } else if (e.message) {
+        member.msg = e.message; // time out
+      }
+      console.log(member.msg);
     }
     return member;
   };
