@@ -21,7 +21,7 @@
       "xxhdpi": "./assets/img/splash.png",
       "xxxhdpi": "./assets/img/splash.png",
       "backgroundColor": "#A60000",
-      "resizeMode": "cover"
+      "resizeMode": "contain"
     }
   }
 }
