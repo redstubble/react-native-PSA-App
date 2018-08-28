@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PDFReader from 'rn-pdf-reader-js';
 import { WebView, Platform } from 'react-native';
+import Pdf from 'react-native-pdf';
 import { CustomContainer } from '../components/CustomSnippets';
+
 
 export default class Document extends Component {
   render({ navigation } = this.props) {
@@ -14,11 +16,18 @@ export default class Document extends Component {
           style={{ marginTop: 20 }}
         />
       ) : (
-        <PDFReader
-          source={{
-            uri: this.props.navigation.getParam('link'),
-          }}
-        />
+        <Pdf
+        source={{uri: this.props.navigation.getParam('link'),cache:true}}
+                    onLoadComplete={(numberOfPages,filePath)=>{
+                        console.log(`number of pages: ${numberOfPages}`);
+                    }}
+                    onPageChanged={(page,numberOfPages)=>{
+                        console.log(`current page: ${page}`);
+                    }}
+                    onError={(error)=>{
+                        console.log(error);
+                    }}
+                    style={styles.pdf}/>
       );
     return (
       <CustomContainer

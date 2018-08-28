@@ -22,6 +22,11 @@
       "xxxhdpi": "./assets/img/splash.png",
       "backgroundColor": "#A60000",
       "resizeMode": "contain"
+    },
+    "isDetached": true,
+    "detach": {
+      "scheme": "exp6d7ac71b1c824d96b2c09f1862188fc3",
+      "androidExpoViewUrl": "https://s3.amazonaws.com/exp-exponent-view-code/android-v2.5.3-sdk27.0.0-408c8d77-8d1f-4784-b7b4-93826250663a.tar.gz"
     }
   }
 }
