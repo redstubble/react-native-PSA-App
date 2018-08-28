@@ -1,12 +1,22 @@
+import React, { Component } from 'react';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
 import { createSwitchNavigator } from 'react-navigation';
 import Login from './layout/Login';
 import AuthLoading from './layout/AuthLoading';
 import HomeNav from './layout/HomeNav';
+import rootReducer from './reducers';
 
-const checkAuth = createSwitchNavigator(
+const customProps = {
+  testNav: 'false',
+};
+
+const store = createStore(rootReducer);
+
+const CheckAuth = createSwitchNavigator(
   {
-    AuthLoading,
     App: HomeNav,
+    AuthLoading,
     Login,
   },
   {
@@ -14,4 +24,18 @@ const checkAuth = createSwitchNavigator(
   },
 );
 
-export default checkAuth;
+class App extends Component {
+  state: {
+    docsLoading: false,
+  };
+
+  render() {
+    return (
+      <Provider store={store}>
+        <CheckAuth />
+      </Provider>
+    );
+  }
+}
+
+export default App;

@@ -39,6 +39,7 @@ export default class ValidateMember {
         expiry: memberObj.Expiry,
         token: memberObj.Token,
         collective_agreements: [],
+        collective_agreements_downloading: false,
         valid: true,
       };
     }

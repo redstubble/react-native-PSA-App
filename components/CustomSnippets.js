@@ -51,3 +51,18 @@ export const CustomWiFiConnectionError = () => (
     </View>
   </View>
 );
+
+export const CustomUserMessage = ({ msg } = this.props) => (
+  <View
+    style={{
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: backgroundRed,
+    }}
+  >
+    <View>
+      <Text style={{ color: 'white', fontSize: 20 }}>{msg}</Text>
+    </View>
+  </View>
+);

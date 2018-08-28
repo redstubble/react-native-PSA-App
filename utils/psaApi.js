@@ -42,7 +42,7 @@ export class LoginAPI {
     );
   }
   // Method
-  signIn = async () => {
+  signIn = async (FnDocsLoading) => {
     let member = {};
     let responseBody = '';
     try {
@@ -55,22 +55,31 @@ export class LoginAPI {
       member = new Member(JSONObj);
       debugger;
       if (member.valid) {
-        await setMemberAsync(member.export());
-        // download barcode
-        const barCodeImg = await this.downloadBlob(JSONObj.data.BarcodeSource);
-        if (barCodeImg) member.creds.barcode_img = barCodeImg;
-
         // agreements
         const agreementEntries = Object.entries(
           JSONObj.data.CollectiveAgreement,
         );
         if (agreementEntries.length > 0) {
-          member.creds.collective_agreements = await this.downloadCollectiveAgreements(
-            agreementEntries,
-          );
-          if (member.creds.collective_agreements.length > 0) {
-            await setMemberAsync(member.export());
-          }
+          FnDocsLoading(true);
+        }
+        await setMemberAsync(member.export());
+        // download barcode
+        const barCodeImg = await this.downloadBlob(JSONObj.data.BarcodeSource);
+        if (barCodeImg) member.creds.barcode_img = barCodeImg;
+
+        if (agreementEntries.length > 0) {
+          const downloadAgreements = async () => {
+            member.creds.collective_agreements = await this.downloadCollectiveAgreements(
+              agreementEntries,
+            );
+            debugger;
+            if (member.creds.collective_agreements.length > 0) {
+              debugger;
+              await setMemberAsync(member.export());
+              FnDocsLoading(false); // apply
+            }
+          };
+          downloadAgreements();
         }
       }
     } catch (e) {
@@ -200,9 +209,3 @@ export const signOut = async () => {
     console.log('server log out failed');
   }
 };
-
-//  public updateMember(credentials) {
-//     return Observable.create((observer) => {
-//       if (this.network.type == 'none') {
-//         observer.error('No Network Connection Found');
-//       } else {

@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { Button } from 'react-native-elements';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { CustomSafeAreaView } from '../style/Text';
 import { textWhite, backgroundRed, backgroundWhite } from '../utils/colors';
 import DateTime from '../components/dateTime';
@@ -17,6 +18,7 @@ import Header from '../components/header';
 import CustomTextInput from '../components/customTextInput';
 import Images from '../assets/images';
 import * as PsaApi from '../utils/psaApi';
+import { updateDocumentState } from '../actions';
 
 const styles = StyleSheet.create({
   container: {
@@ -53,13 +55,14 @@ class Login extends Component {
     this.setState({ password: p });
   }
 
-  userLogin = async ({ navigation } = this.props) => {
+  userLogin = async () => {
+    const { navigation, dispatchDocumentState } = this.props;
     this.setState({ isLoggingIn: true, msg: '' });
     const psaApi = new PsaApi.LoginAPI(this.state.email, this.state.password);
-    const member = await psaApi.signIn(); // timeout 10 seconds,
+    const member = await psaApi.signIn((bool) => dispatchDocumentState(bool)); // timeout 10 seconds
     this.setState({ isLoggingIn: false });
     if (member.valid) {
-      this.props.navigation.navigate('App');
+      navigation.navigate('App');
     } else {
       const msg = member.msg || 'Login failed';
       console.log(msg);
@@ -203,4 +206,22 @@ Login.propTypes = {
   }).isRequired,
 };
 
-export default Login;
+// const mapStateToProps = (state) => ({
+//   documentsLoading: state.documentLoading,
+// });
+
+const mapStateToProps = (state) => {
+  debugger;
+  return {
+    documentsLoading: state.uploading,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  dispatchDocumentState: (bool) => dispatch(updateDocumentState(bool)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Login); // passes dispatch to component.
