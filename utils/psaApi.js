@@ -53,7 +53,6 @@ export class LoginAPI {
       responseBody = await response.text();
       const JSONObj = responseBody ? JSON.parse(responseBody) || null : null;
       member = new Member(JSONObj);
-      debugger;
       if (member.valid) {
         // agreements
         const agreementEntries = Object.entries(
@@ -72,9 +71,7 @@ export class LoginAPI {
             member.creds.collective_agreements = await this.downloadCollectiveAgreements(
               agreementEntries,
             );
-            debugger;
             if (member.creds.collective_agreements.length > 0) {
-              debugger;
               await setMemberAsync(member.export());
               FnDocsLoading(false); // apply
             }
