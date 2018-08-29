@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { DrawerActions } from 'react-navigation';
-import { View, Text, ScrollView } from 'react-native';
+import { View, ActivityIndicator, Text, ScrollView } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import TimerMixin from 'react-timer-mixin';
 import { connect } from 'react-redux';
@@ -65,7 +65,6 @@ class Documents extends Component {
   }
 
   componentWillReceiveProps() {
-    debugger;
     this.setState({ memberRequestCompleted: false });
     this.populateMemberData();
   }
@@ -79,14 +78,13 @@ class Documents extends Component {
     });
   };
 
-  render({ navigation, documentsLoading } = this.props) {
+  render({ navigation, uploading, msg } = this.props) {
     let agreements = null;
     if (this.state.memberRequestCompleted) {
-      debugger;
-      if (documentsLoading) {
-        return <CustomUserMessage msg="Documents Loading" />;
+      if (uploading) {
+        return <CustomUserMessage msg={msg} />;
       }
-      debugger;
+
       agreements = this.state.member.collective_agreements.map(
         (agreement, k) => (
           <CollectiveAgreement
@@ -112,12 +110,10 @@ class Documents extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  debugger;
-  return {
-    documentsLoading: state.uploading,
-  };
-};
+const mapStateToProps = (state) => ({
+    uploading: state.uploading,
+    msg: state.msg,
+  });
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchDocumentState: (bool) => dispatch(updateDocumentState(bool)),

@@ -31,10 +31,11 @@ const styles = StyleSheet.create({
   userValue: {
     fontSize: 18,
     fontFamily: 'OCR A Std',
-    width: '100%',
     textShadowColor: 'rgba(0, 0, 0, 1)',
     textShadowOffset: { width: 0, height: 2 },
     textShadowRadius: 2,
+    overflow: 'hidden',
+    flexWrap: 'wrap',
   },
   barcodeValue: {
     fontSize: 18,
@@ -69,7 +70,8 @@ export class MemberDetail extends Component {
           <UserValue style={styles.userValue}>{memberNo}</UserValue>
         </View>
 
-        <View>
+        <View style={{maxWidth:'100%',overflow: 'hidden',
+    flexWrap: 'wrap'}}>
           <UserProp style={styles.userProp}>MEMBER NAME: </UserProp>
           <UserValue style={styles.userValue}>{memberValue}</UserValue>
         </View>
@@ -118,6 +120,8 @@ export class LandscapeView extends PureComponent {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 paddingLeft: 50,
+                overflow: 'hidden',
+                flexWrap: 'wrap',
               }}
             >
               <View
@@ -125,6 +129,9 @@ export class LandscapeView extends PureComponent {
                   flex: 1,
                   flexDirection: 'column',
                   justifyContent: 'center',
+                  maxWidth: '100%',
+                  overflow: 'hidden',
+                  flexWrap: 'wrap',
                 }}
               >
                 <Image

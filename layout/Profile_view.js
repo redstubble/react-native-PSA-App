@@ -8,29 +8,30 @@ import {
 
 export class ProfileView extends Component {
   state = { spinnerVisible: true };
-  showSpinner() {
+  showSpinner = () => {
     console.log('Show Spinner');
     this.setState({ spinnerVisible: true });
   }
+
 
   hideSpinner() {
     console.log('Hide Spinner');
     this.setState({ spinnerVisible: false });
   }
 
-  render({ sourceURL, navigationAction } = this.props) {
+  render({ sourceURL, navigationAction } = this.props) {    
     return (
       <CustomContainer
         title="Profile Screen"
         navigationAction={navigationAction}
       >
-        <CustomSpinner visible={this.state.spinnerVisible} />
+        {(this.state.spinnerVisible) ?  <CustomSpinner /> : null}
         <WebView
-          style={{ backgroundColor: 'darkred' }}
-          source={{ uri: sourceURL }}
-          onLoadStart={() => this.showSpinner()}
-          onLoad={() => this.hideSpinner()}
-        />
+        style={{ backgroundColor: 'darkred' }}
+        source={{ uri: sourceURL }}
+        onLoadStart={() => this.showSpinner()}
+        onLoadEnd={() => this.hideSpinner()}
+          />
       </CustomContainer>
     );
   }

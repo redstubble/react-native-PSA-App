@@ -13,9 +13,9 @@ const fetchWithTimeout = (url, options) =>
   new Promise((resolve, reject) => {
     // Set timeout timer
     const timer = setTimeout(
-      () => reject(new Error('Unable to connect')),
-      10000,
-    ); // 10 seconds
+      () => reject(new Error('Unable to connect, please check your internet connection')),
+      20000, // 10 seconds
+    );
 
     fetch(url, options)
       .then((response) => resolve(response), (err) => reject(err))
@@ -23,8 +23,9 @@ const fetchWithTimeout = (url, options) =>
   });
 
 export class LoginAPI {
-  constructor(e, p) {
+  constructor(e, p, FnDocsLoading) {
     this.populateHeaders(e, p);
+    this.FnDocsLoading = FnDocsLoading;
     this.options = {
       method: 'POST',
       headers: this.head,
@@ -42,7 +43,7 @@ export class LoginAPI {
     );
   }
   // Method
-  signIn = async (FnDocsLoading) => {
+  signIn = async () => {
     let member = {};
     let responseBody = '';
     try {
@@ -59,7 +60,10 @@ export class LoginAPI {
           JSONObj.data.CollectiveAgreement,
         );
         if (agreementEntries.length > 0) {
-          FnDocsLoading(true);
+          this.FnDocsLoading({
+            uploading: true,
+            msg: `Downloading ${agreementEntries.length} documents`,
+          });
         }
         await setMemberAsync(member.export());
         // download barcode
@@ -71,9 +75,13 @@ export class LoginAPI {
             member.creds.collective_agreements = await this.downloadCollectiveAgreements(
               agreementEntries,
             );
+            
             if (member.creds.collective_agreements.length > 0) {
               await setMemberAsync(member.export());
-              FnDocsLoading(false); // apply
+              this.FnDocsLoading({
+                uploading: false,
+                msg: 'Completed download',
+              }); // apply
             }
           };
           downloadAgreements();
@@ -98,26 +106,45 @@ export class LoginAPI {
   };
 
   downloadCollectiveAgreements = async (agreementEntries) => {
-    const agreements = await Promise.all(
-      agreementEntries.map(async (entry) => {
-        const value = entry.slice(1)[0]; // need second element of array
-        const {
-          Doc: agreementMetaData,
-          BelongsTo: agreementChildrenMetaData,
-        } = value;
+    const total = agreementEntries.length;
+    // const agreements = await Promise.all(
+    const funcArray = agreementEntries.map((entry, i) => {
+      const value = entry.slice(1)[0]; // need second element of array
+      const {
+        Doc: agreementMetaData,
+        BelongsTo: agreementChildrenMetaData,
+      } = value;
+      return async () => {
+        this.FnDocsLoading({
+          uploading: true,
+          msg: `Downloading ${i + 1} of ${total} documents`,
+        });
         const agreement = await this.downloadDocs(agreementMetaData.link);
         agreement.name = agreementMetaData.name;
         agreement.children = await agreementChildrenMetaData.map(
           async (childMetaData) => {
             console.log('Child Agreement', childMetaData);
-            const child = this.downloadDocs(childMetaData.link);
+            const child = await this.downloadDocs(childMetaData.link);
             child.name = childMetaData.name;
           },
         );
         return agreement;
-      }),
-    );
-    return agreements;
+      };
+    });
+
+    const results = [];
+    const appendResults = async (p) => {
+      const r = await p;
+      if (r) {
+        results.push(r);
+      }
+    }
+    const finalPromise = await funcArray.reduce(async (promise, asyncFn) => {
+      await appendResults(promise);
+      return asyncFn();
+    }, Promise.resolve());
+    await appendResults(finalPromise);
+    return results;
   };
 
   getFileNameFromHttpResponse = (disposition) => {

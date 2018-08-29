@@ -58,8 +58,8 @@ class Login extends Component {
   userLogin = async () => {
     const { navigation, dispatchDocumentState } = this.props;
     this.setState({ isLoggingIn: true, msg: '' });
-    const psaApi = new PsaApi.LoginAPI(this.state.email, this.state.password);
-    const member = await psaApi.signIn((bool) => dispatchDocumentState(bool)); // timeout 10 seconds
+    const psaApi = new PsaApi.LoginAPI(this.state.email, this.state.password, (obj) => dispatchDocumentState(obj));
+    const member = await psaApi.signIn(); // timeout 10 seconds
     this.setState({ isLoggingIn: false });
     if (member.valid) {
       navigation.navigate('App');
@@ -214,11 +214,12 @@ const mapStateToProps = (state) => {
   debugger;
   return {
     documentsLoading: state.uploading,
+    msg: state.msg,
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  dispatchDocumentState: (bool) => dispatch(updateDocumentState(bool)),
+  dispatchDocumentState: (state) => dispatch(updateDocumentState(state)),
 });
 
 export default connect(
