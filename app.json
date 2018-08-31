@@ -20,7 +20,7 @@
       "xhdpi": "./assets/img/splash.png",
       "xxhdpi": "./assets/img/splash.png",
       "xxxhdpi": "./assets/img/splash.png",
-      "backgroundColor": "#A60000",
+      "backgroundColor": "#B80000",
       "resizeMode": "contain"
     }
   }
