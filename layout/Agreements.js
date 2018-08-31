@@ -102,7 +102,7 @@ class Documents extends Component {
     return (
       <CustomContainer
         navigationAction={() => navigation.dispatch(DrawerActions.openDrawer())}
-        title="My Document"
+        title="Documents"
       >
         <ScrollView>{agreements}</ScrollView>
       </CustomContainer>
@@ -111,9 +111,9 @@ class Documents extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    uploading: state.uploading,
-    msg: state.msg,
-  });
+  uploading: state.uploading,
+  msg: state.msg,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchDocumentState: (bool) => dispatch(updateDocumentState(bool)),

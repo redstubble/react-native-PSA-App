@@ -11,27 +11,23 @@ export class ProfileView extends Component {
   showSpinner = () => {
     console.log('Show Spinner');
     this.setState({ spinnerVisible: true });
-  }
-
+  };
 
   hideSpinner() {
     console.log('Hide Spinner');
     this.setState({ spinnerVisible: false });
   }
 
-  render({ sourceURL, navigationAction } = this.props) {    
+  render({ sourceURL, navigationAction } = this.props) {
     return (
-      <CustomContainer
-        title="Profile Screen"
-        navigationAction={navigationAction}
-      >
-        {(this.state.spinnerVisible) ?  <CustomSpinner /> : null}
+      <CustomContainer title="Profile" navigationAction={navigationAction}>
+        {this.state.spinnerVisible ? <CustomSpinner /> : null}
         <WebView
-        style={{ backgroundColor: 'darkred' }}
-        source={{ uri: sourceURL }}
-        onLoadStart={() => this.showSpinner()}
-        onLoadEnd={() => this.hideSpinner()}
-          />
+          style={{ backgroundColor: 'darkred' }}
+          source={{ uri: sourceURL }}
+          onLoadStart={() => this.showSpinner()}
+          onLoadEnd={() => this.hideSpinner()}
+        />
       </CustomContainer>
     );
   }
@@ -40,10 +36,7 @@ export class ProfileView extends Component {
 export class ProfileViewLoader extends PureComponent {
   render({ navigationAction } = this.props) {
     return (
-      <CustomContainer
-        title="Profile Screen"
-        navigationAction={navigationAction}
-      >
+      <CustomContainer title="Profile" navigationAction={navigationAction}>
         <CustomSpinner visible />
       </CustomContainer>
     );
@@ -53,10 +46,7 @@ export class ProfileViewLoader extends PureComponent {
 export class NoInternetView extends PureComponent {
   render({ navigationAction } = this.props) {
     return (
-      <CustomContainer
-        title="Profile Screen"
-        navigationAction={navigationAction}
-      >
+      <CustomContainer title="Profile" navigationAction={navigationAction}>
         <CustomWiFiConnectionError />
       </CustomContainer>
     );
