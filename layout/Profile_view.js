@@ -7,14 +7,19 @@ import {
 } from '../components/CustomSnippets';
 
 export class ProfileView extends Component {
-  state = { spinnerVisible: true };
-  showSpinner = () => {
+  state = {
+    spinnerVisible: true,
+    webViewOpacity: 0,
+  };
+  showSpinner = async () => {
     console.log('Show Spinner');
-    this.setState({ spinnerVisible: true });
+    await new Promise((resolve) => setTimeout(resolve, 8000));
+    this.setState({ spinnerVisible: true, webViewOpacity: 1 });
   };
 
   hideSpinner() {
     console.log('Hide Spinner');
+
     this.setState({ spinnerVisible: false });
   }
 
@@ -23,7 +28,9 @@ export class ProfileView extends Component {
       <CustomContainer title="Profile" navigationAction={navigationAction}>
         {this.state.spinnerVisible ? <CustomSpinner /> : null}
         <WebView
-          style={{ backgroundColor: 'darkred' }}
+          style={{
+            opacity: this.state.webViewOpacity,
+          }}
           source={{ uri: sourceURL }}
           onLoadStart={() => this.showSpinner()}
           onLoadEnd={() => this.hideSpinner()}
