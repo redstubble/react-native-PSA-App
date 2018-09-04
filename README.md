@@ -1,14 +1,15 @@
-# PSA CLONE
+# PSA Members APP
 
-This project was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).
+An app for PSA NZ Members to review and update membership details, collective agreements and view membership card to redeem against specific PSA Offers.
 
-![Part 1](https://j.gifs.com/Q0wW1Z.gif)
-![Part 2](https://j.gifs.com/2v5kvW.gif)
-![Part 3](https://j.gifs.com/jqlRqB.gif)
+This project was created with React Native.
+
+![Part 1](https://j.gifs.com/Q0wW1Z.gif =250x)
+![Part 2](https://j.gifs.com/2v5kvW.gif =250x)
+![Part 3](https://j.gifs.com/jqlRqB.gif =250x)
 
 
 [PSA IOS App](https://itunes.apple.com/au/app/psa-members-app/id1330803740?mt=8&app=itunes&ign-mpt=uo%3D4)
-
 [PSA Android App](https://play.google.com/store/apps/details?id=com.ionicframework.psapp180051)
 
 ## ESLint Rules
