@@ -2,7 +2,7 @@
 
 This project was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).
 
-![Part 1](https://gifs.com/gif/Q0wW1Z)
+![Part 1](https://j.gifs.com/Q0wW1Z.gif)
 ![Part 2](https://j.gifs.com/2v5kvW.gif)
 ![Part 3](https://j.gifs.com/jqlRqB.gif)
 
