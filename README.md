@@ -3,7 +3,7 @@
 An app for PSA NZ Members to review and update membership details, collective agreements and view membership card to redeem against specific PSA Offers.
 
 This project was created with React Native.
-<img src="https://j.gifs.com/Q0wW1Z.gif" width="400" height="400" />
+[//]: # (<img src="https://j.gifs.com/Q0wW1Z.gif" width="400" height="400" />)
 ![Part 1](https://j.gifs.com/Q0wW1Z.gif)
 ![Part 2](https://j.gifs.com/2v5kvW.gif)
 ![Part 3](https://j.gifs.com/jqlRqB.gif)
