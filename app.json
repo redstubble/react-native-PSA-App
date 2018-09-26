@@ -5,7 +5,7 @@
     "slug": "psa-nz-app",
     "icon": "./assets/img/icon.png",
     "description": "Members App",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "ios": {
       "bundleIdentifier": "com.redstubble.PSANZ"
     },
