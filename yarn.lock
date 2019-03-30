@@ -3703,9 +3703,9 @@ idx@^2.1.0:
   resolved "https://registry.yarnpkg.com/idx/-/idx-2.4.0.tgz#e89e6650c889a44bf889f79d47f40fe09b4eeaa3"
 
 ieee754@^1.1.4:
-  version "1.1.12"
-  resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.1.12.tgz#50bf24e5b9c8bb98af4964c941cdb0918da7b60b"
-  integrity sha512-GguP+DRY+pJ3soyIiGPTvdiVXjZ+DbXOxGpXn3eMvNW4x4irjqXm4wHKscC+TfxSJ0yw/S1F24tqdMNsMZTiLA==
+  version "1.1.13"
+  resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.1.13.tgz#ec168558e95aa181fd87d37f55c32bbcb6708b84"
+  integrity sha512-4vf7I2LYV/HaWerSo3XmlMkp5eZ83i+/CDluXi/IGTs/O1sejBNhTtnxzmRZfvOUqj7lZjqHkeTvpgSFDlWZTg==
 
 ignore-walk@^3.0.1:
   version "3.0.1"
@@ -6686,10 +6686,9 @@ rimraf@~2.4.0:
   dependencies:
     glob "^6.0.1"
 
-rn-pdf-reader-js@^0.2.0:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/rn-pdf-reader-js/-/rn-pdf-reader-js-0.2.1.tgz#87d439a9d0eb2e1d138d86a7ca40a9d23bfa8c65"
-  integrity sha512-NMpYoKPvPd0XC5+cBN2bqPQsDaV+JV59sw35vKwI3Dxx73PxjSUHHh6E7IuWdHuicvVjgoHjUacig7c/pEEEJg==
+rn-pdf-reader-js@Codeko/rn-pdf-reader-js#v0.2.2:
+  version "0.2.2"
+  resolved "https://codeload.github.com/Codeko/rn-pdf-reader-js/tar.gz/2a03cf1ffe52c1b559273dcd9ce4eda9b5cecaa9"
   dependencies:
     buffer "5.1.0"
     js-base64 "2.4.5"
